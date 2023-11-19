@@ -7,6 +7,7 @@ require 'recipe/laravel.php';
 // Config
 
 set('repository', 'https://github.com/AntonLeontev/pull.ru-app.git');
+set('keep_releases', 2);
 
 add('shared_files', []);
 add('shared_dirs', []);
