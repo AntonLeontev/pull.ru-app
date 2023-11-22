@@ -3,7 +3,6 @@
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\InSales\Services\InSalesApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,12 +17,11 @@ use Src\Domain\InSales\Services\InSalesApi;
 
 Route::any('webhooks/insales/calculate_delivery', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/insales/orders_create', [InSalesController::class, 'ordersCreate']);
-Route::any('webhooks/insales/products_create', [InSalesController::class, 'productsCreate']);
+Route::post('webhooks/insales/products_create', [InSalesController::class, 'productsCreate']);
+Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate']);
 
-if (app()->isProduction()) {
+if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(FullfillmentApi::getLocalities()->json());
-        // InSalesApi::createWebhook('http://pull.anerank4.beget.tech/webhooks/insales/products_create', 'products/create');
-        dd(InSalesApi::getWebhooks()->json());
+
     });
 }

@@ -15,4 +15,9 @@ class InSalesController extends Controller
     {
 
     }
+
+    public function productsUpdate(Request $request)
+    {
+
+    }
 }

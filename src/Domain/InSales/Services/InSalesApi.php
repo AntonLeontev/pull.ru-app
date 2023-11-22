@@ -33,4 +33,10 @@ class InSalesApi
                 ],
             ]);
     }
+
+    public static function getCollections()
+    {
+        return Http::inSales()
+            ->get('admin/collections.json');
+    }
 }

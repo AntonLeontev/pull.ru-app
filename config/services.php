@@ -27,4 +27,8 @@ return [
         'password' => env('INSALES_PASSWORD'),
     ],
 
+    'moySklad' => [
+        'token' => env('MOY_SKLAD_TOKEN'),
+    ],
+
 ];
