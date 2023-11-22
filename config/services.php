@@ -29,6 +29,10 @@ return [
 
     'moySklad' => [
         'token' => env('MOY_SKLAD_TOKEN'),
+        'default_price_type_id' => '5a0279d3-8857-11ee-0a80-0d4e00501cd0',
+        'uom' => [
+            'pce' => '19f1edc0-fc42-4001-94cb-c9ec9c62ec10',
+        ],
     ],
 
 ];
