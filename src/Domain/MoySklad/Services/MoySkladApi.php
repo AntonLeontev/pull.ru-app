@@ -40,7 +40,6 @@ class MoySkladApi
         string $parentFolder = null,
     ): Response {
         $data = [
-            // 'meta' => self::productFolderMeta($id),
             ...$params,
         ];
 
