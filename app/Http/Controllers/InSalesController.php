@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Src\Domain\Synchronizer\Actions\CreateProductFromInsales;
+use Src\Domain\Synchronizer\Actions\UpdateProductFromInsales;
 
 class InSalesController extends Controller
 {
@@ -16,8 +17,8 @@ class InSalesController extends Controller
         $createProduct->handle();
     }
 
-    public function productsUpdate()
+    public function productsUpdate(UpdateProductFromInsales $updateProduct)
     {
-
+        $updateProduct->handle();
     }
 }

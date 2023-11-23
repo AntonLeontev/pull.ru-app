@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Src\Domain\Synchronizer\Actions\SyncCatogoriesFromInsales;
+use Src\Domain\Synchronizer\Actions\SyncCategoriesFromInsales;
 
 class SyncInSalesCategoriesToMoySklad extends Command
 {
@@ -24,7 +24,7 @@ class SyncInSalesCategoriesToMoySklad extends Command
     /**
      * Execute the console command.
      */
-    public function handle(SyncCatogoriesFromInsales $sync)
+    public function handle(SyncCategoriesFromInsales $sync)
     {
         $sync->handle();
     }

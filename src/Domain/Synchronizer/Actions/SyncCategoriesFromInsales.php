@@ -8,7 +8,7 @@ use Src\Domain\MoySklad\Entities\ProductFolder;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;
 
-class SyncCatogoriesFromInsales
+class SyncCategoriesFromInsales
 {
     public function handle()
     {

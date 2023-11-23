@@ -12,7 +12,7 @@ use Src\Domain\Synchronizer\Models\Product;
 
 class CreateProductFromInsales
 {
-    public function __construct(public SyncCatogoriesFromInsales $categorySync)
+    public function __construct(public SyncCategoriesFromInsales $categorySync)
     {
     }
 
@@ -117,7 +117,6 @@ class CreateProductFromInsales
             request()->json('0.title'),
             [
                 'description' => strip_tags(request()->json('0.description')),
-                'images' => [],
                 'salePrices' => [
                     [
                         'value' => (float) request()->json('0.variants.0.price'),
@@ -126,7 +125,7 @@ class CreateProductFromInsales
                 'buyPrice' => [
                     'value' => (float) request()->json('0.variants.0.cost_price'),
                 ],
-                'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
+                // 'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
                 'article' => (string) request()->json('0.variants.0.sku'),
                 'weight' => (float) request()->json('0.variants.0.weight'),
                 'uom' => $units,

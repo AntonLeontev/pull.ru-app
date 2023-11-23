@@ -16,6 +16,27 @@ class MoySkladApi
             ]);
     }
 
+    public static function getProduct(string $id): Response
+    {
+        return Http::moySklad()
+            ->get("entity/product/$id");
+    }
+
+    public static function updateProduct(string $id, array $params): Response
+    {
+        if (isset($params['salePrices'][0])) {
+            $params['salePrices'][0]['priceType'] = self::priceTypeMeta(config('services.moySklad.default_price_type_id'));
+            $params['salePrices'][0]['value'] *= 100;
+        }
+
+        if (isset($params['buyPrice'])) {
+            $params['buyPrice']['value'] *= 100;
+        }
+
+        return Http::moySklad()
+            ->put("entity/product/$id", $params);
+    }
+
     public static function createProduct(
         string $name,
         array $params = [],
@@ -55,10 +76,8 @@ class MoySkladApi
         string $id,
         array $params = [],
     ): Response {
-        $data = [...$params];
-
         return Http::moySklad()
-            ->put("entity/productfolder/$id", $data);
+            ->put("entity/productfolder/$id", $params);
     }
 
     public static function getProductFolders(): Response

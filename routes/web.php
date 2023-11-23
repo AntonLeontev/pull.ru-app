@@ -4,20 +4,19 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\MoySklad\Entity\Image;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 
 Route::any('webhooks/insales/calculate_delivery', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/insales/orders_create', [InSalesController::class, 'ordersCreate']);
 Route::withoutMiddleware()
     ->post('webhooks/insales/products_create', [InSalesController::class, 'productsCreate'])->name('create');
-Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate']);
+Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate'])->name('update');
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(Image::make('name', url: 'https://static.insales-cdn.com/images/products/1/6211/785979459/compact_2023-10-10_13-16.png'));
+        // dd(MoySkladApi::getProducts()->json());
         Http::timeout(1)
-            ->post(route('create'), [
+            ->post(route('update'), [
                 [
                     'id' => 408696716,
                     'category_id' => 32380146,
@@ -42,34 +41,11 @@ if (app()->isLocal()) {
                     'meta_description' => null,
                     'currency_code' => 'RUR',
                     'collections_ids' => [
-                        // 27750683,
-                        // 27837774,
-                        // 27837968,
-                        // 27837814,
-                        // 27837817
                         27837968,
                     ],
                     'sales_channels_id' => null,
                     'description' => null,
-                    'images' => [
-                        [
-                            'id' => 785979459,
-                            'product_id' => 408772452,
-                            'position' => 1,
-                            'created_at' => '2023-11-23T10:37:14.000+03:00',
-                            'image_processing' => false,
-                            'external_id' => null,
-                            'title' => null,
-                            'url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/thumb_2023-10-10_13-16.png',
-                            'original_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/2023-10-10_13-16.png',
-                            'medium_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/medium_2023-10-10_13-16.png',
-                            'small_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/micro_2023-10-10_13-16.png',
-                            'thumb_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/thumb_2023-10-10_13-16.png',
-                            'compact_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/compact_2023-10-10_13-16.png',
-                            'large_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/large_2023-10-10_13-16.png',
-                            'filename' => '2023-10-10_13-16.png',
-                        ],
-                    ],
+                    'images' => [],
                     'video_links' => [],
                     'option_names' => [],
                     'properties' => [],
@@ -119,6 +95,5 @@ if (app()->isLocal()) {
                 ],
             ]);
 
-        // dd(MoySkladApi::getPriceTypes()->json());
     });
 }
