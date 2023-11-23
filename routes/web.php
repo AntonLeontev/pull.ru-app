@@ -4,6 +4,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Src\Domain\MoySklad\Entity\Image;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 
 Route::any('webhooks/insales/calculate_delivery', [DeliveryController::class, 'calculate']);
@@ -14,7 +15,7 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(MoySkladApi::getPriceTypes()->json());
+        // dd(Image::make('name', url: 'https://static.insales-cdn.com/images/products/1/6211/785979459/compact_2023-10-10_13-16.png'));
         Http::timeout(1)
             ->post(route('create'), [
                 [
@@ -50,7 +51,25 @@ if (app()->isLocal()) {
                     ],
                     'sales_channels_id' => null,
                     'description' => null,
-                    'images' => [],
+                    'images' => [
+                        [
+                            'id' => 785979459,
+                            'product_id' => 408772452,
+                            'position' => 1,
+                            'created_at' => '2023-11-23T10:37:14.000+03:00',
+                            'image_processing' => false,
+                            'external_id' => null,
+                            'title' => null,
+                            'url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/thumb_2023-10-10_13-16.png',
+                            'original_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/2023-10-10_13-16.png',
+                            'medium_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/medium_2023-10-10_13-16.png',
+                            'small_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/micro_2023-10-10_13-16.png',
+                            'thumb_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/thumb_2023-10-10_13-16.png',
+                            'compact_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/compact_2023-10-10_13-16.png',
+                            'large_url' => 'https://static.insales-cdn.com/images/products/1/6211/785979459/large_2023-10-10_13-16.png',
+                            'filename' => '2023-10-10_13-16.png',
+                        ],
+                    ],
                     'video_links' => [],
                     'option_names' => [],
                     'properties' => [],

@@ -4,6 +4,7 @@ namespace Src\Domain\Synchronizer\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Src\Domain\MoySklad\Entity\Image;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;
 use Src\Domain\Synchronizer\Models\Product;
@@ -25,7 +26,9 @@ class CreateProductFromInsales
 
             $units = $this->getUnits();
 
-            $moySkladProduct = $this->createMoySkladProduct($units, $productFolder);
+            $image = $this->getImages();
+
+            $moySkladProduct = $this->createMoySkladProduct($units, $productFolder, $image);
 
             $dbProduct->update(['moy_sklad_id' => $moySkladProduct['id']]);
         });
@@ -84,7 +87,28 @@ class CreateProductFromInsales
             : null;
     }
 
-    private function createMoySkladProduct(?array $units, ?string $productFolder)
+    /**
+     * @return Src\Domain\MoySklad\Entity\Image[]
+     */
+    private function getImages(): array
+    {
+        $result = [];
+
+        foreach (request()->json('0.images') as $image) {
+            $result[] = Image::make(
+                filename: $image['filename'],
+                url: $image['large_url']
+            );
+
+            if (count($result) === 10) {
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    private function createMoySkladProduct(?array $units, ?string $productFolder, array|Image $images)
     {
         return MoySkladApi::createProduct(
             request()->json('0.title'),
@@ -103,7 +127,7 @@ class CreateProductFromInsales
                 'article' => (string) request()->json('0.variants.0.sku'),
                 'weight' => (float) request()->json('0.variants.0.weight'),
                 'uom' => $units,
-                'volume' => 0.43,
+                'images' => $images,
             ],
             $productFolder,
         )->json();
