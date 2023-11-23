@@ -4,6 +4,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Src\Domain\InSales\Services\InSalesApi;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 
 Route::any('webhooks/insales/calculate_delivery', [DeliveryController::class, 'calculate']);
@@ -14,7 +15,9 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(MoySkladApi::getProducts()->json());
+        // dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
+        dd(MoySkladApi::getCharacteristics()->json());
+        dd(InSalesApi::getOptionNames()->json());
         Http::timeout(1)
             ->post(route('update'), [
                 [

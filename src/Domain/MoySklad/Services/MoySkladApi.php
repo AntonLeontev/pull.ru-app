@@ -104,6 +104,32 @@ class MoySkladApi
             ->get('/entity/uom');
     }
 
+    public static function getVariants(): Response
+    {
+        return Http::moySklad()
+            ->get('/entity/variant');
+    }
+
+    public static function getCharacteristics(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/variant/metadata');
+    }
+
+    public static function createCharacteristic(string $name): Response
+    {
+        return Http::moySklad()
+            ->post('entity/variant/metadata/characteristics', [
+                'name' => $name,
+            ]);
+    }
+
+    public static function getWebhooks(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/webhook');
+    }
+
     public static function priceTypeMeta(string $id): array
     {
         return [

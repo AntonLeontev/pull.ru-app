@@ -39,4 +39,10 @@ class InSalesApi
         return Http::inSales()
             ->get('admin/collections.json');
     }
+
+    public static function getOptionNames()
+    {
+        return Http::inSales()
+            ->get('admin/option_names.json');
+    }
 }
