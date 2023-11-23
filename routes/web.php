@@ -16,8 +16,8 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 if (app()->isLocal()) {
     Route::get('test', function () {
         // dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
-        dd(MoySkladApi::getCharacteristics()->json());
-        dd(InSalesApi::getOptionNames()->json());
+        // dd(MoySkladApi::getCharacteristics()->json());
+        // dd(InSalesApi::getOptionNames()->json());
         Http::timeout(1)
             ->post(route('update'), [
                 [

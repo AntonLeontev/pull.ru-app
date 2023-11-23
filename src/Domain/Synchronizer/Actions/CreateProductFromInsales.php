@@ -4,8 +4,10 @@ namespace Src\Domain\Synchronizer\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Src\Domain\MoySklad\Entities\BuyPrice;
 use Src\Domain\MoySklad\Entities\Image;
 use Src\Domain\MoySklad\Entities\ProductFolder;
+use Src\Domain\MoySklad\Entities\SalePrice;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;
 use Src\Domain\Synchronizer\Models\Product;
@@ -117,14 +119,8 @@ class CreateProductFromInsales
             request()->json('0.title'),
             [
                 'description' => strip_tags(request()->json('0.description')),
-                'salePrices' => [
-                    [
-                        'value' => (float) request()->json('0.variants.0.price'),
-                    ],
-                ],
-                'buyPrice' => [
-                    'value' => (float) request()->json('0.variants.0.cost_price'),
-                ],
+                'salePrices' => [SalePrice::make(request()->json('0.variants.0.price'))],
+                'buyPrice' => BuyPrice::make(request()->json('0.variants.0.cost_price')),
                 // 'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
                 'article' => (string) request()->json('0.variants.0.sku'),
                 'weight' => (float) request()->json('0.variants.0.weight'),

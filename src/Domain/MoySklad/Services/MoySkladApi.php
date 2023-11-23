@@ -24,15 +24,6 @@ class MoySkladApi
 
     public static function updateProduct(string $id, array $params): Response
     {
-        if (isset($params['salePrices'][0])) {
-            $params['salePrices'][0]['priceType'] = self::priceTypeMeta(config('services.moySklad.default_price_type_id'));
-            $params['salePrices'][0]['value'] *= 100;
-        }
-
-        if (isset($params['buyPrice'])) {
-            $params['buyPrice']['value'] *= 100;
-        }
-
         return Http::moySklad()
             ->put("entity/product/$id", $params);
     }
@@ -45,15 +36,6 @@ class MoySkladApi
             'name' => $name,
             ...$params,
         ];
-
-        if (isset($data['salePrices'][0])) {
-            $data['salePrices'][0]['priceType'] = self::priceTypeMeta(config('services.moySklad.default_price_type_id'));
-            $data['salePrices'][0]['value'] *= 100;
-        }
-
-        if (isset($data['buyPrice'])) {
-            $data['buyPrice']['value'] *= 100;
-        }
 
         return Http::moySklad()
             ->post('entity/product', $data);
@@ -128,16 +110,6 @@ class MoySkladApi
     {
         return Http::moySklad()
             ->get('entity/webhook');
-    }
-
-    public static function priceTypeMeta(string $id): array
-    {
-        return [
-            'meta' => [
-                'href' => "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/$id",
-                'type' => 'pricetype',
-            ],
-        ];
     }
 
     public static function pceMeta(string $id): array
