@@ -7,19 +7,19 @@ use JsonSerializable;
 
 class BuyPrice implements JsonSerializable
 {
-	use Makeable;
+    use Makeable;
 
-	public readonly float $value;
+    public readonly float $value;
 
-	public function __construct(string|int|float $value)
-	{
-		$this->value = (float) ($value * 100);
-	}
+    public function __construct(string|int|float $value)
+    {
+        $this->value = (float) ($value * 100);
+    }
 
-	public function jsonSerialize(): array
-	{
-		return [
-			'value' => $this->value,
-		];
-	}
+    public function jsonSerialize(): array
+    {
+        return [
+            'value' => $this->value,
+        ];
+    }
 }
