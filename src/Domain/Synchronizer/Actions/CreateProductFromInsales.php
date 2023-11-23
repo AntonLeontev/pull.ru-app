@@ -97,7 +97,7 @@ class CreateProductFromInsales
         foreach (request()->json('0.images') as $image) {
             $result[] = Image::make(
                 filename: $image['filename'],
-                url: $image['large_url']
+                path: $image['large_url']
             );
 
             if (count($result) === 10) {

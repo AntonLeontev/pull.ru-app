@@ -4,7 +4,6 @@ namespace Src\Domain\MoySklad\Entity;
 
 use App\Traits\Makeable;
 use JsonSerializable;
-use Src\Domain\MoySklad\Exceptions\ImageCreatingException;
 
 class Image implements JsonSerializable
 {
@@ -14,19 +13,10 @@ class Image implements JsonSerializable
 
     public readonly string $content;
 
-    public function __construct(string $filename, string $content = '', string $url = '')
+    public function __construct(string $filename, string $path)
     {
-        if (empty($content) && empty($url)) {
-            throw new ImageCreatingException('Не переданы ни контент ни ссылка на изображение', 1);
-        }
-
         $this->filename = $filename;
-
-        if (empty($content)) {
-            $this->content = base64_encode(file_get_contents($url));
-        } else {
-            $this->content = base64_encode($content);
-        }
+        $this->content = base64_encode(file_get_contents($path));
     }
 
     public function jsonSerialize(): mixed
