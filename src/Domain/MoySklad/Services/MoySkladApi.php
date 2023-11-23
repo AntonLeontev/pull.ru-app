@@ -19,16 +19,11 @@ class MoySkladApi
     public static function createProduct(
         string $name,
         array $params = [],
-        string $productFolder = null,
     ): Response {
         $data = [
             'name' => $name,
             ...$params,
         ];
-
-        if (! empty($productFolder)) {
-            $data['productFolder'] = self::productFolderMeta($productFolder);
-        }
 
         if (isset($data['salePrices'][0])) {
             $data['salePrices'][0]['priceType'] = self::priceTypeMeta(config('services.moySklad.default_price_type_id'));
@@ -46,16 +41,11 @@ class MoySkladApi
     public static function createProductFolder(
         string $name,
         array $params = [],
-        string $parentFolder = null,
     ): Response {
         $data = [
             'name' => $name,
             ...$params,
         ];
-
-        if (! empty($parentFolder)) {
-            $data['productFolder'] = self::productFolderMeta($parentFolder);
-        }
 
         return Http::moySklad()
             ->post('entity/productfolder', $data);
@@ -64,15 +54,8 @@ class MoySkladApi
     public static function updateProductFolder(
         string $id,
         array $params = [],
-        string $parentFolder = null,
     ): Response {
-        $data = [
-            ...$params,
-        ];
-
-        if (! empty($parentFolder)) {
-            $data['productFolder'] = self::productFolderMeta($parentFolder);
-        }
+        $data = [...$params];
 
         return Http::moySklad()
             ->put("entity/productfolder/$id", $data);
@@ -100,16 +83,6 @@ class MoySkladApi
     {
         return Http::moySklad()
             ->get('/entity/uom');
-    }
-
-    public static function productFolderMeta(string $id): array
-    {
-        return [
-            'meta' => [
-                'href' => "https://api.moysklad.ru/api/remap/1.2/entity/productfolder/$id",
-                'type' => 'productfolder',
-            ],
-        ];
     }
 
     public static function priceTypeMeta(string $id): array

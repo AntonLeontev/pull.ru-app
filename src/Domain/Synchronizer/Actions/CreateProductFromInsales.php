@@ -4,7 +4,8 @@ namespace Src\Domain\Synchronizer\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Src\Domain\MoySklad\Entity\Image;
+use Src\Domain\MoySklad\Entities\Image;
+use Src\Domain\MoySklad\Entities\ProductFolder;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;
 use Src\Domain\Synchronizer\Models\Product;
@@ -66,18 +67,18 @@ class CreateProductFromInsales
         return $product;
     }
 
-    private function getProductFolder(Collection $categories): string
+    private function getProductFolder(Collection $categories): ProductFolder
     {
         foreach ($categories as $category) {
             if ($category->children->isNotEmpty()) {
                 continue;
             }
 
-            $productFolder = $category->moy_sklad_id;
+            $id = $category->moy_sklad_id;
             break;
         }
 
-        return $productFolder ?? $categories->first()->moy_sklad_id;
+        return ProductFolder::make($id ?? $categories->first()->moy_sklad_id);
     }
 
     private function getUnits(): ?array
@@ -95,10 +96,7 @@ class CreateProductFromInsales
         $result = [];
 
         foreach (request()->json('0.images') as $image) {
-            $result[] = Image::make(
-                filename: $image['filename'],
-                path: $image['large_url']
-            );
+            $result[] = Image::make($image['filename'], $image['large_url']);
 
             if (count($result) === 10) {
                 break;
@@ -108,7 +106,12 @@ class CreateProductFromInsales
         return $result;
     }
 
-    private function createMoySkladProduct(?array $units, ?string $productFolder, array|Image $images)
+    /**
+     * @var array|null
+     * @var string|null
+     * @var Src\Domain\MoySklad\Entity\Image[]
+     */
+    private function createMoySkladProduct(?array $units, ?ProductFolder $productFolder, array $images)
     {
         return MoySkladApi::createProduct(
             request()->json('0.title'),
@@ -128,8 +131,8 @@ class CreateProductFromInsales
                 'weight' => (float) request()->json('0.variants.0.weight'),
                 'uom' => $units,
                 'images' => $images,
+                'productFolder' => $productFolder,
             ],
-            $productFolder,
         )->json();
     }
 }
