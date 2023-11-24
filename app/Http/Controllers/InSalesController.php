@@ -12,6 +12,11 @@ class InSalesController extends Controller
 
     }
 
+    public function ordersUpdate()
+    {
+
+    }
+
     public function productsCreate(CreateProductFromInsales $createProduct)
     {
         $createProduct->handle();

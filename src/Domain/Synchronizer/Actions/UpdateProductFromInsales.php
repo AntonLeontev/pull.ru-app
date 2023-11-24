@@ -53,6 +53,7 @@ class UpdateProductFromInsales
                 // 'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
                 'article' => (string) request()->json('0.variants.0.sku'),
                 'weight' => (float) request()->json('0.variants.0.weight'),
+                'volume' => Volume::fromInsalesDimensions(request()->json('0.variants.0.dimensions')),
                 'uom' => $this->syncService->getUnits(),
                 'images' => $this->syncService->getImages(),
                 'productFolder' => $productFolder,
@@ -117,8 +118,6 @@ class UpdateProductFromInsales
                             'salePrices' => [SalePrice::make($variant['price'])],
                             'buyPrice' => BuyPrice::make($variant['cost_price']),
                             'article' => (string) $variant['sku'],
-                            'weight' => (float) $variant['weight'],
-                            'volume' => Volume::fromInsalesDimensions($variant['dimensions']),
                         ]
                     )->json();
 
@@ -131,8 +130,6 @@ class UpdateProductFromInsales
                             'salePrices' => [SalePrice::make($variant['price'])],
                             'buyPrice' => BuyPrice::make($variant['cost_price']),
                             'article' => (string) $variant['sku'],
-                            'weight' => (float) $variant['weight'],
-                            'volume' => Volume::fromInsalesDimensions($variant['dimensions']),
                         ]
                     );
                 }

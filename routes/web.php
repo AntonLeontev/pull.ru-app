@@ -8,7 +8,8 @@ use Src\Domain\InSales\Services\InSalesApi;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 
 Route::any('webhooks/insales/calculate_delivery', [DeliveryController::class, 'calculate']);
-Route::any('webhooks/insales/orders_create', [InSalesController::class, 'ordersCreate']);
+Route::post('webhooks/insales/orders_create', [InSalesController::class, 'ordersCreate']);
+Route::post('webhooks/insales/orders_update', [InSalesController::class, 'ordersUpdate']);
 Route::withoutMiddleware()
     ->post('webhooks/insales/products_create', [InSalesController::class, 'productsCreate'])
     ->name('create');
@@ -18,7 +19,7 @@ if (app()->isLocal()) {
     Route::get('test', function () {
         // dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
         // dd(MoySkladApi::getCharacteristics()->json());
-        // dd(InSalesApi::getOptionNames()->json());
+        dd(InSalesApi::getWebhooks()->json());
         Http::timeout(1)->post(route('update'), [
             [
                 'id' => 408696716,
