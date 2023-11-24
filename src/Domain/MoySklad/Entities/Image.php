@@ -2,13 +2,8 @@
 
 namespace Src\Domain\MoySklad\Entities;
 
-use App\Traits\Makeable;
-use JsonSerializable;
-
-class Image implements JsonSerializable
+class Image extends AbstractEntity
 {
-    use Makeable;
-
     public readonly string $filename;
 
     public readonly string $content;

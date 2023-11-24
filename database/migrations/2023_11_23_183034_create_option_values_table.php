@@ -3,7 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Src\Domain\Synchronizer\Models\Product;
+use Src\Domain\Synchronizer\Models\Option;
+use Src\Domain\Synchronizer\Models\Variant;
 
 return new class extends Migration
 {
@@ -12,12 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variants', function (Blueprint $table) {
+        Schema::create('option_values', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->unsignedInteger('insales_id')->nullable();
-            $table->string('moy_sklad_id')->nullable();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->string('value');
+            $table->foreignIdFor(Variant::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Option::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('variants');
+        Schema::dropIfExists('option_values');
     }
 };

@@ -25,7 +25,9 @@ class SyncOptionsFromInsales
                     return;
                 }
 
-                MoySkladApi::createCharacteristic($dbOption->name);
+                $characteristicId = MoySkladApi::createCharacteristic($dbOption->name)->json('id');
+
+                $dbOption->update(['moy_sklad_id' => $characteristicId]);
             });
         }
     }

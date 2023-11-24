@@ -2,18 +2,13 @@
 
 namespace Src\Domain\MoySklad\Entities;
 
-use App\Traits\Makeable;
-use JsonSerializable;
-
-class BuyPrice implements JsonSerializable
+class BuyPrice extends AbstractEntity
 {
-    use Makeable;
-
     public readonly float $value;
 
-    public function __construct(string|int|float $value)
+    public function __construct(string|int|float|null $value)
     {
-        $this->value = (float) ($value * 100);
+        $this->value = (float) (($value ?? 0) * 100);
     }
 
     public function jsonSerialize(): array

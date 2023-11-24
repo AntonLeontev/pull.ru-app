@@ -2,20 +2,15 @@
 
 namespace Src\Domain\MoySklad\Entities;
 
-use App\Traits\Makeable;
-use JsonSerializable;
-
-class SalePrice implements JsonSerializable
+class SalePrice extends AbstractEntity
 {
-    use Makeable;
-
     public readonly float $value;
 
     public readonly string $priceTypeId;
 
-    public function __construct(string|int|float $value, string $priceTypeId = null)
+    public function __construct(string|int|float|null $value, string $priceTypeId = null)
     {
-        $this->value = (float) ($value * 100);
+        $this->value = (float) (($value ?? 0) * 100);
 
         $this->priceTypeId = $priceTypeId ?? config('services.moySklad.default_price_type_id');
     }

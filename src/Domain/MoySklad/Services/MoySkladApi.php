@@ -4,6 +4,7 @@ namespace Src\Domain\MoySklad\Services;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Src\Domain\MoySklad\Entities\Product;
 
 class MoySkladApi
 {
@@ -90,6 +91,32 @@ class MoySkladApi
     {
         return Http::moySklad()
             ->get('/entity/variant');
+    }
+
+    /**
+     * @param  Src\Domain\MoySklad\Entities\Product  $product
+     * @param  Src\Domain\MoySklad\Entities\Characteristic[]  $characteristics
+     */
+    public static function createVariant(Product $product, array $characteristics, array $params = []): Response
+    {
+        return Http::moySklad()
+            ->post('entity/variant', [
+                'product' => $product,
+                'characteristics' => $characteristics,
+                ...$params,
+            ]);
+    }
+
+    /**
+     * @param  Src\Domain\MoySklad\Entities\Characteristic[]  $characteristics
+     */
+    public static function updateVariant(string $id, array $characteristics, array $params = []): Response
+    {
+        return Http::moySklad()
+            ->put("entity/variant/$id", [
+                'characteristics' => $characteristics,
+                ...$params,
+            ]);
     }
 
     public static function getCharacteristics(): Response
