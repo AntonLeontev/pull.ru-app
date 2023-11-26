@@ -17,6 +17,8 @@ return [
     'cdek' => [
         'login' => env('CDEK_LOGIN'),
         'password' => env('CDEK_PASSWORD'),
+        'shop' => 200422,
+        'warehouse' => 12186,
         'senders' => [
             'moscow' => 14329,
         ],

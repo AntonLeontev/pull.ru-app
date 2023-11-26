@@ -2,43 +2,33 @@
 
 namespace Src\Domain\CDEK\Services;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class FullfillmentApi
 {
-    public static function test()
-    {
-        return Http::post('http://app.lk.reworker.ru/api/oauth/cdek', [
-            'client_id' => 'reworker',
-            'domain' => 'cdek',
-            'grant_type' => 'password',
-            'username' => 'z4fbcZcfzmiNGN2XRU95a30qlzbmh7As',
-            'password' => 'TFterj9pzTOUBzsB4Bs4mx4tJ978Vl6x',
-        ]);
-    }
-
-    public static function point(int $point)
+    public static function point(int $point): Response
     {
         return Http::cdek()
-            ->get("api/delivery-services/service-points/$point");
+            ->get("delivery-services/service-points/$point");
     }
 
-    public static function points()
+    public static function points(): Response
     {
         return Http::cdek()
-            ->get('api/delivery-services/service-points');
+            ->get('delivery-services/service-points');
     }
 
-    public static function getSenders()
+    public static function getSenders(): Response
     {
         return Http::cdek()
-            ->get('/api/delivery-services/senders');
+            ->get('delivery-services/senders');
     }
 
-    public static function getLocalities()
+    public static function getLocalities(): Response
     {
         return Http::cdek()
-            ->get('/api/locations/localities', [
+            ->get('locations/localities', [
                 'filter' => [
                     [
                         'type' => 'eq',       // Тип для получения конкретных данных(равно)
@@ -52,5 +42,17 @@ class FullfillmentApi
                     ],
                 ],
             ]);
+    }
+
+    public static function getShops(): Response
+    {
+        return Http::cdek()
+            ->get('products/shops');
+    }
+
+    public static function getWarehouses(): Response
+    {
+        return Http::cdek()
+            ->get('storage/warehouse');
     }
 }

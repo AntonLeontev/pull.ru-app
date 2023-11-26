@@ -15,7 +15,7 @@ class HttpServiceProvider extends ServiceProvider
     public function register(): void
     {
         Http::macro('cdek', function () {
-            return Http::baseUrl('https://cdek.orderadmin.ru')
+            return Http::baseUrl('https://cdek.orderadmin.ru/api')
                 ->retry(3, 1000)
                 ->acceptJson()
                 ->withBasicAuth(config('services.cdek.login'), config('services.cdek.password'));
