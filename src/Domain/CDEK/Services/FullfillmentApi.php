@@ -4,6 +4,8 @@ namespace Src\Domain\CDEK\Services;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
+use Src\Domain\CDEK\Entities\Dimensions;
+use Src\Domain\CDEK\Entities\Weight;
 
 class FullfillmentApi
 {
@@ -54,5 +56,45 @@ class FullfillmentApi
     {
         return Http::cdek()
             ->get('storage/warehouse');
+    }
+
+    public static function getProducts(): Response
+    {
+        return Http::cdek()
+            ->get('products/offer');
+    }
+
+    public static function createSimpleProduct(
+        string $name,
+        string|int|float $price,
+        string $article = null,
+        int $extId = null,
+        string|int|float $purchasePrice = null,
+        string $image = null,
+        Weight $weight = null,
+        Dimensions $dimensions = null,
+    ): Response {
+        return Http::cdek()
+            ->post('products/offer', [
+                'state' => 'normal',
+                'type' => 'simple',
+                'shop' => config('services.cdek.shop'),
+                'name' => $name,
+                'article' => $article,
+                'price' => $price,
+                'extId' => $extId,
+                'purchasingPrice' => $purchasePrice,
+                'image' => $image,
+                'weight' => $weight,
+                'dimensions' => $dimensions,
+            ]);
+    }
+
+    public static function updateSimpleProduct(int $id, array $params = [])
+    {
+        $shop = config('services.cdek.shop');
+
+        return Http::cdek()
+            ->patch("products/offer/$shop/$id", $params);
     }
 }

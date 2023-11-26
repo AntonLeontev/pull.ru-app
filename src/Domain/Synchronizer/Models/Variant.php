@@ -15,6 +15,7 @@ class Variant extends Model
         'name',
         'insales_id',
         'moy_sklad_id',
+        'cdek_id',
         'product_id',
     ];
 

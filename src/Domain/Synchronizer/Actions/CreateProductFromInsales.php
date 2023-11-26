@@ -4,11 +4,15 @@ namespace Src\Domain\Synchronizer\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Src\Domain\CDEK\Entities\Dimensions;
+use Src\Domain\CDEK\Entities\Weight;
+use Src\Domain\CDEK\Services\FullfillmentApi;
 use Src\Domain\MoySklad\Entities\BuyPrice;
 use Src\Domain\MoySklad\Entities\ProductFolder;
 use Src\Domain\MoySklad\Entities\SalePrice;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Product;
+use Src\Domain\Synchronizer\Models\Variant;
 use Src\Domain\Synchronizer\Services\SyncService;
 
 class CreateProductFromInsales
@@ -40,6 +44,27 @@ class CreateProductFromInsales
         ]);
 
         $product->categories()->sync($categories->pluck('id'));
+
+        $variant = request()->json('0.variants.0');
+
+        $dbVariant = Variant::updateOrCreate(
+            ['insales_id' => $variant['id']],
+            [
+                'name' => $variant['title'] ?? request()->json('0.title'),
+                'product_id' => $product->id,
+            ]
+        );
+
+        $cdekProduct = FullfillmentApi::createSimpleProduct(
+            $dbVariant->name,
+            $variant['price'],
+            $variant['sku'],
+            $dbVariant->id,
+            $variant['cost_price'],
+            request()->json('0.images.0.large_url'),
+            Weight::fromKilos($variant['weight']),
+            Dimensions::fromInsalesDimensions($variant['dimensions']),
+        );
 
         return $product;
     }

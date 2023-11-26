@@ -80,16 +80,12 @@ class UpdateProductFromInsales
 
     private function syncVariants(): void
     {
-        if (count(request()->json('0.variants')) <= 1) {
-            return;
-        }
-
         foreach (request()->json('0.variants') as $variant) {
             DB::transaction(function () use ($variant) {
                 $dbVariant = Variant::updateOrCreate(
                     ['insales_id' => $variant['id']],
                     [
-                        'name' => $variant['title'],
+                        'name' => $variant['title'] ?? request()->json('0.title'),
                         'product_id' => $this->product->id,
                     ]
                 );
@@ -108,6 +104,10 @@ class UpdateProductFromInsales
                     );
 
                     $characteristics[] = Characteristic::make($dbOption->moy_sklad_id, $optionValue['title']);
+                }
+
+                if (empty($characteristics)) {
+                    return;
                 }
 
                 if (is_null($dbVariant->moy_sklad_id)) {
