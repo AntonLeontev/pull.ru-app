@@ -16,14 +16,14 @@ class SyncService
 
     }
 
-    public function actualInsalesCategories(): Collection
+    public function actualInsalesCategories(array $request): Collection
     {
-        $categories = $this->categoriesByInsalesIds(request()->json('0.collections_ids'));
+        $categories = $this->categoriesByInsalesIds($request[0]['collections_ids']);
 
-        if (count(request()->json('0.collections_ids')) !== $categories->count()) {
+        if (count($request[0]['collections_ids']) !== $categories->count()) {
             $this->categorySync->handle();
 
-            $categories = $this->categoriesByInsalesIds(request()->json('0.collections_ids'));
+            $categories = $this->categoriesByInsalesIds($request[0]['collections_ids']);
         }
 
         return $categories;
@@ -53,11 +53,11 @@ class SyncService
     /**
      * @return Src\Domain\MoySklad\Entity\Image[]
      */
-    public function getImages(): array
+    public function getImages(array $request): array
     {
         $result = [];
 
-        foreach (request()->json('0.images') as $image) {
+        foreach ($request[0]['images'] as $image) {
             $result[] = Image::make($image['filename'], $image['large_url']);
 
             if (count($result) === 10) {
@@ -68,9 +68,9 @@ class SyncService
         return $result;
     }
 
-    public function getUnits(): ?array
+    public function getUnits(array $request): ?array
     {
-        return request()->json('0.unit') === 'pce'
+        return $request[0]['unit'] === 'pce'
             ? MoySkladApi::pceMeta(config('services.moySklad.uom.pce'))
             : null;
     }

@@ -21,72 +21,72 @@ class CreateProductFromInsales
     {
     }
 
-    public function handle(): void
+    public function handle(array $request): void
     {
-        $categories = $this->syncService->actualInsalesCategories();
+        $categories = $this->syncService->actualInsalesCategories($request);
 
-        DB::transaction(function () use ($categories) {
-            $dbProduct = $this->createProductInDb($categories);
+        DB::transaction(function () use ($request, $categories) {
+            $dbProduct = $this->createProductInDb($request, $categories);
 
             $productFolder = $this->syncService->getMoySkladProductFolder($categories);
 
-            $moySkladProduct = $this->createMoySkladProduct($productFolder);
+            $moySkladProduct = $this->createMoySkladProduct($request, $productFolder);
 
             $dbProduct->update(['moy_sklad_id' => $moySkladProduct['id']]);
         });
     }
 
-    private function createProductInDb(Collection $categories): Product
+    private function createProductInDb(array $request, Collection $categories): Product
     {
         $product = Product::create([
-            'name' => request()->json('0.title'),
-            'insales_id' => request()->json('0.id'),
+            'name' => $request[0]['title'],
+            'insales_id' => $request[0]['id'],
         ]);
 
         $product->categories()->sync($categories->pluck('id'));
 
-        $variant = request()->json('0.variants.0');
+        $variant = data_get($request, '0.variants.0');
 
         $dbVariant = Variant::updateOrCreate(
             ['insales_id' => $variant['id']],
             [
-                'name' => $variant['title'] ?? request()->json('0.title'),
+                'name' => $variant['title'] ?? data_get($request, '0.title'),
                 'product_id' => $product->id,
             ]
         );
 
         $cdekProduct = FullfillmentApi::createSimpleProduct(
-            $dbVariant->name,
+            $product->name.' '.$dbVariant->name,
             $variant['price'],
             $variant['sku'],
             $dbVariant->id,
             $variant['cost_price'],
-            request()->json('0.images.0.large_url'),
+            data_get($request, '0.images.0.large_url'),
             Weight::fromKilos($variant['weight']),
             Dimensions::fromInsalesDimensions($variant['dimensions']),
-        );
+        )->json();
+
+        $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
 
         return $product;
     }
 
     /**
-     * @var array|null
-     * @var string|null
      * @var Src\Domain\MoySklad\Entity\Image[]
      */
-    private function createMoySkladProduct(?ProductFolder $productFolder): array
+    private function createMoySkladProduct(array $request, ?ProductFolder $productFolder): array
     {
         return MoySkladApi::createProduct(
-            request()->json('0.title'),
+            data_get($request, '0.title'),
             [
-                'description' => strip_tags(request()->json('0.description')),
-                'salePrices' => [SalePrice::make(request()->json('0.variants.0.price'))],
-                'buyPrice' => BuyPrice::make(request()->json('0.variants.0.cost_price')),
-                // 'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
-                'article' => (string) request()->json('0.variants.0.sku'),
-                'weight' => (float) request()->json('0.variants.0.weight'),
-                'uom' => $this->syncService->getUnits(),
-                'images' => $this->syncService->getImages(),
+                'description' => strip_tags(data_get($request, '0.description')),
+                'salePrices' => [SalePrice::make(data_get($request, '0.variants.0.price'))],
+                'buyPrice' => BuyPrice::make(data_get($request, '0.variants.0.cost_price')),
+                // 'barcodes' => [['ean13' => data_get($request, '0.variants.0.barcode')]],
+                'article' => (string) data_get($request, '0.variants.0.sku'),
+                'weight' => (float) data_get($request, '0.variants.0.weight'),
+                'uom' => $this->syncService->getUnits($request),
+                'images' => $this->syncService->getImages($request),
                 'productFolder' => $productFolder,
             ],
         )->json();

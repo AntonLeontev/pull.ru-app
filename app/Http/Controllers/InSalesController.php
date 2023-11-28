@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Src\Domain\Synchronizer\Actions\CreateProductFromInsales;
-use Src\Domain\Synchronizer\Actions\UpdateProductFromInsales;
+use Illuminate\Http\Request;
+use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
+use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
 
 class InSalesController extends Controller
 {
-    public function ordersCreate()
+    public function ordersCreate(Request $request)
     {
 
     }
 
-    public function ordersUpdate()
+    public function ordersUpdate(Request $request)
     {
 
     }
 
-    public function productsCreate(CreateProductFromInsales $createProduct)
+    public function productsCreate(Request $request)
     {
-        $createProduct->handle();
+        dispatch(new CreateProductFromInsales($request->all()));
     }
 
-    public function productsUpdate(UpdateProductFromInsales $updateProduct)
+    public function productsUpdate(Request $request)
     {
-        $updateProduct->handle();
+        dispatch(new UpdateProductFromInsales($request->all()))->delay(now()->addSeconds(3));
     }
 }

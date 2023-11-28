@@ -16,10 +16,14 @@ class Dimensions extends AbstractEntity
     ) {
     }
 
-    public function jsonSerialize(): array
+    public function jsonSerialize(): ?array
     {
         if (is_null($this->x) || is_null($this->y) || is_null($this->z)) {
-            return null;
+            return [
+                'x' => 0,
+                'y' => 0,
+                'z' => 0,
+            ];
         }
 
         return [

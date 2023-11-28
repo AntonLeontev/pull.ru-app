@@ -5,6 +5,9 @@ namespace Src\Domain\Synchronizer\Actions;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Collection\Set;
+use Src\Domain\CDEK\Entities\Dimensions;
+use Src\Domain\CDEK\Entities\Weight;
+use Src\Domain\CDEK\Services\FullfillmentApi;
 use Src\Domain\MoySklad\Entities\BuyPrice;
 use Src\Domain\MoySklad\Entities\Characteristic;
 use Src\Domain\MoySklad\Entities\Product as MoySkladProduct;
@@ -24,38 +27,39 @@ class UpdateProductFromInsales
 
     public function __construct(public SyncService $syncService, public SyncOptionsFromInsales $syncOptions)
     {
-        $this->product = Product::where('insales_id', request()->json('0.id'))
+    }
+
+    public function handle(array $request): void
+    {
+        $this->product = Product::where('insales_id', data_get($request, '0.id'))
             ->with('categories')
             ->first();
+
+        $categories = $this->syncService->actualInsalesCategories($request);
+
+        $this->updateProduct($request, $categories);
+
+        $this->syncOptions($request);
+
+        $this->syncVariants($request);
     }
 
-    public function handle(): void
+    private function updateProduct(array $request, Collection $categories): void
     {
-        $categories = $this->syncService->actualInsalesCategories();
-
-        $this->updateProduct($categories);
-
-        $this->syncOptions();
-
-        $this->syncVariants();
-    }
-
-    private function updateProduct(Collection $categories): void
-    {
-        DB::transaction(function () use ($categories) {
+        DB::transaction(function () use ($request, $categories) {
             $productFolder = $this->updateProductFolder($categories);
 
             MoySkladApi::updateProduct($this->product->moy_sklad_id, [
-                'name' => request()->json('0.title'),
-                'description' => strip_tags(request()->json('0.description')),
-                'salePrices' => [SalePrice::make(request()->json('0.variants.0.price'))],
-                'buyPrice' => BuyPrice::make(request()->json('0.variants.0.cost_price')),
-                // 'barcodes' => [['ean13' => request()->json('0.variants.0.barcode')]],
-                'article' => (string) request()->json('0.variants.0.sku'),
-                'weight' => (float) request()->json('0.variants.0.weight'),
-                'volume' => Volume::fromInsalesDimensions(request()->json('0.variants.0.dimensions')),
-                'uom' => $this->syncService->getUnits(),
-                'images' => $this->syncService->getImages(),
+                'name' => data_get($request, '0.title'),
+                'description' => strip_tags(data_get($request, '0.description')),
+                'salePrices' => [SalePrice::make(data_get($request, '0.variants.0.price'))],
+                'buyPrice' => BuyPrice::make(data_get($request, '0.variants.0.cost_price')),
+                // 'barcodes' => [['ean13' => data_get($request, '0.variants.0.barcode')]],
+                'article' => (string) data_get($request, '0.variants.0.sku'),
+                'weight' => (float) data_get($request, '0.variants.0.weight'),
+                'volume' => Volume::fromInsalesDimensions(data_get($request, '0.variants.0.dimensions')),
+                'uom' => $this->syncService->getUnits($request),
+                'images' => $this->syncService->getImages($request),
                 'productFolder' => $productFolder,
             ]);
         });
@@ -78,14 +82,14 @@ class UpdateProductFromInsales
         return $productFolder;
     }
 
-    private function syncVariants(): void
+    private function syncVariants(array $request): void
     {
-        foreach (request()->json('0.variants') as $variant) {
-            DB::transaction(function () use ($variant) {
+        foreach (data_get($request, '0.variants') as $variant) {
+            DB::transaction(function () use ($request, $variant) {
                 $dbVariant = Variant::updateOrCreate(
                     ['insales_id' => $variant['id']],
                     [
-                        'name' => $variant['title'] ?? request()->json('0.title'),
+                        'name' => $variant['title'] ?? data_get($request, '0.title'),
                         'product_id' => $this->product->id,
                     ]
                 );
@@ -104,6 +108,32 @@ class UpdateProductFromInsales
                     );
 
                     $characteristics[] = Characteristic::make($dbOption->moy_sklad_id, $optionValue['title']);
+                }
+
+                if (is_null($dbVariant->cdek_id)) {
+                    $cdekProduct = FullfillmentApi::createSimpleProduct(
+                        $this->product->name.' '.$dbVariant->name,
+                        $variant['price'],
+                        $variant['sku'],
+                        $dbVariant->id,
+                        $variant['cost_price'],
+                        data_get($request, '0.images.0.large_url'),
+                        Weight::fromKilos($variant['weight']),
+                        Dimensions::fromInsalesDimensions($variant['dimensions']),
+                    )->json();
+
+                    $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
+                } else {
+                    FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
+                        'name' => $this->product->name.' '.$dbVariant->name,
+                        'article' => $variant['sku'],
+                        'price' => $variant['price'],
+                        'extId' => $dbVariant->id,
+                        'purchasingPrice' => $variant['cost_price'],
+                        'image' => data_get($request, '0.images.0.large_url'),
+                        'weight' => Weight::fromKilos($variant['weight']),
+                        'dimensions' => Dimensions::fromInsalesDimensions($variant['dimensions']),
+                    ]);
                 }
 
                 if (empty($characteristics)) {
@@ -137,11 +167,11 @@ class UpdateProductFromInsales
         }
     }
 
-    private function syncOptions()
+    private function syncOptions(array $request)
     {
         $insalesOptionsIds = new Set('int');
 
-        foreach (request()->json('0.variants') as $variant) {
+        foreach (data_get($request, '0.variants') as $variant) {
             foreach ($variant['option_values'] as $optionValue) {
                 $insalesOptionsIds->add($optionValue['option_name_id']);
             }

@@ -16,7 +16,7 @@ class Volume extends AbstractEntity
     public static function fromInsalesDimensions(?string $dimensions): static
     {
         if (is_null($dimensions)) {
-            return new static(null);
+            return new static(0);
         }
 
         $dimensions = preg_split('~x|х~', $dimensions);

@@ -4,7 +4,6 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\CDEK\Entities\Dimensions;
 use Src\Domain\CDEK\Services\FullfillmentApi;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 
@@ -20,11 +19,7 @@ if (app()->isLocal()) {
     Route::get('test', function () {
         // dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
         // dd(MoySkladApi::getCharacteristics()->json());
-        dd(FullfillmentApi::updateSimpleProduct(31946000, [
-            'price' => '1200',
-            'dimensions' => Dimensions::make(120, 50, 300),
-            'image' => 'https://static.insales-cdn.com/images/products/1/5169/786002993/large_2023-10-10_13-16.png',
-        ])->json());
+        // dd(FullfillmentApi::getProducts()->json());
         Http::timeout(1)->post(route('update'), [
             [
                 'id' => 408696716,

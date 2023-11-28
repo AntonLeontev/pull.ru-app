@@ -66,7 +66,7 @@ class FullfillmentApi
 
     public static function createSimpleProduct(
         string $name,
-        string|int|float $price,
+        string|int|float $price = null,
         string $article = null,
         int $extId = null,
         string|int|float $purchasePrice = null,
