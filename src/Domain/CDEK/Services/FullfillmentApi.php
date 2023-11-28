@@ -27,20 +27,25 @@ class FullfillmentApi
             ->get('delivery-services/senders');
     }
 
-    public static function getLocalities(): Response
+    public static function getLocalities(string $location): Response
     {
         return Http::cdek()
             ->get('locations/localities', [
                 'filter' => [
                     [
-                        'type' => 'eq',       // Тип для получения конкретных данных(равно)
+                        'type' => 'ilike',       // Тип для получения конкретных данных(равно)
                         'field' => 'name',  //  Поле - поиск по названию
-                        'value' => 'Москва',    // Значения - Значение сущности
+                        'value' => $location.'%',    // Значения - Значение сущности
                     ],
                     [
                         'type' => 'eq',       // Тип для получения конкретных данных(равно)
                         'field' => 'state',  //  Поле - поиск по состоянию
                         'value' => 'active',    // Значения - Значение сущности
+                    ],
+                    [
+                        'type' => 'in',       // Тип для получения конкретных данных(равно)
+                        'field' => 'type',  //  Поле - поиск по состоянию
+                        'values' => ['город'],    // Значения - Значение сущности
                     ],
                 ],
             ]);

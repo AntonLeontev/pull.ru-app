@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Src\Domain\CDEK\Services\FullfillmentApi;
 
 class DeliveryController extends Controller
 {
@@ -77,5 +78,13 @@ class DeliveryController extends Controller
                 'warnings' => [],
             ],
         ]);
+    }
+
+    public function locality(Request $request)
+    {
+        $localities = FullfillmentApi::getLocalities($request->locality)
+            ->json('_embedded.localities');
+
+        return response()->json($localities);
     }
 }
