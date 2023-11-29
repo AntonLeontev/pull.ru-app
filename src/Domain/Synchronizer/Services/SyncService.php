@@ -47,7 +47,7 @@ class SyncService
             break;
         }
 
-        return ProductFolder::make($id ?? $categories->first()->moy_sklad_id);
+        return ProductFolder::make($id ?? $categories->last()->moy_sklad_id);
     }
 
     /**

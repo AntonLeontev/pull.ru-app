@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
+use App\Services\CDEK\FullfillmentApi;
+use App\Services\InSales\InSalesApi;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\CDEK\Services\FullfillmentApi;
-use Src\Domain\InSales\Services\InSalesApi;
-use Src\Domain\MoySklad\Services\MoySkladApi;
 
 Route::post('webhooks/delivery/locality', [DeliveryController::class, 'locality']);
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -20,11 +20,11 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
-        dd(FullfillmentApi::getLocalities('Москва')->json());
-        dd(InSalesApi::getWebhooks()->json());
+        // dd(MoySkladApi::getProduct('ca8aef1d-89e9-11ee-0a80-05a9004d0516')->json());
+        // dd(FullfillmentApi::getLocalities('Москва')->json());
+        // dd(InSalesApi::getCollections()->json());
 
-        // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/test_product_with_variants.json')), true);
-        // Http::timeout(1)->post(route('update'), $data);
+        $data = json_decode(file_get_contents(public_path('../tests/Fixtures/test_product_without_variants.json')), true);
+        Http::timeout(1)->post(route('create'), $data);
     });
 }
