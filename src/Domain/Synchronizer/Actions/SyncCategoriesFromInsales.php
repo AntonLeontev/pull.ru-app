@@ -2,8 +2,8 @@
 
 namespace Src\Domain\Synchronizer\Actions;
 
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Collection;
-use Src\Domain\InSales\Services\InSalesApi;
 use Src\Domain\MoySklad\Entities\ProductFolder;
 use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;

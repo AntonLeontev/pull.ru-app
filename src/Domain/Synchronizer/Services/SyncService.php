@@ -2,10 +2,10 @@
 
 namespace Src\Domain\Synchronizer\Services;
 
+use App\Services\MoySklad\Entities\Image;
+use App\Services\MoySklad\Entities\ProductFolder;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Database\Eloquent\Collection;
-use Src\Domain\MoySklad\Entities\Image;
-use Src\Domain\MoySklad\Entities\ProductFolder;
-use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Actions\SyncCategoriesFromInsales;
 use Src\Domain\Synchronizer\Models\Category;
 

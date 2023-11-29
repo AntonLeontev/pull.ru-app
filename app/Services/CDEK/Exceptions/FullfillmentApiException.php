@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\CDEK\Exceptions;
+namespace App\Services\CDEK\Exceptions;
 
 use Exception;
 use Illuminate\Http\Client\Response;

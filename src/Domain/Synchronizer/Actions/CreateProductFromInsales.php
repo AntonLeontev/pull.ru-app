@@ -2,15 +2,15 @@
 
 namespace Src\Domain\Synchronizer\Actions;
 
+use App\Services\CDEK\Entities\Dimensions;
+use App\Services\CDEK\Entities\Weight;
+use App\Services\CDEK\FullfillmentApi;
+use App\Services\MoySklad\Entities\BuyPrice;
+use App\Services\MoySklad\Entities\ProductFolder;
+use App\Services\MoySklad\Entities\SalePrice;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Src\Domain\CDEK\Entities\Dimensions;
-use Src\Domain\CDEK\Entities\Weight;
-use Src\Domain\CDEK\Services\FullfillmentApi;
-use Src\Domain\MoySklad\Entities\BuyPrice;
-use Src\Domain\MoySklad\Entities\ProductFolder;
-use Src\Domain\MoySklad\Entities\SalePrice;
-use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Product;
 use Src\Domain\Synchronizer\Models\Variant;
 use Src\Domain\Synchronizer\Services\SyncService;

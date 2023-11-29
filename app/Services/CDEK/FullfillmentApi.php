@@ -1,11 +1,11 @@
 <?php
 
-namespace Src\Domain\CDEK\Services;
+namespace App\Services\CDEK;
 
+use App\Services\CDEK\Entities\Dimensions;
+use App\Services\CDEK\Entities\Weight;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Src\Domain\CDEK\Entities\Dimensions;
-use Src\Domain\CDEK\Entities\Weight;
 
 class FullfillmentApi
 {

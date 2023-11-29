@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\CDEK\Exceptions\FullfillmentApiException;
+use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
-use Src\Domain\CDEK\Exceptions\FullfillmentApiException;
-use Src\Domain\MoySklad\Exceptions\MoySkladApiException;
 
 class HttpServiceProvider extends ServiceProvider
 {

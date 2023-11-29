@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\CDEK\Entities;
+namespace App\Services\CDEK\Entities;
 
 class Dimensions extends AbstractEntity
 {

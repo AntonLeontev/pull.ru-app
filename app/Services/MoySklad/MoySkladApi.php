@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Domain\MoySklad\Services;
+namespace App\Services\MoySklad;
 
+use App\Services\MoySklad\Entities\Product;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
-use Src\Domain\MoySklad\Entities\Product;
 
 class MoySkladApi
 {
@@ -94,8 +94,8 @@ class MoySkladApi
     }
 
     /**
-     * @param  Src\Domain\MoySklad\Entities\Product  $product
-     * @param  Src\Domain\MoySklad\Entities\Characteristic[]  $characteristics
+     * @param  App\Services\MoySklad\Entities\Product  $product
+     * @param  App\Services\MoySklad\Entities\Characteristic[]  $characteristics
      */
     public static function createVariant(Product $product, array $characteristics, array $params = []): Response
     {
@@ -108,7 +108,7 @@ class MoySkladApi
     }
 
     /**
-     * @param  Src\Domain\MoySklad\Entities\Characteristic[]  $characteristics
+     * @param  App\Services\MoySklad\Entities\Characteristic[]  $characteristics
      */
     public static function updateVariant(string $id, array $characteristics, array $params = []): Response
     {

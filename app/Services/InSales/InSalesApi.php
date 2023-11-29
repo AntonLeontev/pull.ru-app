@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\InSales\Services;
+namespace App\Services\InSales;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;

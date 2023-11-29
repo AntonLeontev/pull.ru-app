@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\MoySklad\Exceptions;
+namespace App\Services\MoySklad\Exceptions;
 
 use Exception;
 use Illuminate\Http\Client\Response;

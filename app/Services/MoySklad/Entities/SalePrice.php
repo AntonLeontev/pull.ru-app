@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\MoySklad\Entities;
+namespace App\Services\MoySklad\Entities;
 
 class SalePrice extends AbstractEntity
 {

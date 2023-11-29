@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\MoySklad\Entities;
+namespace App\Services\MoySklad\Entities;
 
 use App\Traits\Makeable;
 use JsonSerializable;

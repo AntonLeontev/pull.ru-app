@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Domain\MoySklad\Entities;
+namespace App\Services\MoySklad\Entities;
 
-class Product extends AbstractEntity
+class ProductFolder extends AbstractEntity
 {
     public function __construct(public readonly ?string $id)
     {
@@ -16,8 +16,8 @@ class Product extends AbstractEntity
 
         return [
             'meta' => [
-                'href' => "https://api.moysklad.ru/api/remap/1.2/entity/product/{$this->id}",
-                'type' => 'product',
+                'href' => "https://api.moysklad.ru/api/remap/1.2/entity/productfolder/{$this->id}",
+                'type' => 'productfolder',
             ],
         ];
     }

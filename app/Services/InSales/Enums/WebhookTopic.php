@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\InSales\Enums;
+namespace App\Services\InSales\Enums;
 
 enum WebhookTopic: string
 {
