@@ -3,9 +3,9 @@
 namespace Src\Domain\Synchronizer\Actions;
 
 use App\Services\InSales\InSalesApi;
+use App\Services\MoySklad\Entities\ProductFolder;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Collection;
-use Src\Domain\MoySklad\Entities\ProductFolder;
-use Src\Domain\MoySklad\Services\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Category;
 
 class SyncCategoriesFromInsales
