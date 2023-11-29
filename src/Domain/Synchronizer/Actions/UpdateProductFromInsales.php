@@ -15,6 +15,7 @@ use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Collection\Set;
+use Src\Domain\Synchronizer\Events\ProductUpdatingSuccess;
 use Src\Domain\Synchronizer\Models\Option;
 use Src\Domain\Synchronizer\Models\OptionValue;
 use Src\Domain\Synchronizer\Models\Product;
@@ -42,6 +43,8 @@ class UpdateProductFromInsales
         $this->syncOptions($request);
 
         $this->syncVariants($request);
+
+        event(new ProductUpdatingSuccess($this->product->name));
     }
 
     private function updateProduct(array $request, Collection $categories): void

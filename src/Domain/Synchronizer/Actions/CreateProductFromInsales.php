@@ -11,6 +11,7 @@ use App\Services\MoySklad\Entities\SalePrice;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Src\Domain\Synchronizer\Events\ProductCreatingSuccess;
 use Src\Domain\Synchronizer\Models\Product;
 use Src\Domain\Synchronizer\Models\Variant;
 use Src\Domain\Synchronizer\Services\SyncService;
@@ -33,6 +34,8 @@ class CreateProductFromInsales
             $moySkladProduct = $this->createMoySkladProduct($request, $productFolder);
 
             $dbProduct->update(['moy_sklad_id' => $moySkladProduct['id']]);
+
+            event(new ProductCreatingSuccess($dbProduct->name));
         });
     }
 

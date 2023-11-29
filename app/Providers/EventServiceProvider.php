@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Src\Domain\Synchronizer\Events\ProductCreatingError;
+use Src\Domain\Synchronizer\Events\ProductCreatingSuccess;
+use Src\Domain\Synchronizer\Events\ProductUpdatingError;
+use Src\Domain\Synchronizer\Events\ProductUpdatingSuccess;
+use Src\Domain\Synchronizer\Listeners\LogToTelegram;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -15,8 +18,17 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        ProductCreatingSuccess::class => [
+            LogToTelegram::class,
+        ],
+        ProductUpdatingSuccess::class => [
+            LogToTelegram::class,
+        ],
+        ProductCreatingError::class => [
+            LogToTelegram::class,
+        ],
+        ProductUpdatingError::class => [
+            LogToTelegram::class,
         ],
     ];
 
