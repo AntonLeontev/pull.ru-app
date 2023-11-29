@@ -95,11 +95,41 @@ class FullfillmentApi
             ]);
     }
 
-    public static function updateSimpleProduct(int $id, array $params = [])
+    public static function updateSimpleProduct(int $id, array $params = []): Response
     {
         $shop = config('services.cdek.shop');
 
         return Http::cdek()
             ->patch("products/offer/$shop/$id", $params);
+    }
+
+    /**
+     * @param  float|int|string  $weight вес в граммах
+     * @param  float|int|string  $width в мм
+     * @param  float|int|string  $height в мм
+     * @param  float|int|string  $length в мм
+     */
+    public static function calculate(
+        int $localityId,
+        float|int|string $estimatedCost,
+        float|int|string $payment,
+        float|int|string $weight,
+        float|int|string $width,
+        float|int|string $height,
+        float|int|string $length,
+    ): Response {
+        return Http::cdek()
+            ->post('/delivery-services/calculator', [
+                'sender' => config('services.cdek.senders.moscow'),
+                'to' => [
+                    'id' => $localityId,
+                ],
+                'estimatedCost' => $estimatedCost,
+                'payment' => $payment,
+                'weight' => $weight * 1000,
+                'width' => $width * 10,
+                'height' => $height * 10,
+                'length' => $length * 10,
+            ]);
     }
 }

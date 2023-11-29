@@ -34,6 +34,28 @@ class InSalesApi
             ]);
     }
 
+    public static function updateWebhook(
+        int $id,
+        string $address = null,
+        string $topic = null,
+        string $formatType = 'json',
+    ): Response {
+        $data = ['webhook' => []];
+
+        if (! is_null($address)) {
+            $data['webhook']['address'] = $address;
+        }
+        if (! is_null($topic)) {
+            $data['webhook']['topic'] = $topic;
+        }
+        if (! is_null($formatType)) {
+            $data['webhook']['formatType'] = $formatType;
+        }
+
+        return Http::inSales()
+            ->put("admin/webhooks/$id.json", $data);
+    }
+
     public static function getCollections()
     {
         return Http::inSales()
