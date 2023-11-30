@@ -20,9 +20,9 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(MoySkladApi::getProducts()->json());
+        // dd(MoySkladApi::getCharacteristics()->json());
         // dd(FullfillmentApi::getLocalities('Москва')->json());
-        // dd(InSalesApi::getClients()->json());
+        // dd(InSalesApi::getOptionNames()->json());
 
         $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         Http::timeout(1)->post(route('order.create'), $data);

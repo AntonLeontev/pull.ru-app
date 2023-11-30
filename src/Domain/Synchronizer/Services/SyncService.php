@@ -4,7 +4,7 @@ namespace Src\Domain\Synchronizer\Services;
 
 use App\Services\MoySklad\Entities\Image;
 use App\Services\MoySklad\Entities\ProductFolder;
-use App\Services\MoySklad\MoySkladApi;
+use App\Services\MoySklad\Entities\Unit;
 use Illuminate\Database\Eloquent\Collection;
 use Src\Domain\Synchronizer\Actions\SyncCategoriesFromInsales;
 use Src\Domain\Synchronizer\Models\Category;
@@ -68,10 +68,8 @@ class SyncService
         return $result;
     }
 
-    public function getUnits(array $request): ?array
+    public function getUnits(array $request): Unit
     {
-        return $request[0]['unit'] === 'pce'
-            ? MoySkladApi::pceMeta(config('services.moySklad.uom.pce'))
-            : null;
+        return Unit::fromInsalesUnit($request[0]['unit']);
     }
 }
