@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeliveryCalculateRequest;
+use App\Services\CDEK\FullfillmentApi;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Src\Domain\CDEK\Services\FullfillmentApi;
 use Src\Domain\Delivery\DTO\DeliveryTariffDTO;
 
 class DeliveryController extends Controller
