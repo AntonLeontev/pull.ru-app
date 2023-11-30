@@ -58,18 +58,20 @@ class CreateProductFromInsales
             ]
         );
 
-        $cdekProduct = FullfillmentApi::createSimpleProduct(
-            $product->name.' '.$dbVariant->name,
-            $variant['price'],
-            $variant['sku'],
-            $dbVariant->id,
-            $variant['cost_price'],
-            data_get($request, '0.images.0.large_url'),
-            Weight::fromKilos($variant['weight']),
-            Dimensions::fromInsalesDimensions($variant['dimensions']),
-        )->json();
+        if (config('services.cdek.enabled')) {
+            $cdekProduct = FullfillmentApi::createSimpleProduct(
+                $product->name.' '.$dbVariant->name,
+                $variant['price'],
+                $variant['sku'],
+                $dbVariant->id,
+                $variant['cost_price'],
+                data_get($request, '0.images.0.large_url'),
+                Weight::fromKilos($variant['weight']),
+                Dimensions::fromInsalesDimensions($variant['dimensions']),
+            )->json();
 
-        $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
+            $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
+        }
 
         return $product;
     }

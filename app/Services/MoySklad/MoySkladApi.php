@@ -2,6 +2,8 @@
 
 namespace App\Services\MoySklad;
 
+use App\Services\MoySklad\Entities\Counterparty;
+use App\Services\MoySklad\Entities\Organization;
 use App\Services\MoySklad\Entities\Product;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -139,13 +141,36 @@ class MoySkladApi
             ->get('entity/webhook');
     }
 
-    public static function pceMeta(string $id): array
+    public static function getOrganizations(): Response
     {
-        return [
-            'meta' => [
-                'href' => 'https://api.moysklad.ru/api/remap/1.2/entity/uom/'.config('services.moySklad.uom.pce'),
-                'type' => 'uom',
-            ],
-        ];
+        return Http::moySklad()
+            ->get('entity/organization');
+    }
+
+    public static function createCustomerOrder(
+        Organization $organization,
+        Counterparty $counterparty,
+        array $data = [],
+    ): Response {
+        return Http::moySklad()
+            ->post('entity/customerorder', [
+                'organization' => $organization,
+                'agent' => $counterparty,
+                ...$data,
+            ]);
+    }
+
+    public static function createIndividualCounterparty(
+        string $name,
+        string $email = null,
+        string $phone = null,
+    ): Response {
+        return Http::moySklad()
+            ->post('entity/counterparty', [
+                'name' => $name,
+                'companyType' => 'individual',
+                'email' => $email,
+                'phone' => $phone,
+            ]);
     }
 }

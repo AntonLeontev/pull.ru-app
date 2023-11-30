@@ -2,11 +2,11 @@
 
 namespace App\Services\MoySklad\Entities;
 
-class Image extends AbstractEntity
+readonly class Image extends AbstractEntity
 {
-    public readonly string $filename;
+    public string $filename;
 
-    public readonly string $content;
+    public string $content;
 
     public function __construct(string $filename, string $path)
     {

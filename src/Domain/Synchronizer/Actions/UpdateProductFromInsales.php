@@ -113,30 +113,32 @@ class UpdateProductFromInsales
                     $characteristics[] = Characteristic::make($dbOption->moy_sklad_id, $optionValue['title']);
                 }
 
-                if (is_null($dbVariant->cdek_id)) {
-                    $cdekProduct = FullfillmentApi::createSimpleProduct(
-                        $this->product->name.' '.$dbVariant->name,
-                        $variant['price'],
-                        $variant['sku'],
-                        $dbVariant->id,
-                        $variant['cost_price'],
-                        data_get($request, '0.images.0.large_url'),
-                        Weight::fromKilos($variant['weight']),
-                        Dimensions::fromInsalesDimensions($variant['dimensions']),
-                    )->json();
+                if (config('services.cdek.enabled')) {
+                    if (is_null($dbVariant->cdek_id)) {
+                        $cdekProduct = FullfillmentApi::createSimpleProduct(
+                            $this->product->name.' '.$dbVariant->name,
+                            $variant['price'],
+                            $variant['sku'],
+                            $dbVariant->id,
+                            $variant['cost_price'],
+                            data_get($request, '0.images.0.large_url'),
+                            Weight::fromKilos($variant['weight']),
+                            Dimensions::fromInsalesDimensions($variant['dimensions']),
+                        )->json();
 
-                    $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
-                } else {
-                    FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
-                        'name' => $this->product->name.' '.$dbVariant->name,
-                        'article' => $variant['sku'],
-                        'price' => $variant['price'],
-                        'extId' => $dbVariant->id,
-                        'purchasingPrice' => $variant['cost_price'],
-                        'image' => data_get($request, '0.images.0.large_url'),
-                        'weight' => Weight::fromKilos($variant['weight']),
-                        'dimensions' => Dimensions::fromInsalesDimensions($variant['dimensions']),
-                    ]);
+                        $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
+                    } else {
+                        FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
+                            'name' => $this->product->name.' '.$dbVariant->name,
+                            'article' => $variant['sku'],
+                            'price' => $variant['price'],
+                            'extId' => $dbVariant->id,
+                            'purchasingPrice' => $variant['cost_price'],
+                            'image' => data_get($request, '0.images.0.large_url'),
+                            'weight' => Weight::fromKilos($variant['weight']),
+                            'dimensions' => Dimensions::fromInsalesDimensions($variant['dimensions']),
+                        ]);
+                    }
                 }
 
                 if (empty($characteristics)) {

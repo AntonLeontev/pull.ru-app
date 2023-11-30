@@ -2,9 +2,9 @@
 
 namespace App\Services\MoySklad\Entities;
 
-class BuyPrice extends AbstractEntity
+readonly class BuyPrice extends AbstractEntity
 {
-    public readonly float $value;
+    public float $value;
 
     public function __construct(string|int|float|null $value)
     {

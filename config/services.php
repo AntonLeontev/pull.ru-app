@@ -22,6 +22,7 @@ return [
         'senders' => [
             'moscow' => 14329,
         ],
+        'enabled' => env('SYNC_CDEK'),
     ],
 
     'inSales' => [
@@ -35,6 +36,8 @@ return [
         'uom' => [
             'pce' => '19f1edc0-fc42-4001-94cb-c9ec9c62ec10',
         ],
+        'organization' => '5a009435-8857-11ee-0a80-0d4e00501cc8',
+        'enabled' => env('SYNC_MOY_SKLAD'),
     ],
 
 ];

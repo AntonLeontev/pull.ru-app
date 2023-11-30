@@ -2,9 +2,9 @@
 
 namespace App\Services\MoySklad\Entities;
 
-class Characteristic extends AbstractEntity
+readonly class Characteristic extends AbstractEntity
 {
-    public function __construct(public readonly string $id, public readonly string $value)
+    public function __construct(public string $id, public string $value)
     {
     }
 

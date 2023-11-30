@@ -56,15 +56,21 @@ class InSalesApi
             ->put("admin/webhooks/$id.json", $data);
     }
 
-    public static function getCollections()
+    public static function getCollections(): Response
     {
         return Http::inSales()
             ->get('admin/collections.json');
     }
 
-    public static function getOptionNames()
+    public static function getOptionNames(): Response
     {
         return Http::inSales()
             ->get('admin/option_names.json');
+    }
+
+    public static function getClients(): Response
+    {
+        return Http::inSales()
+            ->get('admin/clients.json');
     }
 }

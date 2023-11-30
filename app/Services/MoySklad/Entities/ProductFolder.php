@@ -2,9 +2,9 @@
 
 namespace App\Services\MoySklad\Entities;
 
-class ProductFolder extends AbstractEntity
+readonly class ProductFolder extends AbstractEntity
 {
-    public function __construct(public readonly ?string $id)
+    public function __construct(public ?string $id)
     {
     }
 

@@ -2,9 +2,9 @@
 
 namespace App\Services\MoySklad\Entities;
 
-class Volume extends AbstractEntity
+readonly class Volume extends AbstractEntity
 {
-    public function __construct(public readonly ?float $volume)
+    public function __construct(public ?float $volume)
     {
     }
 
