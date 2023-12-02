@@ -14,15 +14,23 @@ return [
     |
     */
 
-    'cdek' => [
-        'login' => env('CDEK_LOGIN'),
-        'password' => env('CDEK_PASSWORD'),
+    'cdekff' => [
+        'login' => env('CDEKFF_LOGIN'),
+        'password' => env('CDEKFF_PASSWORD'),
         'shop' => 200422,
         'warehouse' => 12186,
         'senders' => [
             'moscow' => 14329,
         ],
         'enabled' => env('SYNC_CDEK'),
+    ],
+
+    'cdek' => [
+        'login' => env('CDEK_LOGIN'),
+        'password' => env('CDEK_PASSWORD'),
+        'cities' => [
+            'moscow' => 44,
+        ],
     ],
 
     'inSales' => [

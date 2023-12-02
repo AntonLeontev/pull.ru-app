@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use Illuminate\Http\Client\Response;
@@ -15,13 +16,23 @@ class HttpServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        Http::macro('cdek', function () {
+        Http::macro('cdekff', function () {
             return Http::baseUrl('https://cdek.orderadmin.ru/api')
                 ->retry(3, 1000)
                 ->acceptJson()
-                ->withBasicAuth(config('services.cdek.login'), config('services.cdek.password'))
+                ->withBasicAuth(config('services.cdekff.login'), config('services.cdekff.password'))
                 ->throw(function (Response $response) {
                     throw new FullfillmentApiException($response);
+                });
+        });
+
+        Http::macro('cdek', function () {
+            return Http::baseUrl('https://api.cdek.ru/v2')
+                ->retry(3, 1000)
+                ->acceptJson()
+                ->withHeader('Authorization', 'Bearer '.cdek_auth_token())
+                ->throw(function (Response $response) {
+                    throw new CdekApiException($response);
                 });
         });
 

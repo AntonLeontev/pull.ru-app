@@ -11,25 +11,25 @@ class FullfillmentApi
 {
     public static function point(int $point): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get("delivery-services/service-points/$point");
     }
 
     public static function points(): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('delivery-services/service-points');
     }
 
     public static function getSenders(): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('delivery-services/senders');
     }
 
     public static function getLocalities(string $location): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('locations/localities', [
                 'filter' => [
                     [
@@ -53,19 +53,19 @@ class FullfillmentApi
 
     public static function getShops(): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('products/shops');
     }
 
     public static function getWarehouses(): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('storage/warehouse');
     }
 
     public static function getProducts(): Response
     {
-        return Http::cdek()
+        return Http::cdekff()
             ->get('products/offer');
     }
 
@@ -79,11 +79,11 @@ class FullfillmentApi
         Weight $weight = null,
         Dimensions $dimensions = null,
     ): Response {
-        return Http::cdek()
+        return Http::cdekff()
             ->post('products/offer', [
                 'state' => 'normal',
                 'type' => 'simple',
-                'shop' => config('services.cdek.shop'),
+                'shop' => config('services.cdekff.shop'),
                 'name' => $name,
                 'article' => $article,
                 'price' => $price,
@@ -97,9 +97,9 @@ class FullfillmentApi
 
     public static function updateSimpleProduct(int $id, array $params = []): Response
     {
-        $shop = config('services.cdek.shop');
+        $shop = config('services.cdekff.shop');
 
-        return Http::cdek()
+        return Http::cdekff()
             ->patch("products/offer/$shop/$id", $params);
     }
 
@@ -118,9 +118,9 @@ class FullfillmentApi
         float|int|string $height,
         float|int|string $length,
     ): Response {
-        return Http::cdek()
+        return Http::cdekff()
             ->post('/delivery-services/calculator', [
-                'sender' => config('services.cdek.senders.moscow'),
+                'sender' => config('services.cdekff.senders.moscow'),
                 'to' => [
                     'id' => $localityId,
                 ],

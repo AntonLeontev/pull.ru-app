@@ -113,7 +113,7 @@ class UpdateProductFromInsales
                     $characteristics[] = Characteristic::make($dbOption->moy_sklad_id, $optionValue['title']);
                 }
 
-                if (config('services.cdek.enabled')) {
+                if (config('services.cdekff.enabled')) {
                     if (is_null($dbVariant->cdek_id)) {
                         $cdekProduct = FullfillmentApi::createSimpleProduct(
                             $this->product->name.' '.$dbVariant->name,
