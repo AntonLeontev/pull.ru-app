@@ -5,6 +5,7 @@ namespace App\Services\MoySklad;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\Organization;
 use App\Services\MoySklad\Entities\Product;
+use App\Services\MoySklad\Enums\WebhookAction;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -139,6 +140,17 @@ class MoySkladApi
     {
         return Http::moySklad()
             ->get('entity/webhook');
+    }
+
+    public static function createWebhook(string $url, WebhookAction $action, string $entityType, string $diffType = 'NONE')
+    {
+        return Http::moySklad()
+            ->post('entity/webhook', [
+                'url' => $url,
+                'action' => $action->value,
+                'entityType' => $entityType,
+                'diffType' => $diffType,
+            ]);
     }
 
     public static function getOrganizations(): Response
