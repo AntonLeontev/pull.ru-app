@@ -25,8 +25,7 @@ if (app()->isLocal()) {
         // dd(MoySkladApi::getCharacteristics()->json());
         // dump(FullfillmentApi::getLocalities('Москва')->json());
         // dd(CdekApi::getToken()->json());
-        dd(CdekApi::calculate('Москва', 300, 35, 25, 3)->json());
-        // dd(InSalesApi::getOptionNames()->json());
+        dd(InSalesApi::getWebhooks()->json());
 
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // Http::timeout(1)->post(route('order.create'), $data);

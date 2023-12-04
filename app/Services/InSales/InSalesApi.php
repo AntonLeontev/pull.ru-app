@@ -56,6 +56,12 @@ class InSalesApi
             ->put("admin/webhooks/$id.json", $data);
     }
 
+    public static function deleteWebhook(int $id): Response
+    {
+        return Http::inSales()
+            ->delete("admin/webhooks/$id.json");
+    }
+
     public static function getCollections(): Response
     {
         return Http::inSales()

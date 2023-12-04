@@ -87,8 +87,10 @@ class UpdateProductFromInsales
 
     private function syncVariants(array $request): void
     {
+        $hasVariants = count(data_get($request, '0.variants')) > 1;
+
         foreach (data_get($request, '0.variants') as $variant) {
-            DB::transaction(function () use ($request, $variant) {
+            DB::transaction(function () use ($request, $variant, $hasVariants) {
                 $dbVariant = Variant::updateOrCreate(
                     ['insales_id' => $variant['id']],
                     [
@@ -114,9 +116,11 @@ class UpdateProductFromInsales
                 }
 
                 if (config('services.cdekff.enabled')) {
+                    $name = $hasVariants ? $this->product->name.' '.$dbVariant->name : $this->product->name;
+
                     if (is_null($dbVariant->cdek_id)) {
                         $cdekProduct = FullfillmentApi::createSimpleProduct(
-                            $this->product->name.' '.$dbVariant->name,
+                            $name,
                             $variant['price'],
                             $variant['sku'],
                             $dbVariant->id,
@@ -129,7 +133,7 @@ class UpdateProductFromInsales
                         $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
                     } else {
                         FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
-                            'name' => $this->product->name.' '.$dbVariant->name,
+                            'name' => $name,
                             'article' => $variant['sku'],
                             'price' => $variant['price'],
                             'extId' => $dbVariant->id,

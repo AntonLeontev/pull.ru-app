@@ -9,5 +9,6 @@ abstract class AbstractEntity implements JsonSerializable
 {
     use Makeable;
 
+    #[\ReturnTypeWillChange]
     abstract public function jsonSerialize();
 }

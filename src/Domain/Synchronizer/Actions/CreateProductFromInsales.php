@@ -60,7 +60,7 @@ class CreateProductFromInsales
 
         if (config('services.cdekff.enabled')) {
             $cdekProduct = FullfillmentApi::createSimpleProduct(
-                $product->name.' '.$dbVariant->name,
+                $product->name,
                 $variant['price'],
                 $variant['sku'],
                 $dbVariant->id,

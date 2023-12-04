@@ -8,6 +8,7 @@ class Weight extends AbstractEntity
     {
     }
 
+    #[\ReturnTypeWillChange]
     public function jsonSerialize(): int
     {
         return $this->grams;
@@ -15,6 +16,6 @@ class Weight extends AbstractEntity
 
     public static function fromKilos(float|int|string|null $kilos): static
     {
-        return new static((float) $kilos ?? 0 * 1000);
+        return new static(($kilos ?? 0) * 1000);
     }
 }
