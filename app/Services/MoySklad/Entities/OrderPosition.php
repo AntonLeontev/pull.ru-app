@@ -47,7 +47,7 @@ readonly class OrderPosition extends AbstractEntity
             $position->quantity,
             $position->sale_price * 100,
             $position->discounts_amount / $position->sale_price * 100,
-            $position->vat === -1 ? 0 : $position->vat,
+            (int) $position->vat === -1 ? 0 : $position->vat,
             $assortment
         );
     }

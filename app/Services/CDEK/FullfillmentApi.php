@@ -3,6 +3,7 @@
 namespace App\Services\CDEK;
 
 use App\Services\CDEK\Entities\Dimensions;
+use App\Services\CDEK\Entities\Order;
 use App\Services\CDEK\Entities\Weight;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -19,6 +20,20 @@ class FullfillmentApi
     {
         return Http::cdekff()
             ->get('delivery-services/service-points');
+    }
+
+    public static function pointByCode(string $code): Response
+    {
+        return Http::cdekff()
+            ->get('delivery-services/service-points', [
+                'filter' => [
+                    [
+                        'type' => 'eq',
+                        'field' => 'extId',
+                        'value' => $code,
+                    ],
+                ],
+            ]);
     }
 
     public static function getSenders(): Response
@@ -103,33 +118,9 @@ class FullfillmentApi
             ->patch("products/offer/$shop/$id", $params);
     }
 
-    /**
-     * @param  float|int|string  $weight вес в граммах
-     * @param  float|int|string  $width в мм
-     * @param  float|int|string  $height в мм
-     * @param  float|int|string  $length в мм
-     */
-    public static function calculate(
-        int $localityId,
-        float|int|string $estimatedCost,
-        float|int|string $payment,
-        float|int|string $weight,
-        float|int|string $width,
-        float|int|string $height,
-        float|int|string $length,
-    ): Response {
+    public static function createOrder(array|Order $data)
+    {
         return Http::cdekff()
-            ->post('/delivery-services/calculator', [
-                'sender' => config('services.cdekff.senders.moscow'),
-                'to' => [
-                    'id' => $localityId,
-                ],
-                'estimatedCost' => $estimatedCost,
-                'payment' => $payment,
-                'weight' => $weight * 1000,
-                'width' => $width * 10,
-                'height' => $height * 10,
-                'length' => $length * 10,
-            ]);
+            ->post('products/order', $data);
     }
 }

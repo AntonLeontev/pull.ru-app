@@ -5,7 +5,7 @@ namespace App\Services\CDEK\Entities;
 use App\Traits\Makeable;
 use JsonSerializable;
 
-abstract class AbstractEntity implements JsonSerializable
+abstract readonly class AbstractEntity implements JsonSerializable
 {
     use Makeable;
 

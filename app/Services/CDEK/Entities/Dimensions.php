@@ -2,7 +2,7 @@
 
 namespace App\Services\CDEK\Entities;
 
-class Dimensions extends AbstractEntity
+readonly class Dimensions extends AbstractEntity
 {
     /**
      * @param  int|string|float|null  $x in mm

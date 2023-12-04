@@ -2,7 +2,7 @@
 
 namespace App\Services\CDEK\Entities;
 
-class Weight extends AbstractEntity
+readonly class Weight extends AbstractEntity
 {
     public function __construct(public ?int $grams)
     {

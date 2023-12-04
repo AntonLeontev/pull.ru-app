@@ -2,6 +2,8 @@
 
 namespace Src\Domain\Synchronizer\Actions;
 
+use App\Services\CDEK\Entities\Order as CdekOrder;
+use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\Entities\Client as InSalesClient;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\OrderPosition;
@@ -39,12 +41,18 @@ class CreateOrderFromInsales
             [
                 'name' => (string) $request->number,
                 // 'vatEnabled' => false,
-                'shipmentAddress' => $request->shipping_address->address,
+                'shipmentAddress' => $request->delivery_info->address->formatted,
                 'positions' => $assortment,
             ]
         )->json();
 
         $order->update(['moy_sklad_id' => $msOrder['id']]);
+
+        $cdekOrder = CdekOrder::fromInsalesOrderRequest($request);
+
+        $cdekOrder = FullfillmentApi::createOrder($cdekOrder)->json();
+
+        $order->update(['cdek_id' => $cdekOrder['id']]);
     }
 
     public function getClientFromInsales(InSalesClient $client): Client
