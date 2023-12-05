@@ -25,7 +25,7 @@ Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'va
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        dd(MoySkladApi::getVariant('eedeecaa-8885-11ee-0a80-153c00150e55')->json());
+        dd(MoySkladApi::getProduct('d3e7cb4b-91f5-11ee-0a80-0cb7007ef53e')->json());
         // dd(FullfillmentApi::pointByCode('YEKB300')->json('_embedded.servicePoints.0.id'));
         // dd(CdekApi::getToken()->json());
         // dd(InSalesApi::getWebhooks()->json());

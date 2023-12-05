@@ -10,17 +10,19 @@ class UpdateVariantFromMoySklad
 {
     public function handle(array $request)
     {
-        $updatedFields = data_get($request, 'events.0.updatedFields');
+        foreach (data_get($request, 'events') as $event) {
+            $updatedFields = data_get($event, 'updatedFields');
 
-        if (! in_array('salePrices', $updatedFields) && ! in_array('buyPrices', $updatedFields)) {
-            return;
+            if (! in_array('salePrices', $updatedFields) && ! in_array('buyPrices', $updatedFields)) {
+                return;
+            }
+
+            $variantId = str(data_get($event, 'meta.href'))->afterLast('/')->value();
+            $variant = MoySkladApi::getVariant($variantId)->json();
+
+            dispatch(new VariantFromMoySkladToInsales($variant));
+
+            dispatch(new VariantFromMoySkladToCdek($variant));
         }
-
-        $variantId = str(data_get($request, 'events.0.meta.href'))->afterLast('/')->value();
-        $variant = MoySkladApi::getVariant($variantId)->json();
-
-        dispatch(new VariantFromMoySkladToInsales($variant));
-
-        dispatch(new VariantFromMoySkladToCdek($variant));
     }
 }
