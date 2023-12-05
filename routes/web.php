@@ -6,7 +6,6 @@ use App\Http\Controllers\MoySkladController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\InSalesApi;
-use App\Services\MoySklad\Enums\WebhookAction;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -22,20 +21,17 @@ Route::withoutMiddleware()
 Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate'])->name('update');
 
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
+Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        // dd(MoySkladApi::createWebhook(
-        // 	'https://api.pull.ru/webhooks/moy_sklad/product_update',
-        // 	WebhookAction::update,
-        // 	'product',
-        // 	'FIELDS'
-        // )->json());
+        dd(MoySkladApi::getVariant('eedeecaa-8885-11ee-0a80-153c00150e55')->json());
         // dd(FullfillmentApi::pointByCode('YEKB300')->json('_embedded.servicePoints.0.id'));
         // dd(CdekApi::getToken()->json());
         // dd(InSalesApi::getWebhooks()->json());
 
-        // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
+        $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);
+        dd($data, data_get($data, 'events.0.updatedFields'));
         // Http::timeout(1)->post(route('order.create'), $data);
     });
 }

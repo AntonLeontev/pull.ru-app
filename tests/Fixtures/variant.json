@@ -1,0 +1,358 @@
+{
+    "context": {
+        "employee": {
+            "meta": {
+                "href": "https://api.moysklad.ru/api/remap/1.2/context/employee",
+                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+                "type": "employee",
+                "mediaType": "application/json"
+            }
+        }
+    },
+    "meta": {
+        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/",
+        "type": "variant",
+        "mediaType": "application/json",
+        "size": 4,
+        "limit": 1000,
+        "offset": 0
+    },
+    "rows": [
+        {
+            "meta": {
+                "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/eedeecaa-8885-11ee-0a80-153c00150e55",
+                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata",
+                "type": "variant",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#feature/edit?id=eedee65b-8885-11ee-0a80-153c00150e53"
+            },
+            "id": "eedeecaa-8885-11ee-0a80-153c00150e55",
+            "accountId": "599b1708-8857-11ee-0a80-1419000318e7",
+            "updated": "2023-11-21 18:52:11.468",
+            "name": "Первый (Белый)",
+            "code": "00002",
+            "externalCode": "d-DiaYFZi9raT1d82eXog3",
+            "archived": false,
+            "characteristics": [
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/eedc1f8a-8885-11ee-0a80-153c00150e52",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "eedc1f8a-8885-11ee-0a80-153c00150e52",
+                    "name": "Цвет",
+                    "value": "Белый"
+                }
+            ],
+            "images": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/eedeecaa-8885-11ee-0a80-153c00150e55/images",
+                    "type": "image",
+                    "mediaType": "application/json",
+                    "size": 0,
+                    "limit": 1000,
+                    "offset": 0
+                }
+            },
+            "salePrices": [
+                {
+                    "value": 500000.0,
+                    "currency": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                            "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                            "type": "currency",
+                            "mediaType": "application/json",
+                            "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                        }
+                    },
+                    "priceType": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                            "type": "pricetype",
+                            "mediaType": "application/json"
+                        },
+                        "id": "5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                        "name": "Цена продажи",
+                        "externalCode": "cbcf493b-55bc-11d9-848a-00112f43529a"
+                    }
+                }
+            ],
+            "barcodes": [{ "ean13": "2000000000039" }],
+            "discountProhibited": false,
+            "product": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/ad106616-8857-11ee-0a80-032c00508e1d",
+                    "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                    "type": "product",
+                    "mediaType": "application/json",
+                    "uuidHref": "https://online.moysklad.ru/app/#good/edit?id=ad105f3f-8857-11ee-0a80-032c00508e1b"
+                }
+            }
+        },
+        {
+            "meta": {
+                "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/eee18639-8885-11ee-0a80-153c00150e5a",
+                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata",
+                "type": "variant",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#feature/edit?id=eee180f1-8885-11ee-0a80-153c00150e58"
+            },
+            "id": "eee18639-8885-11ee-0a80-153c00150e5a",
+            "accountId": "599b1708-8857-11ee-0a80-1419000318e7",
+            "updated": "2023-11-21 18:52:11.485",
+            "name": "Первый (Черный)",
+            "code": "00003",
+            "externalCode": "lVrrFcQojb6wRXJS6zIdS3",
+            "archived": false,
+            "characteristics": [
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/eedc1f8a-8885-11ee-0a80-153c00150e52",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "eedc1f8a-8885-11ee-0a80-153c00150e52",
+                    "name": "Цвет",
+                    "value": "Черный"
+                }
+            ],
+            "images": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/eee18639-8885-11ee-0a80-153c00150e5a/images",
+                    "type": "image",
+                    "mediaType": "application/json",
+                    "size": 0,
+                    "limit": 1000,
+                    "offset": 0
+                }
+            },
+            "salePrices": [
+                {
+                    "value": 500000.0,
+                    "currency": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                            "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                            "type": "currency",
+                            "mediaType": "application/json",
+                            "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                        }
+                    },
+                    "priceType": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                            "type": "pricetype",
+                            "mediaType": "application/json"
+                        },
+                        "id": "5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                        "name": "Цена продажи",
+                        "externalCode": "cbcf493b-55bc-11d9-848a-00112f43529a"
+                    }
+                }
+            ],
+            "barcodes": [{ "ean13": "2000000000046" }],
+            "discountProhibited": false,
+            "product": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/ad106616-8857-11ee-0a80-032c00508e1d",
+                    "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                    "type": "product",
+                    "mediaType": "application/json",
+                    "uuidHref": "https://online.moysklad.ru/app/#good/edit?id=ad105f3f-8857-11ee-0a80-032c00508e1b"
+                }
+            }
+        },
+        {
+            "meta": {
+                "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/fa55b4aa-91f5-11ee-0a80-08120080dda5",
+                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata",
+                "type": "variant",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#feature/edit?id=fa55ad40-91f5-11ee-0a80-08120080dda3"
+            },
+            "id": "fa55b4aa-91f5-11ee-0a80-08120080dda5",
+            "accountId": "599b1708-8857-11ee-0a80-1419000318e7",
+            "updated": "2023-12-05 13:41:12.583",
+            "name": "Товар с модификациями (один, черный)",
+            "code": "00007",
+            "externalCode": "dKK3aOUZjT27ranpOr66Z1",
+            "archived": false,
+            "characteristics": [
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/f8b79c87-91f5-11ee-0a80-09cf00803bf6",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "f8b79c87-91f5-11ee-0a80-09cf00803bf6",
+                    "name": "тестовое",
+                    "value": "один"
+                },
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/6f580e2d-8fac-11ee-0a80-037200016fe4",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "6f580e2d-8fac-11ee-0a80-037200016fe4",
+                    "name": "Цвет товара",
+                    "value": "черный"
+                }
+            ],
+            "images": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/fa55b4aa-91f5-11ee-0a80-08120080dda5/images",
+                    "type": "image",
+                    "mediaType": "application/json",
+                    "size": 0,
+                    "limit": 1000,
+                    "offset": 0
+                }
+            },
+            "buyPrice": {
+                "value": 630000.0,
+                "currency": {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                        "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                        "type": "currency",
+                        "mediaType": "application/json",
+                        "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                    }
+                }
+            },
+            "salePrices": [
+                {
+                    "value": 1535400.0,
+                    "currency": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                            "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                            "type": "currency",
+                            "mediaType": "application/json",
+                            "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                        }
+                    },
+                    "priceType": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                            "type": "pricetype",
+                            "mediaType": "application/json"
+                        },
+                        "id": "5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                        "name": "Цена продажи",
+                        "externalCode": "cbcf493b-55bc-11d9-848a-00112f43529a"
+                    }
+                }
+            ],
+            "barcodes": [{ "ean13": "2000000000619" }],
+            "discountProhibited": false,
+            "product": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/d3e7cb4b-91f5-11ee-0a80-0cb7007ef53e",
+                    "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                    "type": "product",
+                    "mediaType": "application/json",
+                    "uuidHref": "https://online.moysklad.ru/app/#good/edit?id=d3e7be09-91f5-11ee-0a80-0cb7007ef53c"
+                }
+            }
+        },
+        {
+            "meta": {
+                "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/fb1b70b8-91f5-11ee-0a80-0cb7007f0035",
+                "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata",
+                "type": "variant",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#feature/edit?id=fb1b6897-91f5-11ee-0a80-0cb7007f0033"
+            },
+            "id": "fb1b70b8-91f5-11ee-0a80-0cb7007f0035",
+            "accountId": "599b1708-8857-11ee-0a80-1419000318e7",
+            "updated": "2023-12-05 11:21:01.467",
+            "name": "Товар с модификациями (два, белый)",
+            "code": "00008",
+            "externalCode": "kR5e-c6IgDutRD8ofY1eY1",
+            "archived": false,
+            "characteristics": [
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/f8b79c87-91f5-11ee-0a80-09cf00803bf6",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "f8b79c87-91f5-11ee-0a80-09cf00803bf6",
+                    "name": "тестовое",
+                    "value": "два"
+                },
+                {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/metadata/characteristics/6f580e2d-8fac-11ee-0a80-037200016fe4",
+                        "type": "attributemetadata",
+                        "mediaType": "application/json"
+                    },
+                    "id": "6f580e2d-8fac-11ee-0a80-037200016fe4",
+                    "name": "Цвет товара",
+                    "value": "белый"
+                }
+            ],
+            "images": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/fb1b70b8-91f5-11ee-0a80-0cb7007f0035/images",
+                    "type": "image",
+                    "mediaType": "application/json",
+                    "size": 0,
+                    "limit": 1000,
+                    "offset": 0
+                }
+            },
+            "buyPrice": {
+                "value": 620000.0,
+                "currency": {
+                    "meta": {
+                        "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                        "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                        "type": "currency",
+                        "mediaType": "application/json",
+                        "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                    }
+                }
+            },
+            "salePrices": [
+                {
+                    "value": 2100000.0,
+                    "currency": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/entity/currency/5a023543-8857-11ee-0a80-0d4e00501ccf",
+                            "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                            "type": "currency",
+                            "mediaType": "application/json",
+                            "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=5a023543-8857-11ee-0a80-0d4e00501ccf"
+                        }
+                    },
+                    "priceType": {
+                        "meta": {
+                            "href": "https://api.moysklad.ru/api/remap/1.2/context/companysettings/pricetype/5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                            "type": "pricetype",
+                            "mediaType": "application/json"
+                        },
+                        "id": "5a0279d3-8857-11ee-0a80-0d4e00501cd0",
+                        "name": "Цена продажи",
+                        "externalCode": "cbcf493b-55bc-11d9-848a-00112f43529a"
+                    }
+                }
+            ],
+            "barcodes": [{ "ean13": "2000000000626" }],
+            "discountProhibited": false,
+            "product": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/product/d3e7cb4b-91f5-11ee-0a80-0cb7007ef53e",
+                    "metadataHref": "https://api.moysklad.ru/api/remap/1.2/entity/product/metadata",
+                    "type": "product",
+                    "mediaType": "application/json",
+                    "uuidHref": "https://online.moysklad.ru/app/#good/edit?id=d3e7be09-91f5-11ee-0a80-0cb7007ef53c"
+                }
+            }
+        }
+    ]
+}

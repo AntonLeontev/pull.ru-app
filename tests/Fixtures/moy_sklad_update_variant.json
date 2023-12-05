@@ -1,0 +1,22 @@
+{
+    "auditContext": {
+        "meta": {
+            "type": "audit",
+            "href": "https://api.moysklad.ru/api/remap/1.2/audit/1170221b-9358-11ee-0a80-0cbf000dcd08"
+        },
+        "uid": "admin@aner-anton",
+        "moment": "2023-12-05 13:21:35"
+    },
+    "events": [
+        {
+            "meta": {
+                "type": "variant",
+                "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/fa55b4aa-91f5-11ee-0a80-08120080dda5"
+            },
+            "updatedFields": ["salePrices"],
+            "action": "UPDATE",
+            "accountId": "599b1708-8857-11ee-0a80-1419000318e7"
+        }
+    ],
+    "requestId": "fb78268a-7c6d-4710-8673-cd67f27b4cc6"
+}

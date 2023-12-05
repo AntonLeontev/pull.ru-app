@@ -29,6 +29,9 @@ class MoySkladApi
     public static function updateProduct(string $id, array $params): Response
     {
         return Http::moySklad()
+            ->withHeaders([
+                'X-Lognex-WebHook-Disable' => '1',
+            ])
             ->put("entity/product/$id", $params);
     }
 
@@ -96,6 +99,12 @@ class MoySkladApi
             ->get('/entity/variant');
     }
 
+    public static function getVariant(string $id): Response
+    {
+        return Http::moySklad()
+            ->get("/entity/variant/$id");
+    }
+
     /**
      * @param  App\Services\MoySklad\Entities\Product  $product
      * @param  App\Services\MoySklad\Entities\Characteristic[]  $characteristics
@@ -116,6 +125,9 @@ class MoySkladApi
     public static function updateVariant(string $id, array $characteristics, array $params = []): Response
     {
         return Http::moySklad()
+            ->withHeaders([
+                'X-Lognex-WebHook-Disable' => '1',
+            ])
             ->put("entity/variant/$id", [
                 'characteristics' => $characteristics,
                 ...$params,
