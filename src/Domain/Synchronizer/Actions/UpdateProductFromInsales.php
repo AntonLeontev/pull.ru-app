@@ -36,6 +36,12 @@ class UpdateProductFromInsales
             ->with('categories')
             ->first();
 
+        if (cache('blocked_products.'.$this->product->id)) {
+            cache()->forget('blocked_products.'.$this->product->id);
+
+            return;
+        }
+
         $categories = $this->syncService->actualInsalesCategories($request);
 
         $this->updateProduct($request, $categories);

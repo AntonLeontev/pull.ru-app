@@ -35,6 +35,8 @@ class CreateProductFromInsales
 
             $dbProduct->update(['moy_sklad_id' => $moySkladProduct['id']]);
 
+            cache(['blocked_products.'.$dbProduct->id => true]);
+
             event(new ProductCreatingSuccess($dbProduct->name));
         });
     }

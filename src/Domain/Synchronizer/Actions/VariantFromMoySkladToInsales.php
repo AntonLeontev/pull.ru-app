@@ -19,6 +19,8 @@ class VariantFromMoySkladToInsales
             InSalesApi::updateVariant($variant->product->insales_id, $variant->insales_id, [
                 'price' => data_get($MSVariant, 'salePrices.0.value') / 100,
             ]);
+
+            cache(['blocked_products.'.$variant->product_id => true]);
         } catch (\Throwable $th) {
             event(new VariantFromMoySkladToInsalesError($variant->name, $variant->id));
             throw $th;
