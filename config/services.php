@@ -42,6 +42,7 @@ return [
         'token' => env('MOY_SKLAD_TOKEN'),
         'default_price_type_id' => '5a0279d3-8857-11ee-0a80-0d4e00501cd0',
         'organization' => '5a009435-8857-11ee-0a80-0d4e00501cc8',
+        'store' => '5a0185cd-8857-11ee-0a80-0d4e00501cca',
         'enabled' => env('SYNC_MOY_SKLAD'),
     ],
 

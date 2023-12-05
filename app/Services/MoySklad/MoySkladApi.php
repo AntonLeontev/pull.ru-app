@@ -197,4 +197,10 @@ class MoySkladApi
                 'phone' => $phone,
             ]);
     }
+
+    public static function getStores(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/store');
+    }
 }

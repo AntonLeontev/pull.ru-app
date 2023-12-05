@@ -24,7 +24,7 @@ readonly class Order extends AbstractEntity
         $products = [];
 
         foreach ($request->order_lines as $product) {
-            $products[] = OrderProduct::fromInsales($product->variant_id, $product->quantity, $product->full_total_price);
+            $products[] = OrderProduct::fromInsales($product->variant_id, $product->quantity, $product->sale_price);
         }
 
         if ($request->delivery_info->type === 'office') {

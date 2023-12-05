@@ -8,6 +8,7 @@ use App\Services\InSales\Entities\Client as InSalesClient;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\OrderPosition;
 use App\Services\MoySklad\Entities\Organization;
+use App\Services\MoySklad\Entities\Store;
 use App\Services\MoySklad\MoySkladApi;
 use Src\Domain\Synchronizer\Models\Client;
 use Src\Domain\Synchronizer\Models\Order;
@@ -35,14 +36,17 @@ class CreateOrderFromInsales
             $assortment[] = OrderPosition::fromInsalesOrder($insalesProduct);
         }
 
+        $address = $request->delivery_info->address->formatted ?? $request->delivery_info->address->city.' '.$request->delivery_info->address->address;
+
         $msOrder = MoySkladApi::createCustomerOrder(
             Organization::make(config('services.moySklad.organization')),
             $counterparty,
             [
                 'name' => (string) $request->number,
                 // 'vatEnabled' => false,
-                'shipmentAddress' => $request->delivery_info->address->formatted,
+                'shipmentAddress' => $address,
                 'positions' => $assortment,
+                'store' => Store::make(config('services.moySklad.store')),
             ]
         )->json();
 
