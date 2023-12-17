@@ -33,6 +33,10 @@ class HttpServiceProvider extends ServiceProvider
                 ->acceptJson()
                 ->withHeader('Authorization', 'Bearer '.cdek_auth_token())
                 ->throw(function (Response $response) {
+                    if ($response->json('errors.0.message') === 'Recipient location is not recognized') {
+                        abort($response->status(), $response->json('errors.0.message'));
+                    }
+
                     throw new CdekApiException($response);
                 });
         });

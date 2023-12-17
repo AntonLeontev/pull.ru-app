@@ -12,9 +12,8 @@ if (! function_exists('objectize')) {
 if (! function_exists('cdek_token')) {
     function cdek_auth_token(): string
     {
-        $response = CdekApi::getToken();
-
         if (is_null(cache('cdek_auth_token'))) {
+            $response = CdekApi::getToken();
             cache(['cdek_auth_token' => $response->json('access_token')], $response->json('expires_in'));
         }
 

@@ -112,6 +112,7 @@ class Widget
         $data = Http::cdek()->post('calculator/tarifflist', $this->requestData)->json();
 
         return $data;
+        // return $this->httpRequest('calculator/tarifflist', $this->requestData, false, true);
     }
 
     private function http_response_code($code)
