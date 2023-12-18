@@ -21,11 +21,15 @@ class InSalesController extends Controller
 
     public function productsCreate(Request $request)
     {
-        dispatch(new CreateProductFromInsales($request->all()));
+        foreach ($request->all() as $product) {
+            dispatch(new CreateProductFromInsales($product));
+        }
     }
 
     public function productsUpdate(Request $request)
     {
-        dispatch(new UpdateProductFromInsales($request->all()))->delay(now()->addSeconds(3));
+        foreach ($request->all() as $product) {
+            dispatch(new UpdateProductFromInsales($product))->delay(now()->addSeconds(3));
+        }
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Src\Domain\Synchronizer\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Src\Domain\Synchronizer\Events\AbstractEventForLogging;
 
-class LogToTelegram implements ShouldQueue
+class LogToTelegram
 {
     public function handle(AbstractEventForLogging $event): void
     {

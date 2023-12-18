@@ -93,6 +93,7 @@ class FullfillmentApi
         string $image = null,
         Weight $weight = null,
         Dimensions $dimensions = null,
+        array $barcodes = [],
     ): Response {
         return Http::cdekff()
             ->post('products/offer', [
@@ -107,6 +108,7 @@ class FullfillmentApi
                 'image' => $image,
                 'weight' => $weight,
                 'dimensions' => $dimensions,
+                'barcodes' => $barcodes,
             ]);
     }
 

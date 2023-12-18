@@ -80,9 +80,31 @@ class InSalesApi
             ->get('admin/clients.json');
     }
 
+    public static function getVariants(int $productId): Response
+    {
+        return Http::inSales()
+            ->get("admin/products/$productId/variants.json");
+    }
+
     public static function updateVariant(int $productId, int $variantId, array $data): Response
     {
         return Http::inSales()
             ->put("admin/products/$productId/variants/$variantId.json", $data);
+    }
+
+    public static function getProducts(int $fromId = null, int $perPage = 10): Response
+    {
+        return Http::inSales()
+            ->get('/admin/products.json', [
+                'with_deleted' => false,
+                'from_id' => $fromId,
+                'per_page' => $perPage,
+            ]);
+    }
+
+    public static function getImage(int $productId, int $imageId): Response
+    {
+        return Http::inSales()
+            ->get("admin/products/$productId/images/$imageId.json");
     }
 }

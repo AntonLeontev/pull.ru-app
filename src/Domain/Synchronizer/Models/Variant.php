@@ -17,6 +17,7 @@ class Variant extends Model
         'moy_sklad_id',
         'cdek_id',
         'product_id',
+        'ean13',
     ];
 
     public function product(): BelongsTo

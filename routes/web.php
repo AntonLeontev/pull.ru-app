@@ -25,13 +25,15 @@ Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'va
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        dd(MoySkladApi::getStores()->json());
-        // dd(FullfillmentApi::pointByCode('YEKB300')->json('_embedded.servicePoints.0.id'));
+        // dd(MoySkladApi::getVariant('01f2fd01-9d05-11ee-0a80-136b004daad4')->json());
+        // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // dd(CdekApi::getToken()->json());
-        // dd(InSalesApi::getWebhooks()->json());
+        $products = InSalesApi::getVariants(412972193)->json();
 
-        $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);
-        dd($data, data_get($data, 'events.0.updatedFields'));
+        dd($products);
+
+        // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);
+        // dd($data, data_get($data, 'events.0.updatedFields'));
         // Http::timeout(1)->post(route('order.create'), $data);
     });
 }

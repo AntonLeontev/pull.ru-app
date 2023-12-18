@@ -12,7 +12,7 @@ class SyncInSalesCategoriesToMoySklad extends Command
      *
      * @var string
      */
-    protected $signature = 'app:categories-sync';
+    protected $signature = 'app:sync-categories';
 
     /**
      * The console command description.
