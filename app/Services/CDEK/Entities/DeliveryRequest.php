@@ -6,7 +6,7 @@ use App\Services\CDEK\FullfillmentApi;
 
 readonly class DeliveryRequest extends AbstractEntity
 {
-    public function __construct(public int $rate, public int $price, public ?int $servicePointId = null)
+    public function __construct(public int $rate, public int $price, public ?int $servicePointId = null, int|float $discount = null)
     {
     }
 
@@ -17,6 +17,7 @@ readonly class DeliveryRequest extends AbstractEntity
             'rate' => $this->rate,
             'sender' => config('services.cdekff.senders.moscow'),
             'retailPrice' => $this->price,
+            'discount' => 1000,
         ];
 
         if (is_null($this->servicePointId)) {
