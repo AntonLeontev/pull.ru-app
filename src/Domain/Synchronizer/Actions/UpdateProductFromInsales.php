@@ -96,11 +96,11 @@ class UpdateProductFromInsales
             DB::transaction(function () use ($request, $variant, $hasVariants) {
                 if ($hasVariants) {
                     $dbVariant = Variant::updateOrCreate(
-                        ['insales_id' => $variant['id']],
                         [
-                            'name' => $variant['title'] ?? data_get($request, 'title'),
+                            'name' => $variant['title'],
                             'product_id' => $this->product->id,
-                        ]
+                        ],
+                        ['insales_id' => $variant['id']]
                     );
                 } else {
                     $dbVariant = Variant::updateOrCreate(
