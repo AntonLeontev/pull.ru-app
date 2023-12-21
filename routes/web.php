@@ -27,10 +27,11 @@ if (app()->isLocal()) {
     Route::get('test', function () {
         // dd(MoySkladApi::getVariant('01f2fd01-9d05-11ee-0a80-136b004daad4')->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
-        // dd(CdekApi::getToken()->json());
-        $products = InSalesApi::getVariants(412972193)->json();
+        $regs = collect(CdekApi::regions()->json());
 
-        dd($products);
+        dd($regs->filter(fn ($value) => str_contains($value['region'], 'лта')));
+        dd(CdekApi::deliverypoints(['region_code' => 41])->json());
+        // $products = InSalesApi::getVariants(412972193)->json();
 
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);
         // dd($data, data_get($data, 'events.0.updatedFields'));

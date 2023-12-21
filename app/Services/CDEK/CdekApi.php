@@ -26,6 +26,20 @@ class CdekApi
             ]);
     }
 
+    public static function regions(string $countryCode = 'RU')
+    {
+        return Http::cdek()
+            ->get('location/regions', [
+                'country_codes' => $countryCode,
+            ]);
+    }
+
+    public static function deliverypoints(array $params = [])
+    {
+        return Http::cdek()
+            ->get('deliverypoints', $params);
+    }
+
     public static function calculate(string $city, int $weight, int $length, int $width, int $height)
     {
         return Http::cdek()
