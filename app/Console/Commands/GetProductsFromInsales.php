@@ -45,7 +45,7 @@ class GetProductsFromInsales extends Command
             if ($product) {
                 dispatch(new UpdateProductFromInsales($ISProduct));
             } else {
-                dispatch(new CreateProductFromInsales($ISProduct));
+                dispatch(new CreateProductFromInsales($ISProduct, false));
             }
 
             $count++;

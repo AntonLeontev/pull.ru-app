@@ -24,11 +24,11 @@ class CreateProductFromInsales
     {
     }
 
-    public function handle(array $request): void
+    public function handle(array $request, bool $withBlocking = true): void
     {
         $categories = $this->syncService->actualInsalesCategories($request);
 
-        DB::transaction(function () use ($request, $categories) {
+        DB::transaction(function () use ($request, $categories, $withBlocking) {
             $dbProduct = $this->createProductInDb($request, $categories);
 
             $productFolder = $this->syncService->getMoySkladProductFolder($categories);
@@ -42,6 +42,12 @@ class CreateProductFromInsales
             $this->syncService->syncOptions($request);
 
             $this->createVariants($request, $dbProduct);
+
+            if ($withBlocking) {
+                //От инсейлс за созданием сразу идет запрос обновления.
+                //Чтобы не запускать обновление с теми же данными, блочим этот товар
+                cache(['blocked_products.'.$dbProduct->id => true]);
+            }
 
             event(new ProductCreatingSuccess($dbProduct->name));
         });

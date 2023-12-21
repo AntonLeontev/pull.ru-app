@@ -16,7 +16,7 @@ class CreateProductFromInsales implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $request)
+    public function __construct(private array $request, private bool $withBlocking = true)
     {
     }
 
@@ -25,6 +25,6 @@ class CreateProductFromInsales implements ShouldQueue
      */
     public function handle(CreateAction $createProduct): void
     {
-        $createProduct->handle($this->request);
+        $createProduct->handle($this->request, $this->withBlocking);
     }
 }
