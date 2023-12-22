@@ -29,8 +29,8 @@ if (app()->isLocal()) {
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         $regs = collect(CdekApi::regions()->json());
 
-        dd($regs->filter(fn ($value) => str_contains($value['region'], 'лта')));
-        dd(CdekApi::deliverypoints(['region_code' => 41])->json());
+        // dd($regs->filter(fn ($value) => str_contains($value['region'], 'лта')));
+        // dd(CdekApi::deliverypoints(['region_code' => 41])->json());
         // $products = InSalesApi::getVariants(412972193)->json();
 
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);

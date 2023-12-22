@@ -29,6 +29,22 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
                    $entry->isScheduledTask() ||
                    $entry->hasMonitoredTag();
         });
+
+        Telescope::tag(function (IncomingEntry $entry) {
+            if ($entry->type === 'request') {
+                return match ($entry->content['uri']) {
+                    '/webhooks/insales/products_create' => ['insales', 'product create'],
+                    '/webhooks/insales/products_update' => ['insales', 'product update'],
+                    '/webhooks/insales/orders_create' => ['insales', 'orders update'],
+                    '/webhooks/insales/orders_update' => ['insales', 'orders update'],
+                    '/webhooks/moy_sklad/product_update' => ['ms', 'product update'],
+                    '/webhooks/moy_sklad/variant_update' => ['ms', 'variant update'],
+                    default => [],
+                };
+            }
+
+            return [];
+        });
     }
 
     /**
