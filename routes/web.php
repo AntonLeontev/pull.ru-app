@@ -30,14 +30,19 @@ if (app()->isLocal()) {
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
-        // dd($regs->filter(fn ($value) => str_contains($value['region'], 'лта')));
-        // dd(CdekApi::deliverypoints(['region_code' => 41])->json());
+        // $result = [];
+        // foreach (config('delivery.cdek.allowed_regions') as $region) {
+        // 	$first = $regs->filter(fn ($value) => str_contains($value['region'], $region))->first();
+
+        // 	$result[$first['region']] = $first['region_code'];
+        // }
+        // dd($result);
+
+        dd(CdekApi::deliverypoints(['region_code' => 67])->json());
         // $products = InSalesApi::getVariants(412972193)->json();
 
-        $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
-        $action->handle($data);
-
         // dd($data, data_get($data, 'events.0.updatedFields'));
+        // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // $data['name'] = (string) random_int(1, 999);
         // dd(Http::moySklad()->post('entity/customerorder', $data)->json());
     });
