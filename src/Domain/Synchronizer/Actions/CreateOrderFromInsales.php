@@ -15,9 +15,15 @@ use Src\Domain\Synchronizer\Models\Order;
 
 class CreateOrderFromInsales
 {
+    public function __construct(public ResolveDiscount $resolveDiscount)
+    {
+    }
+
     public function handle(array $request): void
     {
         $request = objectize($request);
+
+        $this->resolveDiscount->handle($request);
 
         $client = $this->getClientFromInsales(InSalesClient::fromObject($request->client));
 
@@ -57,6 +63,10 @@ class CreateOrderFromInsales
         $cdekOrder = FullfillmentApi::createOrder($cdekOrder)->json();
 
         $order->update(['cdek_id' => $cdekOrder['id']]);
+
+        foreach ($request->order_lines as $line) {
+            cache(['blocked_products.'.$line->product_id => true]);
+        }
     }
 
     public function getClientFromInsales(InSalesClient $client): Client

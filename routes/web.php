@@ -9,6 +9,7 @@ use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -24,17 +25,20 @@ Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'pr
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
 
 if (app()->isLocal()) {
-    Route::get('test', function () {
+    Route::get('test', function (CreateOrderFromInsales $action) {
         // dd(MoySkladApi::getVariant('01f2fd01-9d05-11ee-0a80-136b004daad4')->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
-        $regs = collect(CdekApi::regions()->json());
+        // $regs = collect(CdekApi::regions()->json());
 
         // dd($regs->filter(fn ($value) => str_contains($value['region'], 'лта')));
         // dd(CdekApi::deliverypoints(['region_code' => 41])->json());
         // $products = InSalesApi::getVariants(412972193)->json();
 
-        // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/moy_sklad_update_variant.json')), true);
+        $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
+        $action->handle($data);
+
         // dd($data, data_get($data, 'events.0.updatedFields'));
-        // Http::timeout(1)->post(route('order.create'), $data);
+        // $data['name'] = (string) random_int(1, 999);
+        // dd(Http::moySklad()->post('entity/customerorder', $data)->json());
     });
 }

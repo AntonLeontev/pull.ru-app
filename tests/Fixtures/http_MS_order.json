@@ -1,0 +1,40 @@
+{
+    "organization": {
+        "meta": {
+            "href": "https://api.moysklad.ru/api/remap/1.2/entity/organization/5a009435-8857-11ee-0a80-0d4e00501cc8",
+            "type": "organization",
+            "mediaType": "application/json"
+        }
+    },
+    "agent": {
+        "meta": {
+            "href": "https://api.moysklad.ru/api/remap/1.2/entity/counterparty/8003c0ca-8fb5-11ee-0a80-037200034a9f",
+            "type": "counterparty",
+            "mediaType": "application/json"
+        }
+    },
+    "name": "1047",
+    "shipmentAddress": "Дедовск ул. Победы, 4",
+    "positions": [
+        {
+            "quantity": 1,
+            "price": 499000,
+            "discount": 5,
+            "vat": 0,
+            "assortment": {
+                "meta": {
+                    "href": "https://api.moysklad.ru/api/remap/1.2/entity/variant/880b3fbe-9ff2-11ee-0a80-08af0017e5b9",
+                    "type": "variant",
+                    "mediaType": "application/json"
+                }
+            }
+        }
+    ],
+    "store": {
+        "meta": {
+            "href": "https://api.moysklad.ru/api/remap/1.2/entity/store/5a0185cd-8857-11ee-0a80-0d4e00501cca",
+            "type": "store",
+            "mediaType": "application/json"
+        }
+    }
+}

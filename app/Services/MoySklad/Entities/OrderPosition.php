@@ -46,7 +46,7 @@ readonly class OrderPosition extends AbstractEntity
         return new static(
             $position->quantity,
             $position->sale_price * 100,
-            $position->discounts_amount / $position->sale_price * 100,
+            0,
             (int) $position->vat === -1 ? 0 : $position->vat,
             $assortment
         );

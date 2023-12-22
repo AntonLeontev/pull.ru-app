@@ -11,7 +11,7 @@ readonly class OrderProduct extends AbstractEntity
     public function __construct(
         public int $cdekId,
         public int $count,
-        public int $price,
+        public int|float $price,
     ) {
     }
 
@@ -24,7 +24,7 @@ readonly class OrderProduct extends AbstractEntity
         ];
     }
 
-    public static function fromInsales(int $insalesVariantId, int $count, int $price): static
+    public static function fromInsales(int $insalesVariantId, int $count, int|float $price): static
     {
         $variant = Variant::where('insales_id', $insalesVariantId)->first();
 
