@@ -38,14 +38,10 @@ class ResolveDiscount
 
             if (count($ids) === 1) {
                 $lineDiscount = $discount - $distributedDiscount;
-                $distributedDiscount += $lineDiscount;
-                $line->line_discount = (string) ($lineDiscount / 100);
-                $line->sale_price = (string) ($line->sale_price - round($lineDiscount / $line->quantity) / 100);
-
-                continue;
+            } else {
+                $lineDiscount = $this->getLineDiscount($line, $priceWithoutDiscount, $discount);
             }
 
-            $lineDiscount = $this->getLineDiscount($line, $priceWithoutDiscount, $discount);
             $distributedDiscount += $lineDiscount;
             $line->line_discount = (string) ($lineDiscount / 100);
             $line->sale_price = (string) ($line->sale_price - round($lineDiscount / $line->quantity) / 100);
