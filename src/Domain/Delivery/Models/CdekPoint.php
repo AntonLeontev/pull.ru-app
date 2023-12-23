@@ -28,6 +28,8 @@ class CdekPoint extends Model
         'allowed_cod',
         'weight_min',
         'weight_max',
+        'work_time_list',
+        'work_time_exceptions',
         'country_code',
         'region_code',
         'region',
@@ -40,6 +42,7 @@ class CdekPoint extends Model
         'address',
         'address_full',
         'fulfillment',
+        'dimensions',
     ];
 
     protected $casts = [
@@ -56,7 +59,7 @@ class CdekPoint extends Model
 
     public function jsonSerialize(): array
     {
-        return [
+        $array = [
             'code' => $this->code,
             'name' => $this->name,
             'uuid' => $this->uuid,
@@ -71,8 +74,8 @@ class CdekPoint extends Model
             'have_cashless' => $this->have_cashless,
             'have_cash' => $this->have_cash,
             'allowed_cod' => $this->allowed_cod,
-            'weight_min' => $this->weight_min,
-            'weight_max' => $this->weight_max,
+            'weight_min' => (float) $this->weight_min,
+            'weight_max' => (float) $this->weight_max,
             'location' => [
                 'country_code' => $this->country_code,
                 'region_code' => $this->region_code,
@@ -81,12 +84,18 @@ class CdekPoint extends Model
                 'city' => $this->city,
                 'fias_guid' => $this->fias_guid,
                 'postal_code' => $this->postal_code,
-                'longitude' => $this->longitude,
-                'latitude' => $this->latitude,
+                'longitude' => (float) $this->longitude,
+                'latitude' => (float) $this->latitude,
                 'address' => $this->address,
                 'address_full' => $this->address_full,
             ],
             'fulfillment' => $this->fulfillment,
         ];
+
+        if (! is_null($this->dimensions)) {
+            $array['dimensions'] = json_decode($this->dimensions);
+        }
+
+        return $array;
     }
 }

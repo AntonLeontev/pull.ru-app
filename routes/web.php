@@ -9,6 +9,7 @@ use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Src\Domain\Delivery\Models\CdekPoint;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -30,15 +31,10 @@ if (app()->isLocal()) {
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
-        // $result = [];
-        // foreach (config('delivery.cdek.allowed_regions') as $region) {
-        // 	$first = $regs->filter(fn ($value) => str_contains($value['region'], $region))->first();
-
-        // 	$result[$first['region']] = $first['region_code'];
-        // }
-        // dd($result);
-
-        dd(CdekApi::deliverypoints(['region_code' => 67])->json());
+        $t = CdekApi::deliverypoints(['region_code' => 67]);
+        // dump($t->json(1));
+        dump($t->json(2));
+        dd(json_decode(json_encode(CdekPoint::where('type', 'POSTAMAT')->first()), true));
         // $products = InSalesApi::getVariants(412972193)->json();
 
         // dd($data, data_get($data, 'events.0.updatedFields'));

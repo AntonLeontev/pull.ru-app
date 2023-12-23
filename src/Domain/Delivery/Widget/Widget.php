@@ -4,6 +4,7 @@ namespace Src\Domain\Delivery\Widget;
 
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
+use Src\Domain\Delivery\Models\CdekPoint;
 
 class Widget
 {
@@ -104,7 +105,26 @@ class Widget
 
     protected function getOffices()
     {
-        return $this->httpRequest('deliverypoints', $this->requestData);
+        return CdekPoint::query()
+            ->whereIn('region_code', array_values(config('delivery.cdek.allowed_regions')))
+            ->when(isset($this->requestData['is_handout']), function ($query) {
+                $query->where('is_handout', $this->requestData['is_handout'] === 'true');
+            })
+            ->when(isset($this->requestData['have_cashless']), function ($query) {
+                $query->where('have_cashless', $this->requestData['have_cashless'] === 'true');
+            })
+            ->when(isset($this->requestData['have_cash']), function ($query) {
+                $query->where('have_cash', $this->requestData['have_cash'] === 'true');
+            })
+            ->when(isset($this->requestData['is_dressing_room']), function ($query) {
+                $query->where('is_dressing_room', $this->requestData['is_dressing_room'] === 'true');
+            })
+            ->when(isset($this->requestData['type']), function ($query) {
+                $query->where('type', $this->requestData['type']);
+            })
+            ->get();
+        // return $this->httpRequest('deliverypoints', $this->requestData);
+
     }
 
     protected function calculate()
@@ -112,7 +132,6 @@ class Widget
         $data = Http::cdek()->post('calculator/tarifflist', $this->requestData)->json();
 
         return $data;
-        // return $this->httpRequest('calculator/tarifflist', $this->requestData, false, true);
     }
 
     private function http_response_code($code)

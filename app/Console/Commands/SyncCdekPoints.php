@@ -24,7 +24,7 @@ class SyncCdekPoints extends Command
             $points = CdekApi::deliverypoints(['region_code' => $code])->json();
 
             foreach ($points as $point) {
-                CdekPoint::updateOrCreate(
+                $cdekPoint = CdekPoint::updateOrCreate(
                     ['uuid' => $point['uuid']],
                     [
                         'code' => $point['code'],
@@ -57,6 +57,11 @@ class SyncCdekPoints extends Command
                         'fulfillment' => $point['fulfillment'],
                     ]
                 );
+
+                if (isset($point['dimensions'])) {
+                    $cdekPoint->dimensions = json_encode($point['dimensions']);
+                    $cdekPoint->save();
+                }
             }
         }
     }
