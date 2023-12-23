@@ -120,10 +120,13 @@ class Widget
                 $query->where('is_dressing_room', $this->requestData['is_dressing_room'] === 'true');
             })
             ->when(isset($this->requestData['type']), function ($query) {
+                if ($this->requestData['type'] === 'ALL') {
+                    return;
+                }
+
                 $query->where('type', $this->requestData['type']);
             })
             ->get();
-        // return $this->httpRequest('deliverypoints', $this->requestData);
 
     }
 
