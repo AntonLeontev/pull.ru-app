@@ -60,7 +60,6 @@ class UpdateProductFromInsales
                 'description' => strip_tags(data_get($request, 'description')),
                 'salePrices' => [SalePrice::make(data_get($request, 'variants.0.price'))],
                 'buyPrice' => BuyPrice::make(data_get($request, 'variants.0.cost_price')),
-                // 'barcodes' => [['ean13' => data_get($request, 'variants.0.barcode')]],
                 'article' => (string) data_get($request, 'variants.0.sku'),
                 'weight' => (float) data_get($request, 'variants.0.weight'),
                 'volume' => Volume::fromInsalesDimensions(data_get($request, 'variants.0.dimensions')),
@@ -95,13 +94,23 @@ class UpdateProductFromInsales
         foreach (data_get($request, 'variants') as $variant) {
             DB::transaction(function () use ($request, $variant, $hasVariants) {
                 if ($hasVariants) {
-                    $dbVariant = Variant::updateOrCreate(
-                        [
+                    $dbVariant = Variant::where('insales_id', $variant['id'])
+                        ->first();
+
+                    if (is_null($dbVariant)) {
+                        $dbVariant = Variant::updateOrCreate(
+                            [
+                                'name' => $variant['title'],
+                                'product_id' => $this->product->id,
+                            ],
+                            ['insales_id' => $variant['id']]
+                        );
+                    } else {
+                        $dbVariant->update([
                             'name' => $variant['title'],
                             'product_id' => $this->product->id,
-                        ],
-                        ['insales_id' => $variant['id']]
-                    );
+                        ]);
+                    }
                 } else {
                     $dbVariant = Variant::updateOrCreate(
                         ['product_id' => $this->product->id],
