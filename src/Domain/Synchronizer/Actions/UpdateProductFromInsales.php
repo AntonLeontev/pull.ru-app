@@ -105,10 +105,7 @@ class UpdateProductFromInsales
                         ],
                     );
                 } else {
-                    $dbVariant->update([
-                        'name' => $variant['title'],
-                        'product_id' => $this->product->id,
-                    ]);
+                    $dbVariant->update(['insales_id' => $variant['id']]);
                 }
             } else {
                 $dbVariant = Variant::updateOrCreate(
