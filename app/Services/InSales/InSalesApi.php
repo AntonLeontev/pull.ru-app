@@ -92,6 +92,12 @@ class InSalesApi
             ->put("admin/products/$productId/variants/$variantId.json", $data);
     }
 
+    public static function getProduct(int $id): Response
+    {
+        return Http::inSales()
+            ->get("/admin/products/$id.json");
+    }
+
     public static function getProducts(int $fromId = null, int $perPage = 10): Response
     {
         return Http::inSales()

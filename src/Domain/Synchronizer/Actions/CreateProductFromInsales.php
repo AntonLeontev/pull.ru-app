@@ -91,91 +91,89 @@ class CreateProductFromInsales
         $hasVariants = count(data_get($request, 'variants')) > 1;
 
         foreach (data_get($request, 'variants') as $variant) {
-            DB::transaction(function () use ($request, $variant, $hasVariants, $product) {
-                $dbVariant = Variant::updateOrCreate(
-                    ['insales_id' => $variant['id']],
-                    [
-                        'name' => $variant['title'] ?? data_get($request, 'title'),
-                        'product_id' => $product->id,
-                        'ean13' => $request['barcode'],
-                    ]
-                );
+            $dbVariant = Variant::updateOrCreate(
+                ['insales_id' => $variant['id']],
+                [
+                    'name' => $variant['title'] ?? data_get($request, 'title'),
+                    'product_id' => $product->id,
+                    'ean13' => $request['barcode'],
+                ]
+            );
 
-                $characteristics = $this->syncService->updateVariantOptions($variant, $dbVariant);
+            $characteristics = $this->syncService->updateVariantOptions($variant, $dbVariant);
 
-                if (! empty($characteristics)) {
-                    if (is_null($dbVariant->moy_sklad_id)) {
-                        $MSVariant = MoySkladApi::createVariant(
-                            MoySkladProduct::make($product->moy_sklad_id),
-                            $characteristics,
-                            [
-                                'salePrices' => [SalePrice::make($variant['price'])],
-                                'buyPrice' => BuyPrice::make($variant['cost_price']),
-                                'article' => (string) $variant['sku'],
-                            ]
-                        )->json();
+            if (! empty($characteristics)) {
+                if (is_null($dbVariant->moy_sklad_id)) {
+                    $MSVariant = MoySkladApi::createVariant(
+                        MoySkladProduct::make($product->moy_sklad_id),
+                        $characteristics,
+                        [
+                            'salePrices' => [SalePrice::make($variant['price'])],
+                            'buyPrice' => BuyPrice::make($variant['cost_price']),
+                            'article' => (string) $variant['sku'],
+                        ]
+                    )->json();
 
-                        $dbVariant->update([
-                            'moy_sklad_id' => $MSVariant['id'],
-                            'ean13' => data_get($MSVariant, 'barcodes.0.ean13'),
-                        ]);
+                    $dbVariant->update([
+                        'moy_sklad_id' => $MSVariant['id'],
+                        'ean13' => data_get($MSVariant, 'barcodes.0.ean13'),
+                    ]);
 
-                        $variant['barcode'] = data_get($MSVariant, 'barcodes.0.ean13');
-                    } else {
-                        $MSVariant = MoySkladApi::updateVariant(
-                            $dbVariant->moy_sklad_id,
-                            $characteristics,
-                            [
-                                'salePrices' => [SalePrice::make($variant['price'])],
-                                'buyPrice' => BuyPrice::make($variant['cost_price']),
-                                'article' => (string) $variant['sku'],
-                            ]
-                        );
+                    $variant['barcode'] = data_get($MSVariant, 'barcodes.0.ean13');
+                } else {
+                    $MSVariant = MoySkladApi::updateVariant(
+                        $dbVariant->moy_sklad_id,
+                        $characteristics,
+                        [
+                            'salePrices' => [SalePrice::make($variant['price'])],
+                            'buyPrice' => BuyPrice::make($variant['cost_price']),
+                            'article' => (string) $variant['sku'],
+                        ]
+                    );
 
-                        $variant['barcode'] = data_get($MSVariant, 'barcodes.0.ean13');
+                    $variant['barcode'] = data_get($MSVariant, 'barcodes.0.ean13');
+                }
+            }
+
+            if (config('services.cdekff.enabled')) {
+                $name = $hasVariants ? $product->name.' '.$dbVariant->name : $product->name;
+
+                if ($variant['image_id']) {
+                    try {
+                        $image = InSalesApi::getImage($request['id'], $variant['image_id'])->json('large_url');
+                    } catch (\Throwable $th) {
+                        $image = data_get($request, 'images.0.large_url');
                     }
                 }
 
-                if (config('services.cdekff.enabled')) {
-                    $name = $hasVariants ? $product->name.' '.$dbVariant->name : $product->name;
+                if (is_null($dbVariant->cdek_id)) {
+                    $cdekProduct = FullfillmentApi::createSimpleProduct(
+                        $name,
+                        $variant['price'],
+                        $variant['sku'],
+                        $dbVariant->id,
+                        $variant['cost_price'],
+                        $image ?? data_get($request, 'images.0.large_url'),
+                        Weight::fromKilos($variant['weight']),
+                        Dimensions::fromInsalesDimensions($variant['dimensions']),
+                        [$variant['barcode']]
+                    )->json();
 
-                    if ($variant['image_id']) {
-                        try {
-                            $image = InSalesApi::getImage($request['id'], $variant['image_id'])->json('large_url');
-                        } catch (\Throwable $th) {
-                            $image = data_get($request, 'images.0.large_url');
-                        }
-                    }
-
-                    if (is_null($dbVariant->cdek_id)) {
-                        $cdekProduct = FullfillmentApi::createSimpleProduct(
-                            $name,
-                            $variant['price'],
-                            $variant['sku'],
-                            $dbVariant->id,
-                            $variant['cost_price'],
-                            $image ?? data_get($request, 'images.0.large_url'),
-                            Weight::fromKilos($variant['weight']),
-                            Dimensions::fromInsalesDimensions($variant['dimensions']),
-                            [$variant['barcode']]
-                        )->json();
-
-                        $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
-                    } else {
-                        FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
-                            'name' => $name,
-                            'article' => $variant['sku'],
-                            'price' => $variant['price'],
-                            'extId' => $dbVariant->id,
-                            'purchasingPrice' => $variant['cost_price'],
-                            'image' => data_get($request, 'images.0.large_url'),
-                            'weight' => Weight::fromKilos($variant['weight']),
-                            'dimensions' => Dimensions::fromInsalesDimensions($variant['dimensions']),
-                            'barcodes' => [$variant['barcode']],
-                        ]);
-                    }
+                    $dbVariant->update(['cdek_id' => $cdekProduct['id']]);
+                } else {
+                    FullfillmentApi::updateSimpleProduct($dbVariant->cdek_id, [
+                        'name' => $name,
+                        'article' => $variant['sku'],
+                        'price' => $variant['price'],
+                        'extId' => $dbVariant->id,
+                        'purchasingPrice' => $variant['cost_price'],
+                        'image' => data_get($request, 'images.0.large_url'),
+                        'weight' => Weight::fromKilos($variant['weight']),
+                        'dimensions' => Dimensions::fromInsalesDimensions($variant['dimensions']),
+                        'barcodes' => [$variant['barcode']],
+                    ]);
                 }
-            });
+            }
         }
     }
 }

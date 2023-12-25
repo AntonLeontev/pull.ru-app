@@ -5,12 +5,11 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
+use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\Delivery\Models\CdekPoint;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
-use Src\Domain\Synchronizer\Models\Variant;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -32,12 +31,8 @@ if (app()->isLocal()) {
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        // // dump($t->json(1));
-        // dump($t->json(2));
-        // dd(json_decode(json_encode(CdekPoint::where('type', 'POSTAMAT')->first()), true));
-        $dbVariant = Variant::where('insales_id', 123)
-            ->first();
-        dd($dbVariant);
+        // dd(InSalesApi::getProduct(413664101)->json());
+        dd(InSalesApi::getVariants(413664101)->json());
         // dd($data, data_get($data, 'events.0.updatedFields'));
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // $data['name'] = (string) random_int(1, 999);
