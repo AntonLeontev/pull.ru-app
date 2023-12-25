@@ -49,7 +49,7 @@ class CreateProductFromInsales
                 cache(['blocked_products.'.$dbProduct->id => true]);
             }
 
-            event(new ProductCreatingSuccess($dbProduct->name));
+            event(new ProductCreatingSuccess($dbProduct->name, $request['permalink']));
         });
     }
 

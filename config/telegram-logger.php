@@ -19,7 +19,7 @@ return [
     // Telegram sendMessage options: https://core.telegram.org/bots/api#sendmessage
     'options' => [
         // 'parse_mode' => 'html',
-        // 'disable_web_page_preview' => true,
+        'disable_web_page_preview' => true,
         // 'disable_notification' => false
     ],
 ];

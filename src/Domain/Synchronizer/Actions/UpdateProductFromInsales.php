@@ -46,7 +46,7 @@ class UpdateProductFromInsales
 
         $this->syncVariants($request);
 
-        event(new ProductUpdatingSuccess($this->product->name));
+        event(new ProductUpdatingSuccess($this->product->name, $request['permalink']));
     }
 
     private function updateProduct(array $request, Collection $categories): void

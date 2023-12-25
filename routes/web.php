@@ -31,8 +31,7 @@ if (app()->isLocal()) {
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        // dd(InSalesApi::getProduct(413664101)->json());
-        dd(InSalesApi::getVariants(413664101)->json());
+        dd(InSalesApi::getProduct(413664101)->json());
         // dd($data, data_get($data, 'events.0.updatedFields'));
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // $data['name'] = (string) random_int(1, 999);
