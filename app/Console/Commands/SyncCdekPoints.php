@@ -64,5 +64,16 @@ class SyncCdekPoints extends Command
                 }
             }
         }
+
+        $deletedCount = 0;
+
+        CdekPoint::lazyByid()->each(function (CdekPoint $point) use ($deletedCount) {
+            if ($point->updated_at < today()) {
+                $point->delete();
+                $deletedCount++;
+            }
+        });
+
+        $this->comment("Удалено $deletedCount ПВЗ");
     }
 }

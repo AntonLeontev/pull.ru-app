@@ -119,6 +119,9 @@ class Widget
             ->when(isset($this->requestData['is_dressing_room']), function ($query) {
                 $query->where('is_dressing_room', $this->requestData['is_dressing_room'] === 'true');
             })
+            ->when(isset($this->requestData['allowed_cod']), function ($query) {
+                $query->where('allowed_cod', $this->requestData['allowed_cod'] === 'true');
+            })
             ->when(isset($this->requestData['type']), function ($query) {
                 if ($this->requestData['type'] === 'ALL') {
                     return;
