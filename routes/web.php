@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
@@ -23,6 +24,8 @@ Route::post('webhooks/insales/products_update', [InSalesController::class, 'prod
 
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
+
+Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
