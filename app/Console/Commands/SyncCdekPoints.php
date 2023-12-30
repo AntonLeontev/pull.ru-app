@@ -32,7 +32,7 @@ class SyncCdekPoints extends Command
                         'uuid' => $point['uuid'],
                         'work_time' => $point['work_time'],
                         'type' => $point['type'],
-                        'owner_code' => $point['owner_code'],
+                        'owner_code' => $point['owner_code'] ?? null,
                         'take_only' => $point['take_only'],
                         'is_handout' => $point['is_handout'],
                         'is_reception' => $point['is_reception'],
