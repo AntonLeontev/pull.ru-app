@@ -28,9 +28,12 @@ class UpdateProductFromInsales
 
     public function handle(array $request): void
     {
-        $this->product = Product::where('insales_id', data_get($request, 'id'))
-            ->with('categories')
-            ->first();
+        $this->product = Product::updateOrCreate(
+            ['insales_id' => data_get($request, 'id')],
+            ['name' => data_get($request, 'title')]
+        );
+
+        $this->product->load('categories');
 
         if (cache('blocked_products.'.$this->product->id)) {
             cache()->forget('blocked_products.'.$this->product->id);
@@ -51,9 +54,13 @@ class UpdateProductFromInsales
 
     private function updateProduct(array $request, Collection $categories): void
     {
-        $productFolder = $this->updateProductFolder($categories);
+        if (is_null($this->product->moy_sklad_id)) {
+            $moySkladProduct = MoySkladApi::createProduct(data_get($request, 'title'))->json();
 
-        $this->product->update(['name' => data_get($request, 'title')]);
+            $this->product->update(['moy_sklad_id' => $moySkladProduct['id']]);
+        }
+
+        $productFolder = $this->updateProductFolder($categories);
 
         MoySkladApi::updateProduct($this->product->moy_sklad_id, [
             'name' => data_get($request, 'title'),
