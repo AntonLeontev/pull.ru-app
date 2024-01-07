@@ -32,7 +32,7 @@ class GetProductsFromInsales extends Command
         $this->call('app:sync-categories');
         $this->call('app:sync-options');
 
-        $products = InSalesApi::getProducts(null, 100)->json();
+        $products = InSalesApi::getProducts(null, 300)->json();
 
         $count = 0;
         foreach ($products as $ISProduct) {
