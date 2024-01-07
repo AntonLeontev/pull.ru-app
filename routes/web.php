@@ -29,12 +29,13 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        // dd(MoySkladApi::getCharacteristics()->json());
+        dump(MoySkladApi::getPriceTypes()->json());
+        dd(MoySkladApi::getStores()->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        dd(InSalesApi::getProduct(413664101)->json());
+        // dd(InSalesApi::getProduct(413664101)->json());
         // dd($data, data_get($data, 'events.0.updatedFields'));
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // $data['name'] = (string) random_int(1, 999);

@@ -40,9 +40,12 @@ return [
 
     'moySklad' => [
         'token' => env('MOY_SKLAD_TOKEN'),
-        'default_price_type_id' => '5a0279d3-8857-11ee-0a80-0d4e00501cd0',
-        'organization' => '5a009435-8857-11ee-0a80-0d4e00501cc8',
-        'store' => '5a0185cd-8857-11ee-0a80-0d4e00501cca',
+        // 'default_price_type_id' => '5a0279d3-8857-11ee-0a80-0d4e00501cd0', // aner
+        'default_price_type_id' => '3f7ac9c1-ad4b-11ee-0a80-0dfd005ae996', // pull
+        // 'organization' => '5a009435-8857-11ee-0a80-0d4e00501cc8', // aner
+        'organization' => '3f775ef7-ad4b-11ee-0a80-0dfd005ae98d', // pull
+        // 'store' => '5a0185cd-8857-11ee-0a80-0d4e00501cca', // aner
+        'store' => '3f79e955-ad4b-11ee-0a80-0dfd005ae990', // pull
         'enabled' => env('SYNC_MOY_SKLAD'),
     ],
 
