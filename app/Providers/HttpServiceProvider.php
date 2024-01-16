@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
+use App\Services\Tinkoff\Exceptions\TinkoffApiException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
@@ -58,6 +59,16 @@ class HttpServiceProvider extends ServiceProvider
                 ->baseUrl('https://api.moysklad.ru/api/remap/1.2')
                 ->throw(function (Response $response) {
                     throw new MoySkladApiException($response);
+                });
+        });
+
+        Http::macro('tinkoff', function () {
+            return Http::asJson()
+                ->retry(2, 1000)
+                ->acceptJson()
+                ->baseUrl('https://securepay.tinkoff.ru/v2/')
+                ->throw(function (Response $response) {
+                    throw new TinkoffApiException($response);
                 });
         });
     }

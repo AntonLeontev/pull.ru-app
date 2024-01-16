@@ -36,6 +36,7 @@ return [
     'inSales' => [
         'login' => env('INSALES_LOGIN'),
         'password' => env('INSALES_PASSWORD'),
+        'online_payment_gateway_id' => '5982078',
     ],
 
     'moySklad' => [
@@ -47,6 +48,18 @@ return [
         // 'store' => '5a0185cd-8857-11ee-0a80-0d4e00501cca', // aner
         'store' => '3f79e955-ad4b-11ee-0a80-0dfd005ae990', // pull
         'enabled' => env('SYNC_MOY_SKLAD'),
+    ],
+
+    'tinkoff' => [
+        'merchant_id' => env('TINKOFF_MERCHANT_ID'),
+        'terminal_id' => env('TINKOFF_TERMINAL_ID'),
+        'terminal' => env('TINKOFF_TERMINAL'),
+        'password' => env('TINKOFF_PASSWORD'),
+        'notification_url' => env('APP_URL').'/webhooks/online-payments',
+        'success_url' => null,
+        'fail_url' => null,
+        'taxation' => 'usn_income_outcome',
+        'tax' => 'none', // НДС в чеке
     ],
 
 ];

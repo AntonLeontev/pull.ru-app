@@ -2,16 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Tinkoff\TinkoffService;
 use Illuminate\Http\Request;
+use Src\Domain\Payments\Enums\OnlinePaymentStatus;
+use Src\Domain\Payments\Models\OnlinePayment;
+use Src\Domain\Synchronizer\Actions\ResolveDiscount;
+use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Jobs\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
+use Src\Domain\Synchronizer\Models\Order;
 
 class InSalesController extends Controller
 {
-    public function ordersCreate(Request $request)
+    public function ordersCreate(Request $request, TinkoffService $tinkoffService, ResolveDiscount $resolveDiscount)
     {
-        dispatch(new CreateOrderFromInsales($request->all()));
+        if ($request->get('payment_gateway_id') != config('services.inSales.online_payment_gateway_id')) {
+            dispatch(new CreateOrderFromInsales($request->all()));
+
+            return;
+        }
+
+        $request = objectize($request->all());
+
+        $resolveDiscount->handle($request);
+
+        $order = Order::create([
+            'insales_id' => $request->id,
+            'payment_status' => OrderPaymentStatus::pending,
+            'status' => OrderStatus::init,
+        ]);
+
+        $response = $tinkoffService->init($request, $order->id);
+
+        OnlinePayment::create([
+            'order_id' => $order->id,
+            'terminal_key' => $response->json('TerminalKey'),
+            'status' => OnlinePaymentStatus::from($response->json('Status')),
+            'external_id' => $response->json('PaymentId'),
+            'amount' => $response->json('Amount'),
+            'payment_url' => $response->json('PaymentURL'),
+        ]);
+
+        return response()->json(['ok' => true, 'redirect' => $response->json('PaymentURL')]);
     }
 
     public function ordersUpdate(Request $request)
