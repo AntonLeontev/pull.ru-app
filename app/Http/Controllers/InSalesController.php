@@ -34,7 +34,7 @@ class InSalesController extends Controller
             'status' => OrderStatus::init,
         ]);
 
-        $response = $tinkoffService->init($request, $order->id);
+        $response = $tinkoffService->init($request);
 
         OnlinePayment::create([
             'order_id' => $order->id,
@@ -65,5 +65,10 @@ class InSalesController extends Controller
         foreach ($request->all() as $product) {
             dispatch(new UpdateProductFromInsales($product))->delay(now()->addSeconds(3));
         }
+    }
+
+    public function externalPayment(Request $request)
+    {
+
     }
 }

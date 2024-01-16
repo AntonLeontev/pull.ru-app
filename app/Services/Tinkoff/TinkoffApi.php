@@ -20,14 +20,20 @@ class TinkoffApi
             'OrderId' => $orderId,
             'PayType' => 'O',
             'NotificationURL' => config('services.tinkoff.notification_url'),
-            'SuccessURL' => config('services.tinkoff.success_url'),
-            'FailURL' => config('services.tinkoff.fail_url'),
             'Receipt' => [
                 'Taxation' => config('services.tinkoff.taxation'),
                 'Email' => $customerEmail,
                 'Items' => $items,
             ],
         ];
+
+        if (! is_null(config('services.tinkoff.success_url'))) {
+            $data['SuccessURL'] = config('services.tinkoff.success_url');
+        }
+
+        if (! is_null(config('services.tinkoff.fail_url'))) {
+            $data['FailURL'] = config('services.tinkoff.fail_url');
+        }
 
         $data['Token'] = self::makeToken($data);
 

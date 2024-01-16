@@ -11,7 +11,7 @@ class TinkoffService
     {
     }
 
-    public function init(object $request, int $orderId)
+    public function init(object $request)
     {
         $items = [];
 
@@ -20,7 +20,7 @@ class TinkoffService
                 $line->title,
                 $line->sale_price * 100,
                 $line->quantity,
-                $line->sale_price * $line->quantity,
+                $line->sale_price * 100 * $line->quantity,
                 PaymentObject::commodity
             );
         }
@@ -36,8 +36,8 @@ class TinkoffService
         }
 
         $response = $this->api->init(
-            $request->total_price,
-            $orderId,
+            $request->total_price * 100,
+            $request->number,
             $request->client->email,
             $items
         );
