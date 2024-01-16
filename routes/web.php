@@ -29,13 +29,21 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dump(MoySkladApi::getPriceTypes()->json());
-        dd(MoySkladApi::getStores()->json());
+        // dump(MoySkladApi::getProduct('8d951a73-b3a0-11ee-0a80-09580088ec5f')->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        // dd(InSalesApi::getProduct(413664101)->json());
+        // $resp = InSalesApi::getProducts(perPage: 200)->json();
+        // $result = [];
+
+        // foreach ($resp as $product) {
+        // 	if ($product['title'] === 'Джинсы Burberry') {
+        // 		$result[] = $product;
+        // 	}
+        // }
+        // dump($result);
+
         // dd($data, data_get($data, 'events.0.updatedFields'));
         // $data = json_decode(file_get_contents(public_path('../tests/Fixtures/new_order.json')), true);
         // $data['name'] = (string) random_int(1, 999);

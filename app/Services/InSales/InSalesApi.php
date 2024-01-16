@@ -2,6 +2,7 @@
 
 namespace App\Services\InSales;
 
+use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -98,13 +99,17 @@ class InSalesApi
             ->get("/admin/products/$id.json");
     }
 
-    public static function getProducts(int $fromId = null, int $perPage = 10): Response
-    {
+    public static function getProducts(
+        int $fromId = null,
+        int $perPage = 10,
+        Carbon $updatedSince = null
+    ): Response {
         return Http::inSales()
             ->get('/admin/products.json', [
                 'with_deleted' => false,
                 'from_id' => $fromId,
                 'per_page' => $perPage,
+                'updated_since' => $updatedSince?->format('Y-m-d H:i:s'),
             ]);
     }
 
