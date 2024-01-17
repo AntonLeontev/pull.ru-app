@@ -118,4 +118,10 @@ class InSalesApi
         return Http::inSales()
             ->get("admin/products/$productId/images/$imageId.json");
     }
+
+    public static function getOrder(int $id): Response
+    {
+        return Http::inSales()
+            ->get("/admin/orders/{$id}.json");
+    }
 }

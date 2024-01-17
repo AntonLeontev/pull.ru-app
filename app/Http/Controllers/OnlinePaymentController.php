@@ -10,4 +10,14 @@ class OnlinePaymentController extends Controller
     {
 
     }
+
+    public function tinkoffSuccess(Request $request)
+    {
+
+    }
+
+    public function tinkoffFail(Request $request)
+    {
+
+    }
 }

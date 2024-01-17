@@ -56,8 +56,8 @@ return [
         'terminal' => env('TINKOFF_TERMINAL'),
         'password' => env('TINKOFF_PASSWORD'),
         'notification_url' => env('APP_URL').'/webhooks/online-payments',
-        'success_url' => null,
-        'fail_url' => null,
+        'success_url' => env('APP_URL').'/webhooks/online-payments/tinkoff-success',
+        'fail_url' => env('APP_URL').'/webhooks/online-payments/tinkoff-fail',
         'taxation' => 'usn_income_outcome',
         'tax' => 'none', // НДС в чеке
     ],

@@ -9,9 +9,6 @@ use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
-use App\Services\Tinkoff\Entities\ReceiptItem;
-use App\Services\Tinkoff\Enums\PaymentObject;
-use App\Services\Tinkoff\TinkoffApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -19,6 +16,8 @@ Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
 
 Route::post('webhooks/online-payments', [OnlinePaymentController::class, 'tinkoff']);
+Route::post('webhooks/online-payments/tinkoff-success', [OnlinePaymentController::class, 'tinkoffSuccess']);
+Route::post('webhooks/online-payments/tinkoff-fail', [OnlinePaymentController::class, 'tinkoffFail']);
 
 Route::post('webhooks/insales/orders_create', [InSalesController::class, 'ordersCreate'])->name('order.create');
 Route::post('webhooks/insales/orders_update', [InSalesController::class, 'ordersUpdate']);
@@ -40,12 +39,10 @@ if (app()->isLocal()) {
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        // $resp = InSalesApi::getProducts(perPage: 200)->json();
+        $resp = InSalesApi::getOrder(91763385)->json();
+        dd($resp);
         // $result = [];
 
-        $items = [new ReceiptItem('Test', 120000, 2, 240000, PaymentObject::commodity)];
-
-        dd(TinkoffApi::init(240000, 3, 'aner-anton@ya.ru', $items)->json());
         // foreach ($resp as $product) {
         // 	if ($product['title'] === 'Джинсы Burberry') {
         // 		$result[] = $product;
