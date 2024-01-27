@@ -19,6 +19,9 @@ class TinkoffApi
             'Amount' => $amount,
             'OrderId' => $orderId,
             'PayType' => 'O',
+            'DATA' => [
+                'OperationInitiatorType' => 0,
+            ],
             'NotificationURL' => config('services.tinkoff.notification_url'),
             'Receipt' => [
                 'Taxation' => config('services.tinkoff.taxation'),
@@ -38,6 +41,44 @@ class TinkoffApi
         $data['Token'] = self::makeToken($data);
 
         $response = Http::tinkoff()->post('/Init', $data);
+
+        if ($response->json('Success') === false) {
+            throw new TinkoffApiException($response);
+        }
+
+        return $response;
+    }
+
+    public static function getState(int $paymentId): Response
+    {
+        $data = [
+            'TerminalKey' => config('services.tinkoff.terminal'),
+            'PaymentId' => $paymentId,
+        ];
+
+        $data['Token'] = self::makeToken($data);
+
+        $response = Http::tinkoff()->post('/GetState', $data);
+
+        if ($response->json('Success') === false) {
+            throw new TinkoffApiException($response);
+        }
+
+        return $response;
+    }
+
+    public static function getConfirmOperation(...$paymentIds): Response
+    {
+        $data = [
+            'TerminalKey' => config('services.tinkoff.terminal'),
+            // 'CallbackUrl' => config('services.tinkoff.notification_url'),
+            'CallbackUrl' => 'https://app.pull.ru/webhooks/online-payments',
+            'PaymentIdList' => $paymentIds,
+        ];
+
+        $data['Token'] = self::makeToken($data);
+
+        $response = Http::tinkoff()->post('/getConfirmOperation', $data);
 
         if ($response->json('Success') === false) {
             throw new TinkoffApiException($response);

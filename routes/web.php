@@ -7,15 +7,15 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
-use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
+use App\Services\Tinkoff\TinkoffApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
 
-Route::any('webhooks/online-payments', [OnlinePaymentController::class, 'tinkoff']);
+Route::any('webhooks/online-payments/tinkoff', [OnlinePaymentController::class, 'tinkoff']);
 Route::any('webhooks/online-payments/tinkoff-success', [OnlinePaymentController::class, 'tinkoffSuccess']);
 Route::any('webhooks/online-payments/tinkoff-fail', [OnlinePaymentController::class, 'tinkoffFail']);
 
@@ -39,7 +39,7 @@ if (app()->isLocal()) {
         // $regs = collect(CdekApi::regions()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        $resp = InSalesApi::getOrder(91763385)->json();
+        $resp = TinkoffApi::getConfirmOperation(3817953370)->json();
         dd($resp);
         // $result = [];
 
