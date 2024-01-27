@@ -40,7 +40,11 @@ class ISProduct
     {
         $images = collect();
         foreach ($data['images'] as $image) {
-            $images[] = ISImage::fromRequest($image);
+            try {
+                $images[] = ISImage::fromRequest($image);
+            } catch (\Throwable $th) {
+                continue;
+            }
         }
 
         $optionNames = collect();

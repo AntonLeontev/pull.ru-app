@@ -64,7 +64,11 @@ class SyncService
         $result = [];
 
         foreach ($product['images'] as $image) {
-            $result[] = Image::make($image['filename'], $image['large_url']);
+            try {
+                $result[] = Image::make($image['filename'], $image['large_url']);
+            } catch (\Throwable $th) {
+                continue;
+            }
 
             if (count($result) === 10) {
                 break;
