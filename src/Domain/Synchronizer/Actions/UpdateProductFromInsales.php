@@ -99,6 +99,10 @@ class UpdateProductFromInsales
 
         foreach (data_get($request, 'variants') as $variant) {
             if ($hasVariants) {
+                if (is_null($variant['title'])) {
+                    continue;
+                }
+
                 $dbVariant = Variant::where('name', $variant['title'])
                     ->where('product_id', $this->product->id)
                     ->first();
