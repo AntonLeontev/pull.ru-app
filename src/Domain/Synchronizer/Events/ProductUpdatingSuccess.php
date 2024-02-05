@@ -10,6 +10,6 @@ class ProductUpdatingSuccess extends AbstractEventForLogging
 
     public function getMessage(): string
     {
-        return "✅ Успешно обновлен товар \"{$this->productName}\" https://pull.ru/product/{$this->permalink}";
+        return "✅ Успешно обновлен товар \"{$this->productName}\" https://limmite.ru/product/{$this->permalink}";
     }
 }
