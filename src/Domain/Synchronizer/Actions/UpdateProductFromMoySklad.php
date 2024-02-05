@@ -30,9 +30,13 @@ class UpdateProductFromMoySklad
 
             $dbVariant = $dbProduct->variants->first();
 
-            dispatch(new ProductFromMoySkladToInsales($dbVariant, $MSProduct));
+            if (config('services.moySklad.enabled')) {
+                dispatch(new ProductFromMoySkladToInsales($dbVariant, $MSProduct));
+            }
 
-            dispatch(new ProductFromMoySkladToCdek($dbVariant, $MSProduct));
+            if (config('services.cdekff.enabled')) {
+                dispatch(new ProductFromMoySkladToCdek($dbVariant, $MSProduct));
+            }
         }
     }
 }

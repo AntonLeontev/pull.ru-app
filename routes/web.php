@@ -7,7 +7,6 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
-use App\Services\MoySklad\Enums\WebhookAction;
 use App\Services\MoySklad\MoySkladApi;
 use App\Services\Tinkoff\TinkoffApi;
 use Illuminate\Support\Facades\Route;
@@ -38,10 +37,6 @@ if (app()->isLocal()) {
         // dump(MoySkladApi::getProduct('8d951a73-b3a0-11ee-0a80-09580088ec5f')->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
-
-        dump(MoySkladApi::createWebhook('https://app.limmite.ru/webhooks/moy_sklad/product_update', WebhookAction::update, 'product')->json());
-        dump(MoySkladApi::createWebhook('https://app.limmite.ru/webhooks/moy_sklad/variant_update', WebhookAction::update, 'variant')->json());
-        dump(MoySkladApi::getWebhooks()->json());
 
         // $t = CdekApi::deliverypoints(['region_code' => 67]);
         // $resp = TinkoffApi::getConfirmOperation(3817953370)->json();

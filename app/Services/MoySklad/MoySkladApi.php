@@ -165,6 +165,17 @@ class MoySkladApi
             ]);
     }
 
+    public static function updateWebhook(string $id, string $url, WebhookAction $action, string $entityType, string $diffType = 'NONE')
+    {
+        return Http::moySklad()
+            ->put("entity/webhook/$id", [
+                'url' => $url,
+                'action' => $action->value,
+                'entityType' => $entityType,
+                'diffType' => $diffType,
+            ]);
+    }
+
     public static function getOrganizations(): Response
     {
         return Http::moySklad()

@@ -20,9 +20,13 @@ class UpdateVariantFromMoySklad
             $variantId = str(data_get($event, 'meta.href'))->afterLast('/')->value();
             $variant = MoySkladApi::getVariant($variantId)->json();
 
-            dispatch(new VariantFromMoySkladToInsales($variant));
+            if (config('services.moySklad.enabled')) {
+                dispatch(new VariantFromMoySkladToInsales($variant));
+            }
 
-            dispatch(new VariantFromMoySkladToCdek($variant));
+            if (config('services.cdekff.enabled')) {
+                dispatch(new VariantFromMoySkladToCdek($variant));
+            }
         }
     }
 }
