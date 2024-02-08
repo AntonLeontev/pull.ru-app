@@ -25,7 +25,7 @@ class UpdateProductFromMoySklad
             $dbProduct = Product::where('moy_sklad_id', $productId)->first();
 
             if ($dbProduct->variants->count() > 1) {
-                throw new Exception('У товара не должно быть модификаций');
+                throw new Exception("У товара с id $dbProduct->id не должно быть модификаций");
             }
 
             $dbVariant = $dbProduct->variants->first();
