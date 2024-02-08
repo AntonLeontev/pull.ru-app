@@ -66,7 +66,7 @@ class UpdateProductFromInsales
             'name' => data_get($request, 'title'),
             'description' => strip_tags(data_get($request, 'description')),
             'salePrices' => [SalePrice::make(data_get($request, 'variants.0.price'))],
-            'buyPrice' => BuyPrice::make(data_get($request, 'variants.0.cost_price')),
+            // 'buyPrice' => BuyPrice::make(data_get($request, 'variants.0.cost_price')),
             'article' => (string) data_get($request, 'variants.0.sku'),
             'weight' => (float) data_get($request, 'variants.0.weight'),
             'volume' => Volume::fromInsalesDimensions(data_get($request, 'variants.0.dimensions')),
@@ -137,7 +137,7 @@ class UpdateProductFromInsales
                         $characteristics,
                         [
                             'salePrices' => [SalePrice::make($variant['price'])],
-                            'buyPrice' => BuyPrice::make($variant['cost_price']),
+                            // 'buyPrice' => BuyPrice::make($variant['cost_price']),
                             'article' => (string) $variant['sku'],
                         ]
                     )->json();
@@ -154,7 +154,7 @@ class UpdateProductFromInsales
                         $characteristics,
                         [
                             'salePrices' => [SalePrice::make($variant['price'])],
-                            'buyPrice' => BuyPrice::make($variant['cost_price']),
+                            // 'buyPrice' => BuyPrice::make($variant['cost_price']),
                             'article' => (string) $variant['sku'],
                         ]
                     );
