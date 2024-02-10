@@ -17,8 +17,10 @@ return [
     'cdekff' => [
         'login' => env('CDEKFF_LOGIN'),
         'password' => env('CDEKFF_PASSWORD'),
-        'shop' => 200422,
-        'warehouse' => 12186,
+        // 'shop' => 200422, // old
+        'shop' => 205303, // new
+        // 'warehouse' => 12186, // old
+        'warehouse' => 14413, // new
         'senders' => [
             'moscow' => 14329,
         ],

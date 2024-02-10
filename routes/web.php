@@ -42,6 +42,9 @@ if (app()->isLocal()) {
         // $resp = TinkoffApi::getConfirmOperation(3817953370)->json();
         // $result = [];
 
+        // dump(FullfillmentApi::getShops()->json());
+        dump(FullfillmentApi::getWarehouses()->json());
+        // dump(FullfillmentApi::getSenders()->json());
         // foreach ($resp as $product) {
         // 	if ($product['title'] === 'Джинсы Burberry') {
         // 		$result[] = $product;

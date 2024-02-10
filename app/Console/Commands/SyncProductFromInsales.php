@@ -18,13 +18,6 @@ class SyncProductFromInsales extends Command
     protected $signature = 'app:sync-product {--id=} {--ISid=}';
 
     /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
      * Execute the console command.
      */
     public function handle()
