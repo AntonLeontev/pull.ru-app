@@ -3,7 +3,7 @@
 namespace App\Services\CDEK;
 
 use App\Services\CDEK\Entities\Dimensions;
-use App\Services\CDEK\Entities\Order;
+use App\Services\CDEK\Entities\FullfilmentOrder;
 use App\Services\CDEK\Entities\Weight;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -120,7 +120,7 @@ class FullfillmentApi
             ->patch("products/offer/$shop/$id", $params);
     }
 
-    public static function createOrder(array|Order $data)
+    public static function createOrder(array|FullfilmentOrder $data)
     {
         return Http::cdekff()
             ->post('products/order', $data);

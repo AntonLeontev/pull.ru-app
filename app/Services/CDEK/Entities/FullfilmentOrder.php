@@ -2,7 +2,7 @@
 
 namespace App\Services\CDEK\Entities;
 
-readonly class Order extends AbstractEntity
+readonly class FullfilmentOrder extends AbstractEntity
 {
     public function __construct(
         public Client $client,

@@ -8,7 +8,6 @@ use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
 use App\Services\MoySklad\MoySkladApi;
-use App\Services\Tinkoff\TinkoffApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -38,13 +37,7 @@ if (app()->isLocal()) {
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
-        // $t = CdekApi::deliverypoints(['region_code' => 67]);
-        // $resp = TinkoffApi::getConfirmOperation(3817953370)->json();
-        // $result = [];
-
-        // dump(FullfillmentApi::getShops()->json());
-        dump(FullfillmentApi::getWarehouses()->json());
-        // dump(FullfillmentApi::getSenders()->json());
+        // dd(CdekApi::getOrder('72753034-0747-4bc0-a2b5-725dd95359bb')->json());
         // foreach ($resp as $product) {
         // 	if ($product['title'] === 'Джинсы Burberry') {
         // 		$result[] = $product;

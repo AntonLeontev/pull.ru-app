@@ -2,8 +2,8 @@
 
 namespace Src\Domain\Synchronizer\Actions;
 
-use App\Services\CDEK\Entities\Order as CdekOrder;
-use App\Services\CDEK\FullfillmentApi;
+use App\Services\CDEK\CdekApi;
+use App\Services\CDEK\Entities\Delivery\Order as DeliveryOrder;
 use App\Services\InSales\Entities\Client as InSalesClient;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\OrderPosition;
@@ -58,11 +58,11 @@ class CreateOrderFromInsales
 
         $order->update(['moy_sklad_id' => $msOrder['id']]);
 
-        $cdekOrder = CdekOrder::fromInsalesOrderRequest($request);
+        $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
 
-        $cdekOrder = FullfillmentApi::createOrder($cdekOrder)->json();
+        $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
 
-        $order->update(['cdek_id' => $cdekOrder['id']]);
+        $order->update(['cdek_id' => $cdekOrderId]);
 
         foreach ($request->order_lines as $line) {
             cache(['blocked_products.'.$line->product_id => true]);

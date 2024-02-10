@@ -33,6 +33,8 @@ return [
         'cities' => [
             'moscow' => 44,
         ],
+        'shipment_point' => 'MSK2290',
+        'base_url' => env('CDEK_BASE_URL'),
     ],
 
     'inSales' => [

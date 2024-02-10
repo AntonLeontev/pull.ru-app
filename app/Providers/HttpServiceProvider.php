@@ -29,7 +29,7 @@ class HttpServiceProvider extends ServiceProvider
         });
 
         Http::macro('cdek', function () {
-            return Http::baseUrl('https://api.cdek.ru/v2')
+            return Http::baseUrl(config('services.cdek.base_url'))
                 ->retry(3, 1000)
                 ->acceptJson()
                 ->withHeader('Authorization', 'Bearer '.cdek_auth_token())

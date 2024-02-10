@@ -2,6 +2,7 @@
 
 namespace App\Services\CDEK;
 
+use App\Services\CDEK\Entities\Delivery\Order;
 use Illuminate\Support\Facades\Http;
 
 class CdekApi
@@ -58,5 +59,15 @@ class CdekApi
                     'height' => $height,
                 ],
             ]);
+    }
+
+    public static function createOrder(Order $order)
+    {
+        return Http::cdek()->post('/orders', $order);
+    }
+
+    public static function getOrder(string $id)
+    {
+        return Http::cdek()->get("orders/$id");
     }
 }
