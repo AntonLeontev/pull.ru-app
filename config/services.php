@@ -54,6 +54,11 @@ return [
         'price_id' => '3f7ac9c1-ad4b-11ee-0a80-0dfd005ae996',
         'old_price_id' => 'f5850725-cef7-11ee-0a80-0f3f003357ed',
         'enabled' => env('SYNC_MOY_SKLAD'),
+        'fields_to_update' => [
+            'salePrices',
+            'buyPrices',
+            'Старая цена',
+        ],
     ],
 
     'tinkoff' => [

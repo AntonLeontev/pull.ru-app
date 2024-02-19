@@ -3,9 +3,10 @@
 namespace Src\Domain\Synchronizer\Actions;
 
 use App\Services\MoySklad\MoySkladApi;
-use Exception;
 use Src\Domain\Synchronizer\Jobs\ProductFromMoySkladToCdek;
 use Src\Domain\Synchronizer\Jobs\ProductFromMoySkladToInsales;
+use Src\Domain\Synchronizer\Jobs\VariantFromMoySkladToCdek;
+use Src\Domain\Synchronizer\Jobs\VariantFromMoySkladToInsales;
 use Src\Domain\Synchronizer\Models\Product;
 
 class UpdateProductFromMoySklad
@@ -15,7 +16,7 @@ class UpdateProductFromMoySklad
         foreach (data_get($request, 'events') as $event) {
             $updatedFields = data_get($event, 'updatedFields');
 
-            if (! in_array('salePrices', $updatedFields) && ! in_array('buyPrices', $updatedFields)) {
+            if (empty(array_intersect(config('services.moySklad.fields_to_update'), $updatedFields))) {
                 return;
             }
 
@@ -25,7 +26,19 @@ class UpdateProductFromMoySklad
             $dbProduct = Product::where('moy_sklad_id', $productId)->first();
 
             if ($dbProduct->variants->count() > 1) {
-                throw new Exception("У товара с id $dbProduct->id не должно быть модификаций");
+                foreach ($dbProduct->variants as $variant) {
+                    $MSVariant = MoySkladApi::getVariant($variant->moy_sklad_id)->json();
+
+                    if (config('services.moySklad.enabled')) {
+                        dispatch(new VariantFromMoySkladToInsales($MSVariant));
+                    }
+
+                    if (config('services.cdekff.enabled') && in_array('salePrices', $updatedFields)) {
+                        dispatch(new VariantFromMoySkladToCdek($MSVariant));
+                    }
+                }
+
+                return;
             }
 
             $dbVariant = $dbProduct->variants->first();
@@ -34,7 +47,7 @@ class UpdateProductFromMoySklad
                 dispatch(new ProductFromMoySkladToInsales($dbVariant, $MSProduct));
             }
 
-            if (config('services.cdekff.enabled')) {
+            if (config('services.cdekff.enabled') && in_array('salePrices', $updatedFields)) {
                 dispatch(new ProductFromMoySkladToCdek($dbVariant, $MSProduct));
             }
         }

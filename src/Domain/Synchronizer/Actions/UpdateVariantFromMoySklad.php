@@ -12,13 +12,8 @@ class UpdateVariantFromMoySklad
     {
         foreach (data_get($request, 'events') as $event) {
             $updatedFields = data_get($event, 'updatedFields');
-            $fieldsToUpdate = [
-                'salePrices',
-                'buyPrices',
-                'Старая цена',
-            ];
 
-            if (empty(array_intersect($fieldsToUpdate, $updatedFields))) {
+            if (empty(array_intersect(config('services.moySklad.fields_to_update'), $updatedFields))) {
                 return;
             }
 
@@ -29,7 +24,7 @@ class UpdateVariantFromMoySklad
                 dispatch(new VariantFromMoySkladToInsales($variant));
             }
 
-            if (config('services.cdekff.enabled')) {
+            if (config('services.cdekff.enabled') && in_array('salePrices', $updatedFields)) {
                 dispatch(new VariantFromMoySkladToCdek($variant));
             }
         }
