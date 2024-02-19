@@ -72,11 +72,11 @@ class SyncMovementFromMoySkladToFullfilment extends Command
 
         $variantsIds = [];
         foreach ($response['rows'] as $row) {
-            if ($row['meta']['type'] === 'variant') {
-                $variantsIds[$row['id']] = $row['quantity'];
+            if ($row['assortment']['meta']['type'] === 'variant') {
+                $variantsIds[$row['assortment']['id']] = $row['quantity'];
             }
 
-            if ($row['meta']['type'] === 'product') {
+            if ($row['assortment']['meta']['type'] === 'product') {
                 throw new Exception("Найден товар, а не модификация в перемещении ID товара в МС: {$row['id']}", 1);
             }
         }
@@ -95,5 +95,8 @@ class SyncMovementFromMoySkladToFullfilment extends Command
         }
 
         FullfillmentApi::addProductsToMovement($cdekProducts);
+
+        $count = count($cdekProducts);
+        $this->info("Создано перемещение {$cdekMovement['id']}. Добавлено товаров: $count из {$response['meta']['size']}");
     }
 }
