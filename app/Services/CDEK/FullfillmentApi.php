@@ -6,6 +6,7 @@ use App\Services\CDEK\Entities\Dimensions;
 use App\Services\CDEK\Entities\FullfilmentOrder;
 use App\Services\CDEK\Entities\Weight;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
 class FullfillmentApi
@@ -120,9 +121,43 @@ class FullfillmentApi
             ->patch("products/offer/$shop/$id", $params);
     }
 
-    public static function createOrder(array|FullfilmentOrder $data)
+    public static function createOrder(array|FullfilmentOrder $data): Response
     {
         return Http::cdekff()
             ->post('products/order', $data);
+    }
+
+    public static function createMovement(int $warehouseId, int $extId = null): Response
+    {
+        return Http::cdekff()
+            ->post('storage/movements/document', [
+                'type' => 'products',
+                'extId' => $extId,
+                'warehouse' => $warehouseId,
+            ]);
+    }
+
+    public static function getMovements(): Response
+    {
+        return Http::cdekff()
+            ->get('storage/movements/document');
+    }
+
+    public static function getMovement(int $id): Response
+    {
+        return Http::cdekff()
+            ->get("storage/movements/document/$id");
+    }
+
+    public static function deleteMovement(int $id): Response
+    {
+        return Http::cdekff()
+            ->delete("storage/movements/document/$id");
+    }
+
+    public static function addProductsToMovement(array|Collection $products): Response
+    {
+        return Http::cdekff()
+            ->post('storage/movements/document/item/bulk', $products);
     }
 }

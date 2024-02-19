@@ -214,4 +214,42 @@ class MoySkladApi
         return Http::moySklad()
             ->get('entity/store');
     }
+
+    public static function getMoves(int $limit = null, string $expand = null): Response
+    {
+        $query = 'entity/move?order=created,desc';
+
+        if (! is_null($limit)) {
+            $query .= "&limit=$limit";
+        }
+
+        if (! is_null($expand)) {
+            $query .= "&expand=$expand";
+        }
+
+        return Http::moySklad()
+            ->get($query);
+    }
+
+    public static function getMove(string $id): Response
+    {
+        return Http::moySklad()
+            ->get("entity/move/$id");
+    }
+
+    public static function getMovePositions(string $id, int $limit = null, string $expand = null): Response
+    {
+        $query = "entity/move/$id/positions?";
+
+        if (! is_null($limit)) {
+            $query .= "&limit=$limit";
+        }
+
+        if (! is_null($expand)) {
+            $query .= "&expand=$expand";
+        }
+
+        return Http::moySklad()
+            ->get($query);
+    }
 }

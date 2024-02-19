@@ -34,8 +34,8 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-
-        // dump(MoySkladApi::getVariant('0e0e1b5c-c733-11ee-0a80-0e1e001ec893')->json());
+        // dump(MoySkladApi::getMovePositions('c6585b6c-cf33-11ee-0a80-0383004274ae', expand:'assortment')->json());
+        // dd(FullfillmentApi::getMovements()->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
