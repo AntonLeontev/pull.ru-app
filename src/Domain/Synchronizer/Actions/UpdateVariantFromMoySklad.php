@@ -12,10 +12,13 @@ class UpdateVariantFromMoySklad
     {
         foreach (data_get($request, 'events') as $event) {
             $updatedFields = data_get($event, 'updatedFields');
+            $fieldsToUpdate = [
+                'salePrices',
+                'buyPrices',
+                'Старая цена',
+            ];
 
-            if (! in_array('salePrices', $updatedFields) && ! in_array('buyPrices', $updatedFields)) {
-                return;
-            } elseif (! in_array('Старая цена', $updatedFields)) {
+            if (empty(array_intersect($fieldsToUpdate, $updatedFields))) {
                 return;
             }
 
