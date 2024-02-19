@@ -51,6 +51,8 @@ return [
         'organization' => '3f775ef7-ad4b-11ee-0a80-0dfd005ae98d', // pull
         // 'store' => '5a0185cd-8857-11ee-0a80-0d4e00501cca', // aner
         'store' => '3f79e955-ad4b-11ee-0a80-0dfd005ae990', // pull
+        'price_id' => '3f7ac9c1-ad4b-11ee-0a80-0dfd005ae996',
+        'old_price_id' => 'f5850725-cef7-11ee-0a80-0f3f003357ed',
         'enabled' => env('SYNC_MOY_SKLAD'),
     ],
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
+use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
@@ -33,10 +34,14 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        // dump(MoySkladApi::getProduct('8d951a73-b3a0-11ee-0a80-09580088ec5f')->json());
+
+        // dump(MoySkladApi::getVariant('0e0e1b5c-c733-11ee-0a80-0e1e001ec893')->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
+        // dd(InSalesApi::updateVariant(415374444, 695320116, [
+        // 	'old_price' => 12500,
+        // ])->json());
         // dd(CdekApi::getOrder('72753034-0747-4bc0-a2b5-725dd95359bb')->json());
         // foreach ($resp as $product) {
         // 	if ($product['title'] === 'Джинсы Burberry') {

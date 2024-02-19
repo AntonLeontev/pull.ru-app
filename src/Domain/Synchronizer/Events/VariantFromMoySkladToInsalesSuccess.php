@@ -11,6 +11,6 @@ class VariantFromMoySkladToInsalesSuccess extends AbstractEventForLogging
 
     public function getMessage(): string
     {
-        return "✅Мой Склад -> Insales\nтовар: {$this->name} ({$this->id})";
+        return "✅Мой Склад -> Insales\nтовар: {$this->name} (ID: {$this->id})";
     }
 }

@@ -15,6 +15,8 @@ class UpdateVariantFromMoySklad
 
             if (! in_array('salePrices', $updatedFields) && ! in_array('buyPrices', $updatedFields)) {
                 return;
+            } elseif (! in_array('Старая цена', $updatedFields)) {
+                return;
             }
 
             $variantId = str(data_get($event, 'meta.href'))->afterLast('/')->value();
