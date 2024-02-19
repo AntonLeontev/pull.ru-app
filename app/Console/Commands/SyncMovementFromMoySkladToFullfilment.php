@@ -85,6 +85,12 @@ class SyncMovementFromMoySkladToFullfilment extends Command
 
         $cdekProducts = [];
         foreach ($variants as $variant) {
+            if (is_null($variant->cdek_id)) {
+                $this->alert("Пропущена модификация без cdek_id. MS id = {$variant->moy_sklad_id}");
+
+                continue;
+            }
+
             $cdekProducts[] = new MovementProduct(
                 $variant->cdek_id,
                 config('services.cdekff.shop'),
