@@ -118,6 +118,14 @@ class FullfillmentApi
             ]);
     }
 
+    public static function getProduct(int $id): Response
+    {
+        $shop = config('services.cdekff.shop');
+
+        return Http::cdekff()
+            ->get("products/offer/$shop/$id");
+    }
+
     public static function updateSimpleProduct(int $id, array $params = []): Response
     {
         $shop = config('services.cdekff.shop');

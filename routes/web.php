@@ -32,6 +32,6 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
 
-        dd(FullfillmentApi::getProducts()->json());
+        dd(FullfillmentApi::deleteProduct(32409302)->json());
     });
 }

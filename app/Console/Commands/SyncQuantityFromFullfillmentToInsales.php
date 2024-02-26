@@ -80,16 +80,19 @@ class SyncQuantityFromFullfillmentToInsales extends Command
 
             $insalesVariant['id'] = $dbVariant->insales_id;
 
-            $items = $variant['items'];
+            $items = collect($variant['items'] ?? []);
 
-            if (is_null($items)) {
-                continue;
-            }
+            // Только доступные для заказа
+            $normalItems = $items->filter(fn ($item) => $item['state'] === 'normal');
 
-            foreach ($items as $item) {
-                $configWarehouse = $warehouses->first(fn ($warehouse) => $item['warehouse'] === $warehouse['cdekff']);
+            foreach ($warehouses as $warehouse) {
+                $item = $normalItems->first(fn ($item) => $item['warehouse'] === $warehouse['cdekff']);
 
-                $insalesVariant['quantity_at_warehouse'.$configWarehouse['insales']] = $item['count'];
+                if (! is_null($item)) {
+                    $insalesVariant['quantity_at_warehouse'.$warehouse['insales']] = $item['count'];
+                } else {
+                    $insalesVariant['quantity_at_warehouse'.$warehouse['insales']] = 0;
+                }
             }
 
             $data['variants'][] = $insalesVariant;
@@ -99,6 +102,19 @@ class SyncQuantityFromFullfillmentToInsales extends Command
             return;
         }
 
-        InSalesApi::updateVariantsGroup($data);
+        $response = InSalesApi::updateVariantsGroup($data)->json();
+
+        foreach ($response as $result) {
+            if ($result['status'] === 'ok') {
+                continue;
+            }
+
+            $error = '';
+            foreach ($result['errors'] as $key => $value) {
+                $error .= trim("$key - ".implode(' ', $value));
+            }
+
+            $this->info("Ошибка обновления. insales_id модификации {$result['id']}. Ошибка: $error\n");
+        }
     }
 }
