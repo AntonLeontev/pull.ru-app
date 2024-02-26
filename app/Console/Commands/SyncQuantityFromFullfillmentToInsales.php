@@ -55,14 +55,36 @@ class SyncQuantityFromFullfillmentToInsales extends Command
     private function syncVariants(array $variants): void
     {
         $data = ['variants' => []];
-        $warehouses = collect(config('services.warehouses_match'));
+        $warehouses = collect(config('sync.warehouses_match'));
 
         foreach ($variants as $variant) {
+            if (in_array($variant['extId'], config('sync.cdekff_not_allowed'))) {
+                continue;
+            }
+
             $insalesVariant = [];
             $dbVariant = Variant::find($variant['extId']);
+
+            if (is_null($dbVariant)) {
+                $this->info("Не найдена модификация с id {$variant['extId']}. Ищу по cdek_id");
+                $dbVariant = Variant::where('cdek_id', $variant['id'])->first(['insales_id']);
+
+                if (is_null($dbVariant)) {
+                    $this->info("Не найдена модификация с cdek_id {$variant['id']}\n");
+
+                    continue;
+                } else {
+                    $this->info("Нашел со cdek_id {$variant['id']}\n");
+                }
+            }
+
             $insalesVariant['id'] = $dbVariant->insales_id;
 
             $items = $variant['items'];
+
+            if (is_null($items)) {
+                continue;
+            }
 
             foreach ($items as $item) {
                 $configWarehouse = $warehouses->first(fn ($warehouse) => $item['warehouse'] === $warehouse['cdekff']);
@@ -72,7 +94,11 @@ class SyncQuantityFromFullfillmentToInsales extends Command
 
             $data['variants'][] = $insalesVariant;
         }
-        dd($data);
+
+        if (empty($data['variants'])) {
+            return;
+        }
+
         InSalesApi::updateVariantsGroup($data);
     }
 }

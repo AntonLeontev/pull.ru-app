@@ -72,12 +72,4 @@ return [
         'taxation' => 'usn_income_outcome',
         'tax' => 'none', // НДС в чеке
     ],
-
-    'warehouses_match' => [
-        [
-            'insales' => 0,
-            'cdekff' => 14413,
-        ],
-    ],
-
 ];
