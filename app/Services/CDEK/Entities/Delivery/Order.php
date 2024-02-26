@@ -69,7 +69,7 @@ readonly class Order implements JsonSerializable
                 $variant->id,
                 $orderLine->sale_price,
                 $orderLine->sale_price,
-                $orderLine->weight * 100,
+                $orderLine->weight * 1000,
                 $orderLine->quantity,
             );
 

@@ -36,7 +36,7 @@ if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
         // dump(MoySkladApi::getMovePositions('39974f2f-cfdb-11ee-0a80-070e000f3139', expand:'assortment')->json());
         // dd(FullfillmentApi::deleteMovement(111747)->json());
-        dd(FullfillmentApi::getMovementProducts(112024)->json());
+        dd(FullfillmentApi::getProducts()->json());
         // dd(FullfillmentApi::updateSimpleProduct(32233198, ['barcodes' => ['2000000003191']])->json());
         // $regs = collect(CdekApi::regions()->json());
 
