@@ -79,10 +79,15 @@ class FullfillmentApi
             ->get('storage/warehouse');
     }
 
-    public static function getProducts(): Response
+    public static function getProducts(int $page = 1): Response
     {
+        $url = 'products/offer?';
+        if ($page > 1) {
+            $url .= "page=$page";
+        }
+
         return Http::cdekff()
-            ->get('products/offer');
+            ->get($url);
     }
 
     public static function createSimpleProduct(

@@ -73,4 +73,11 @@ return [
         'tax' => 'none', // НДС в чеке
     ],
 
+    'warehouses_match' => [
+        [
+            'insales' => 0,
+            'cdekff' => 14413,
+        ],
+    ],
+
 ];

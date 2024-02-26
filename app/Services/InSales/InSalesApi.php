@@ -93,6 +93,12 @@ class InSalesApi
             ->put("admin/products/$productId/variants/$variantId.json", $data);
     }
 
+    public static function updateVariantsGroup(array $data): Response
+    {
+        return Http::inSales()
+            ->put('/admin/products/variants_group_update.json', $data);
+    }
+
     public static function getProduct(int $id): Response
     {
         return Http::inSales()

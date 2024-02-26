@@ -1,0 +1,13 @@
+{
+    "TerminalKey": "1705139607309DEMO",
+    "OrderId": "1084",
+    "Success": true,
+    "Status": "AUTHORIZED",
+    "PaymentId": 4009939866,
+    "ErrorCode": "0",
+    "Amount": 18600,
+    "CardId": 403039959,
+    "Pan": "430000******0777",
+    "ExpDate": "1230",
+    "Token": "ed4ad300c0b55b8a69b608f3d748afe5dcc6b98b415dbf4cacd040bb0c376f66"
+}
