@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\InSales\InSalesApi;
 use Illuminate\Console\Command;
+use Illuminate\Http\Client\RequestException;
 use Src\Domain\Synchronizer\Models\Product;
 
 class ZeroInsalesQuantity extends Command
@@ -33,19 +34,27 @@ class ZeroInsalesQuantity extends Command
             $this->alert('Загружено 1000 товаров. Нужно заняться пагинацией');
         }
 
-        $products->filter(function ($item) {
-            return $item['is_hidden'] === false && $item['archived'] === false;
+        $filtered = $products->filter(function ($item) {
+            return $item['archived'] === false;
         });
 
-        $progressbar = $this->output->createProgressBar($products->count());
+        $progressbar = $this->output->createProgressBar($filtered->count());
 
         $progressbar->start();
 
-        foreach ($products as $product) {
+        foreach ($filtered as $product) {
             foreach ($product['variants'] as $variant) {
-                InSalesApi::updateVariant($product['id'], $variant['id'], [
-                    'quantity_at_warehouse0' => 0,
-                ]);
+                try {
+                    InSalesApi::updateVariant($product['id'], $variant['id'], [
+                        'quantity_at_warehouse0' => 0,
+                    ]);
+                } catch (RequestException $e) {
+                    if ($e->getCode() === 404) {
+                        $this->info("404 on product id {$product['id']}, variant id {$variant['id']}");
+
+                        continue;
+                    }
+                }
             }
 
             $dbProduct = Product::where('insales_id', $product['id'])->first();

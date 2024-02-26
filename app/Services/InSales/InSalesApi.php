@@ -113,6 +113,12 @@ class InSalesApi
             ]);
     }
 
+    public static function getProductsCount(): Response
+    {
+        return Http::inSales()
+            ->get('/admin/products/count.json');
+    }
+
     public static function getImage(int $productId, int $imageId): Response
     {
         return Http::inSales()
