@@ -237,12 +237,16 @@ class MoySkladApi
             ->get("entity/move/$id");
     }
 
-    public static function getMovePositions(string $id, int $limit = null, string $expand = null): Response
+    public static function getMovePositions(string $id, int $limit = null, int $offset = null, string $expand = null): Response
     {
         $query = "entity/move/$id/positions?";
 
         if (! is_null($limit)) {
             $query .= "&limit=$limit";
+        }
+
+        if (! is_null($offset)) {
+            $query .= "&offset=$offset";
         }
 
         if (! is_null($expand)) {

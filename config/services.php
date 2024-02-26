@@ -66,7 +66,7 @@ return [
         'terminal_id' => env('TINKOFF_TERMINAL_ID'),
         'terminal' => env('TINKOFF_TERMINAL'),
         'password' => env('TINKOFF_PASSWORD'),
-        'notification_url' => env('APP_URL').'/webhooks/online-payments',
+        'notification_url' => env('APP_URL').'/webhooks/online-payments/tinkoff',
         'success_url' => null,
         'fail_url' => null,
         'taxation' => 'usn_income_outcome',

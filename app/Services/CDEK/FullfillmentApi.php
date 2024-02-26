@@ -160,4 +160,10 @@ class FullfillmentApi
         return Http::cdekff()
             ->post('storage/movements/document/item/bulk', $products);
     }
+
+    public static function getMovementProducts(int $id): Response
+    {
+        return Http::cdekff()
+            ->get("storage/movements/document/item?filter[0][type]=eq&filter[0][field]=document&filter[0][value]=$id");
+    }
 }

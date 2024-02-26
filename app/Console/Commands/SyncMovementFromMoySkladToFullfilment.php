@@ -60,49 +60,53 @@ class SyncMovementFromMoySkladToFullfilment extends Command
 
         $movement->update(['cdek_id' => $cdekMovement['id']]);
 
+        $this->info("Создано перемещение {$cdekMovement['id']}");
+
         //----------------- Positions----------------
 
-        $response = MoySkladApi::getMovePositions($msMovement['id'], expand: 'assortment')->json();
+        $limit = 500;
+        $offset = 0;
+        $size = 501;
 
-        if ($response['meta']['size'] === 1000) {
-            $this->alert('У перемещения 1000 или более позиций!');
+        while ($size > $limit + $offset) {
+            $response = MoySkladApi::getMovePositions($msMovement['id'], $limit, $offset, 'assortment')->json();
 
-            return;
-        }
+            $variantsIds = [];
+            foreach ($response['rows'] as $row) {
+                if ($row['assortment']['meta']['type'] === 'variant') {
+                    $variantsIds[$row['assortment']['id']] = $row['quantity'];
+                }
 
-        $variantsIds = [];
-        foreach ($response['rows'] as $row) {
-            if ($row['assortment']['meta']['type'] === 'variant') {
-                $variantsIds[$row['assortment']['id']] = $row['quantity'];
+                if ($row['assortment']['meta']['type'] === 'product') {
+                    throw new Exception("Найден товар, а не модификация в перемещении ID товара в МС: {$row['id']}", 1);
+                }
             }
 
-            if ($row['assortment']['meta']['type'] === 'product') {
-                throw new Exception("Найден товар, а не модификация в перемещении ID товара в МС: {$row['id']}", 1);
+            $variants = Variant::whereIn('moy_sklad_id', array_keys($variantsIds))->get(['cdek_id', 'ean13', 'moy_sklad_id']);
+
+            $cdekProducts = [];
+            foreach ($variants as $variant) {
+                if (is_null($variant->cdek_id)) {
+                    $this->alert("Пропущена модификация без cdek_id. MS id = {$variant->moy_sklad_id}");
+
+                    continue;
+                }
+
+                $cdekProducts[] = new MovementProduct(
+                    $variant->cdek_id,
+                    config('services.cdekff.shop'),
+                    $cdekMovement['id'],
+                    $variant->ean13,
+                    $variantsIds[$variant->moy_sklad_id]
+                );
             }
+
+            FullfillmentApi::addProductsToMovement($cdekProducts);
+
+            $count = count($cdekProducts) + $offset;
+            $this->info("Добавлено товаров: $count из {$response['meta']['size']}");
+            $size = $response['meta']['size'];
+            $offset += 500;
         }
-
-        $variants = Variant::whereIn('moy_sklad_id', array_keys($variantsIds))->get(['cdek_id', 'ean13', 'moy_sklad_id']);
-
-        $cdekProducts = [];
-        foreach ($variants as $variant) {
-            if (is_null($variant->cdek_id)) {
-                $this->alert("Пропущена модификация без cdek_id. MS id = {$variant->moy_sklad_id}");
-
-                continue;
-            }
-
-            $cdekProducts[] = new MovementProduct(
-                $variant->cdek_id,
-                config('services.cdekff.shop'),
-                $cdekMovement['id'],
-                $variant->ean13,
-                $variantsIds[$variant->moy_sklad_id]
-            );
-        }
-
-        FullfillmentApi::addProductsToMovement($cdekProducts);
-
-        $count = count($cdekProducts);
-        $this->info("Создано перемещение {$cdekMovement['id']}. Добавлено товаров: $count из {$response['meta']['size']}");
     }
 }
