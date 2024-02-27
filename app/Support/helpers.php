@@ -20,3 +20,10 @@ if (! function_exists('cdek_token')) {
         return cache('cdek_auth_token');
     }
 }
+
+if (! function_exists('block_product')) {
+    function block_product($id): void
+    {
+        cache(['blocked_products.'.$id => true]);
+    }
+}

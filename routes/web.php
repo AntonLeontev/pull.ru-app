@@ -34,8 +34,8 @@ if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
 
         // dd(FullfillmentApi::getMovementProducts(112559)->json());
-        // dd(FullfillmentApi::getMovementProducts(112024)->json());
+        dd(FullfillmentApi::getMovementProducts(112024)->json());
 
-        dd(InSalesApi::getVariant(413752633, 687923901)->headers());
+        // dd(InSalesApi::getVariant(413752633, 687923901)->headers());
     });
 }

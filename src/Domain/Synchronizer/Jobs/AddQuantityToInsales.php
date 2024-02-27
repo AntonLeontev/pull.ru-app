@@ -47,6 +47,8 @@ class AddQuantityToInsales implements ShouldQueue
                 ];
 
                 $import['variants'][] = $insalesVariant;
+
+                block_product($productId);
             }
 
             $response = InSalesApi::updateVariantsGroup($import)->json();
