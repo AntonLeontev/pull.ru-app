@@ -43,19 +43,18 @@ class ZeroInsalesQuantity extends Command
         $progressbar->start();
 
         foreach ($filtered as $product) {
-            foreach ($product['variants'] as $variant) {
-                try {
-                    InSalesApi::updateVariant($product['id'], $variant['id'], [
-                        'quantity_at_warehouse0' => 0,
-                    ]);
-                } catch (RequestException $e) {
-                    if ($e->getCode() === 404) {
-                        $this->info("404 on product id {$product['id']}, variant id {$variant['id']}");
+			$data = ['variants' => []];
 
-                        continue;
-                    }
-                }
+            foreach ($product['variants'] as $variant) {
+				$insalesVariant = [
+					'id' => $variant['id'],
+					'quantity_at_warehouse0' => 0,
+				];
+
+				$data['variants'][] = $insalesVariant;
             }
+
+			InSalesApi::updateVariantsGroup($data);
 
             $dbProduct = Product::where('insales_id', $product['id'])->first();
 
