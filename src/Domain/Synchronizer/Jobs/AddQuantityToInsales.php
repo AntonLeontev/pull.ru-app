@@ -16,6 +16,8 @@ class AddQuantityToInsales implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
+
     /**
      * Create a new job instance.
      */
@@ -26,7 +28,7 @@ class AddQuantityToInsales implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
         try {
             $import = ['variants' => []];
@@ -51,7 +53,6 @@ class AddQuantityToInsales implements ShouldQueue
         } catch (InsalesRateLimitException $e) {
             return $this->release(300);
         }
-
     }
 
     private function getInsalesIds(int $id): array
