@@ -36,6 +36,6 @@ if (app()->isLocal()) {
         // dd(FullfillmentApi::getMovementProducts(112559)->json());
         // dd(FullfillmentApi::getMovementProducts(112024)->json());
 
-        dd(InSalesApi::getVariant(413752633, 687923901)->json());
+        dd(InSalesApi::getVariant(413752633, 687923901)->headers());
     });
 }

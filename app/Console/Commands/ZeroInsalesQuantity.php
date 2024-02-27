@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Services\InSales\InSalesApi;
 use Illuminate\Console\Command;
-use Illuminate\Http\Client\RequestException;
 use Src\Domain\Synchronizer\Models\Product;
 
 class ZeroInsalesQuantity extends Command
@@ -43,18 +42,18 @@ class ZeroInsalesQuantity extends Command
         $progressbar->start();
 
         foreach ($filtered as $product) {
-			$data = ['variants' => []];
+            $data = ['variants' => []];
 
             foreach ($product['variants'] as $variant) {
-				$insalesVariant = [
-					'id' => $variant['id'],
-					'quantity_at_warehouse0' => 0,
-				];
+                $insalesVariant = [
+                    'id' => $variant['id'],
+                    'quantity_at_warehouse0' => 0,
+                ];
 
-				$data['variants'][] = $insalesVariant;
+                $data['variants'][] = $insalesVariant;
             }
 
-			InSalesApi::updateVariantsGroup($data);
+            InSalesApi::updateVariantsGroup($data);
 
             $dbProduct = Product::where('insales_id', $product['id'])->first();
 

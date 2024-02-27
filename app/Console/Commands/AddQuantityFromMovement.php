@@ -3,11 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Services\CDEK\FullfillmentApi;
-use App\Services\InSales\InSalesApi;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
-use Src\Domain\Synchronizer\Models\Product;
-use Src\Domain\Synchronizer\Models\Variant;
+use Src\Domain\Synchronizer\Jobs\AddQuantityToInsales;
 
 class AddQuantityFromMovement extends Command
 {
@@ -39,49 +37,25 @@ class AddQuantityFromMovement extends Command
         $response = FullfillmentApi::getMovementProducts($cdekId);
         $lastPage = $response->json('page_count');
 
-        $this->addQuantityToInsales($response->json('_embedded.document_item_id'));
+        dispatch(new AddQuantityToInsales($response->json('_embedded.document_item_id')));
 
-        if ($lastPage = 1) {
+        if ($lastPage === 1) {
             return;
         }
 
         $progress = $this->output->createProgressBar($lastPage);
+        $progress->start();
         $progress->advance();
 
         foreach (range(2, $lastPage) as $page) {
             $response = FullfillmentApi::getMovementProducts($cdekId, $page);
 
-            $this->addQuantityToInsales($response->json('_embedded.document_item_id'));
+            dispatch(new AddQuantityToInsales($response->json('_embedded.document_item_id')));
 
             $progress->advance();
         }
 
         $progress->finish();
-    }
-
-    private function addQuantityToInsales(array $products): void
-    {
-        $import = ['variants' => []];
-        $warehouses = collect(config('sync.warehouses_match'));
-        $cdekWarehouse = $products[0]['_embedded']['warehouse']['id'];
-        $insalesWarehouse = $warehouses->first(fn ($warehouse) => $warehouse['cdekff'] === $cdekWarehouse)['insales'];
-
-        foreach ($products as $product) {
-            $id = (int) $product['_embedded']['productOffer']['extId'];
-            [$productId, $variantId] = $this->getInsalesIds($id);
-            $quantityInInsales = $this->getQuantityInInsales($productId, $variantId, $insalesWarehouse);
-
-            $insalesVariant = [
-                'id' => $variantId,
-                'quantity_at_warehouse'.$insalesWarehouse => $product['quantityPlace'] + $quantityInInsales,
-            ];
-
-            $import['variants'][] = $insalesVariant;
-        }
-
-        dd($import['variants']);
-
-        $response = InSalesApi::updateVariantsGroup($import)->json();
     }
 
     private function askCdekId(): int
@@ -114,18 +88,5 @@ class AddQuantityFromMovement extends Command
         );
 
         return (int) str($choice)->match('~\[\d+\]~')->trim('[]')->value();
-    }
-
-    private function getInsalesId(int $id): array
-    {
-        $variant = Variant::find($id);
-        $product = Product::find($variant->product_id);
-
-        return [$product->insales_id, $variant->insales_id];
-    }
-
-    private function getQuantityInInsales(int $productId, int $variantId, int $warehouse): int
-    {
-        return (int) InSalesApi::getVariant($productId, $variantId)->json("quantity_at_warehouse$warehouse");
     }
 }
