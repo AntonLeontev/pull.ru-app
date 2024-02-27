@@ -150,10 +150,15 @@ class FullfillmentApi
             ]);
     }
 
-    public static function getMovements(): Response
+    public static function getMovements(int $page = 1): Response
     {
+        $url = 'storage/movements/document?';
+        if ($page > 1) {
+            $url .= "page=$page";
+        }
+
         return Http::cdekff()
-            ->get('storage/movements/document');
+            ->get($url);
     }
 
     public static function getMovement(int $id): Response
@@ -174,9 +179,14 @@ class FullfillmentApi
             ->post('storage/movements/document/item/bulk', $products);
     }
 
-    public static function getMovementProducts(int $id): Response
+    public static function getMovementProducts(int $id, int $page = 1): Response
     {
+        $url = "storage/movements/document/item?filter[0][type]=eq&filter[0][field]=document&filter[0][value]=$id";
+        if ($page > 1) {
+            $url .= "&page=$page";
+        }
+
         return Http::cdekff()
-            ->get("storage/movements/document/item?filter[0][type]=eq&filter[0][field]=document&filter[0][value]=$id");
+            ->get($url);
     }
 }

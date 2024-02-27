@@ -6,6 +6,7 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\FullfillmentApi;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -32,6 +33,9 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
 
-        dd(FullfillmentApi::deleteProduct(32409302)->json());
+        // dd(FullfillmentApi::getMovementProducts(112559)->json());
+        // dd(FullfillmentApi::getMovementProducts(112024)->json());
+
+        dd(InSalesApi::getVariant(413752633, 687923901)->json());
     });
 }

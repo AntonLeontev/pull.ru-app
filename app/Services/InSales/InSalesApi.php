@@ -87,6 +87,12 @@ class InSalesApi
             ->get("admin/products/$productId/variants.json");
     }
 
+    public static function getVariant(int $productId, int $variantId): Response
+    {
+        return Http::inSales()
+            ->get("admin/products/$productId/variants/$variantId.json");
+    }
+
     public static function updateVariant(int $productId, int $variantId, array $data): Response
     {
         return Http::inSales()

@@ -12,9 +12,10 @@ class Movement extends Model
     protected $fillable = [
         'cdek_id',
         'moy_sklad_id',
+        'is_handled',
     ];
 
     protected $casts = [
-
+        'is_handled' => 'boolean',
     ];
 }

@@ -23,7 +23,6 @@ class HttpServiceProvider extends ServiceProvider
                 ->acceptJson()
                 ->withBasicAuth(config('services.cdekff.login'), config('services.cdekff.password'))
                 ->throw(function (Response $response) {
-                    dd($response);
                     throw new FullfillmentApiException($response);
                 });
         });
