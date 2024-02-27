@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
+use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
 use Illuminate\Http\Client\Response;
@@ -46,7 +47,12 @@ class HttpServiceProvider extends ServiceProvider
                 ->retry(3, 1000)
                 ->withBasicAuth(config('services.inSales.login'), config('services.inSales.password'))
                 ->asJson()
-                ->baseUrl('https://myshop-cdw517.myinsales.ru');
+                ->baseUrl('https://myshop-cdw517.myinsales.ru')
+                ->throw(function (Response $response) {
+                    if ($response->status() === 429) {
+                        throw new InsalesRateLimitException();
+                    }
+                });
         });
 
         Http::macro('moySklad', function () {

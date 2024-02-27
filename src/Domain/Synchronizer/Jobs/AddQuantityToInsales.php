@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Synchronizer\Jobs;
 
+use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\InSales\InSalesApi;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,25 +28,30 @@ class AddQuantityToInsales implements ShouldQueue
      */
     public function handle(): void
     {
-        $import = ['variants' => []];
-        $warehouses = collect(config('sync.warehouses_match'));
-        $cdekWarehouse = $this->products[0]['_embedded']['warehouse']['id'];
-        $insalesWarehouse = $warehouses->first(fn ($warehouse) => $warehouse['cdekff'] === $cdekWarehouse)['insales'];
+        try {
+            $import = ['variants' => []];
+            $warehouses = collect(config('sync.warehouses_match'));
+            $cdekWarehouse = $this->products[0]['_embedded']['warehouse']['id'];
+            $insalesWarehouse = $warehouses->first(fn ($warehouse) => $warehouse['cdekff'] === $cdekWarehouse)['insales'];
 
-        foreach ($this->products as $product) {
-            $id = (int) $product['_embedded']['productOffer']['extId'];
-            [$productId, $variantId] = $this->getInsalesIds($id);
-            $quantityInInsales = $this->getQuantityInInsales($productId, $variantId, $insalesWarehouse);
+            foreach ($this->products as $product) {
+                $id = (int) $product['_embedded']['productOffer']['extId'];
+                [$productId, $variantId] = $this->getInsalesIds($id);
+                $quantityInInsales = $this->getQuantityInInsales($productId, $variantId, $insalesWarehouse);
 
-            $insalesVariant = [
-                'id' => $variantId,
-                'quantity_at_warehouse'.$insalesWarehouse => $product['quantityPlace'] + $quantityInInsales,
-            ];
+                $insalesVariant = [
+                    'id' => $variantId,
+                    'quantity_at_warehouse'.$insalesWarehouse => $product['quantityPlace'] + $quantityInInsales,
+                ];
 
-            $import['variants'][] = $insalesVariant;
+                $import['variants'][] = $insalesVariant;
+            }
+
+            $response = InSalesApi::updateVariantsGroup($import)->json();
+        } catch (InsalesRateLimitException $e) {
+            return $this->release(300);
         }
 
-        $response = InSalesApi::updateVariantsGroup($import)->json();
     }
 
     private function getInsalesIds(int $id): array
