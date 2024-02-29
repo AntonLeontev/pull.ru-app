@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Src\Domain\Synchronizer\Models\Movement;
+use Src\Domain\Synchronizer\Models\Product;
 use Src\Domain\Synchronizer\Models\Variant;
 
 class CompareMovement extends Command
@@ -41,6 +42,10 @@ class CompareMovement extends Command
 
         $productsInCdek = $this->getProductsInCdek($movement->cdek_id);
         $productsInMS = $this->getProductsInMS($movement->moy_sklad_id);
+
+        $errors = $this->compare($productsInCdek, $productsInMS);
+
+        $this->publish($errors);
     }
 
     private function askId(): int
@@ -102,7 +107,7 @@ class CompareMovement extends Command
         return collect($products);
     }
 
-    private function getProductsInMS(string $id)
+    private function getProductsInMS(string $id): Collection
     {
         $this->info('Собираем продукты из МС');
 
@@ -117,7 +122,7 @@ class CompareMovement extends Command
             $response = MoySkladApi::getMovePositions($id, $limit, $offset, 'assortment');
             $size = $response->json('meta.size');
 
-            $progress->start($size);
+            $progress->start($size, $offset);
 
             foreach ($response->json('rows') as $msProduct) {
                 $productId = Variant::where('moy_sklad_id', $msProduct['assortment']['id'])->first()->id;
@@ -136,5 +141,58 @@ class CompareMovement extends Command
         $progress->finish();
 
         return collect($products);
+    }
+
+    private function compare(Collection $productsInCdek, Collection $productsInMS): array
+    {
+        $errors = [];
+        $msProduct = null;
+        $msKey = null;
+
+        foreach ($productsInCdek as $key => $cdekProduct) {
+            foreach ($productsInMS as $key => $item) {
+                if ($item['id'] == $cdekProduct['id']) {
+                    $msProduct = $item;
+                    $msKey = $key;
+                    break;
+                }
+            }
+
+            if (is_null($msProduct)) {
+                $errors[] = "В сдеке найден товар которого нет в МС: id {$cdekProduct['id']}, кол-во {$cdekProduct['qnt']} шт";
+
+                continue;
+            }
+
+            if ($msProduct['qnt'] == $cdekProduct['qnt']) {
+                $productsInMS->pull($msKey);
+                $msProduct = null;
+                $msKey = null;
+
+                continue;
+            }
+
+            $variant = Variant::find($cdekProduct['id']);
+            $product = Product::find($variant->product_id);
+            $errors[] = "Не совпало кол-во товаров id {$cdekProduct['id']}, {$product->name} {$variant->name} {$variant->ean13}: в сдеке - {$cdekProduct['qnt']} шт, в мс - {$msProduct['qnt']} шт.";
+            $productsInMS->pull($msKey);
+            $msProduct = null;
+            $msKey = null;
+        }
+
+        if ($productsInMS->isNotEmpty()) {
+            foreach ($productsInMS as $msProduct) {
+                $errors[] = "В МС есть товар, которого нет в сдек: id {$msProduct['id']} - {$msProduct['qnt']} шт";
+            }
+        }
+
+        return $errors;
+    }
+
+    private function publish(array $errors): void
+    {
+        foreach ($errors as $error) {
+            $this->info($error);
+        }
     }
 }
