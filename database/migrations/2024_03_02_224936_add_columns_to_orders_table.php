@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fullfillment_id')->after('cdek_id')->nullable();
             $table->unsignedBigInteger('number')->after('id')->nullable();
             $table->unsignedSmallInteger('tries')->after('fullfillment_id')->default(0);
-			$table->json('delivery_info')->nullable();
+            $table->json('delivery_info')->nullable();
         });
     }
 

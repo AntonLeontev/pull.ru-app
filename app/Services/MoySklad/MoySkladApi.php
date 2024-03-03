@@ -195,6 +195,12 @@ class MoySkladApi
             ]);
     }
 
+    public static function updateCustomerOrder(string $id, array $data = []): Response
+    {
+        return Http::moySklad()
+            ->put("entity/customerorder/$id", $data);
+    }
+
     public static function createIndividualCounterparty(
         string $name,
         string $email = null,

@@ -14,11 +14,15 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
+        'number',
         'insales_id',
         'cdek_id',
+        'fullfillment_id',
+        'tries',
         'moy_sklad_id',
         'payment_status',
         'status',
+        'delivery_info',
     ];
 
     protected $casts = [

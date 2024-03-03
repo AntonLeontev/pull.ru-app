@@ -68,13 +68,37 @@ enum OrderStatus: string
             [
                 'app' => 'approved',
                 'insales' => 'approved',
-                'cdekff' => 'pending',
+                'cdekff' => 'pending_queued',
+                'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+            ],
+            [
+                'app' => 'approved',
+                'insales' => 'approved',
+                'cdekff' => 'confirmed',
+                'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+            ],
+            [
+                'app' => 'approved',
+                'insales' => 'approved',
+                'cdekff' => 'assembling',
+                'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+            ],
+            [
+                'app' => 'approved',
+                'insales' => 'approved',
+                'cdekff' => 'assembled',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
             ],
             [
                 'app' => 'dispatched',
                 'insales' => 'dispatched',
                 'cdekff' => 'delivery',
+                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+            ],
+            [
+                'app' => 'dispatched',
+                'insales' => 'dispatched',
+                'cdekff' => 'processing',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
             ],
             [
