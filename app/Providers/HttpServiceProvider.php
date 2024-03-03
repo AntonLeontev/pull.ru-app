@@ -76,5 +76,11 @@ class HttpServiceProvider extends ServiceProvider
                     throw new TinkoffApiException($response);
                 });
         });
+
+        Http::macro('sm-register', function () {
+            return Http::asJson()
+                ->retry(2, 1000)
+                ->baseUrl('https://sm-register.tinkoff.ru');
+        });
     }
 }

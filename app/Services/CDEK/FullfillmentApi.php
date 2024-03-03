@@ -189,4 +189,22 @@ class FullfillmentApi
         return Http::cdekff()
             ->get($url);
     }
+
+    public static function getOrders(): Response
+    {
+        return Http::cdekff()
+            ->get('products/order');
+    }
+
+    public static function getOrderById(int $id): Response
+    {
+        return Http::cdekff()
+            ->get('products/order/'.$id);
+    }
+
+    public static function getOrderByExtId(int $id): Response
+    {
+        return Http::cdekff()
+            ->get("products/order?filter[0][type]=eq&filter[0][field]=extId&filter[0][value]=$id");
+    }
 }

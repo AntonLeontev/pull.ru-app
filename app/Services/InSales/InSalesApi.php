@@ -142,4 +142,10 @@ class InSalesApi
         return Http::inSales()
             ->get("/admin/orders/{$id}.json");
     }
+
+    public static function getCustomStatuses(): Response
+    {
+        return Http::inSales()
+            ->get('/admin/custom_statuses.json');
+    }
 }

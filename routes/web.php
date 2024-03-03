@@ -5,9 +5,13 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
+use App\Services\CDEK\CdekApi;
+use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\InSalesApi;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -31,7 +35,11 @@ Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
+        // dump(CdekApi::getOrder('72753034-f364-4464-9d26-140d55762759')->json());
+        // dd(FullfillmentApi::getOrderByExtId(1526274153)->json());
 
-        // dd(InSalesApi::getVariant(413752633, 687923901)->headers());
+        dd(OrderStatus::fromCdek('cancel')->toMS());
+        // dump(InSalesApi::getCustomStatuses()->json());
+        dd(MoySkladApi::getOrderStates()->json());
     });
 }

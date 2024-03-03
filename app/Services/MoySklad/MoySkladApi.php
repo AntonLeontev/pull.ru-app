@@ -256,4 +256,10 @@ class MoySkladApi
         return Http::moySklad()
             ->get($query);
     }
+
+    public static function getOrderStates(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/customerorder/metadata');
+    }
 }

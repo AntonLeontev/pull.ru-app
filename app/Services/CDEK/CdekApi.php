@@ -3,6 +3,7 @@
 namespace App\Services\CDEK;
 
 use App\Services\CDEK\Entities\Delivery\Order;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class CdekApi
@@ -66,8 +67,28 @@ class CdekApi
         return Http::cdek()->post('/orders', $order);
     }
 
+    public static function getOrders()
+    {
+        return Http::cdek()->get('orders');
+    }
+
     public static function getOrder(string $id)
     {
         return Http::cdek()->get("orders/$id");
+    }
+
+    public static function getWebhooks(): Response
+    {
+        return Http::cdek()
+            ->get('webhooks');
+    }
+
+    public static function createWebhook(string $url, string $type): Response
+    {
+        return Http::cdek()
+            ->post('webhooks', [
+                'url' => $url,
+                'type' => $type,
+            ]);
     }
 }
