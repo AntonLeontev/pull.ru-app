@@ -158,4 +158,24 @@ class InSalesApi
         return Http::inSales()
             ->get('/admin/custom_statuses.json');
     }
+
+    public static function createSimilar(int $id, array $ids = []): Response
+    {
+        return Http::inSales()
+            ->post("/admin/products/$id/similars.json", [
+                'similar_ids' => $ids,
+            ]);
+    }
+
+    public static function destroySimilar(int $id, int $similarId): Response
+    {
+        return Http::inSales()
+            ->delete("/admin/products/$id/similars/$similarId.json");
+    }
+
+    public static function getSimilars(int $id): Response
+    {
+        return Http::inSales()
+            ->get("/admin/products/$id/similars.json");
+    }
 }
