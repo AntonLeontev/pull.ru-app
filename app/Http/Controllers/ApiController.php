@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 class ApiController extends Controller
 {
-    public function allowedRegions()
+    public function allowedRegions(): JsonResponse
     {
         $regions = array_keys(config('delivery.cdek.allowed_regions'));
         if ($key = array_search('Татарстан', $regions)) {
@@ -21,5 +24,16 @@ class ApiController extends Controller
         }
 
         return response()->json($regions);
+    }
+
+    public function organizationByBrand(Request $request): JsonResponse
+    {
+        $brands = collect(config('brands.brands'));
+        $organizations = collect(config('brands.organizations'));
+
+        $brand = $brands->where('id', $request->brand_id)->first();
+        $organization = $organizations->where('id', $brand['organization_id'])->first();
+
+        return response()->json($organization);
     }
 }

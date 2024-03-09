@@ -75,6 +75,12 @@ class InSalesApi
             ->get('admin/option_names.json');
     }
 
+    public static function getOptionValues(): Response
+    {
+        return Http::inSales()
+            ->get('admin/option_values.json');
+    }
+
     public static function getClients(): Response
     {
         return Http::inSales()
@@ -91,6 +97,12 @@ class InSalesApi
     {
         return Http::inSales()
             ->get("admin/products/$productId/variants/$variantId.json");
+    }
+
+    public static function getVariantFields(): Response
+    {
+        return Http::inSales()
+            ->get('admin/variant_fields.json');
     }
 
     public static function updateVariant(int $productId, int $variantId, array $data): Response
@@ -129,6 +141,12 @@ class InSalesApi
     {
         return Http::inSales()
             ->get('/admin/products/count.json');
+    }
+
+    public static function getProductFields(): Response
+    {
+        return Http::inSales()
+            ->get('/admin/product_fields.json');
     }
 
     public static function getImage(int $productId, int $imageId): Response
@@ -177,5 +195,17 @@ class InSalesApi
     {
         return Http::inSales()
             ->get("/admin/products/$id/similars.json");
+    }
+
+    public static function getProperties(): Response
+    {
+        return Http::inSales()
+            ->get('/admin/properties.json');
+    }
+
+    public static function getCharacteristics(int $propertyId)
+    {
+        return Http::inSales()
+            ->get("/admin/properties/$propertyId/characteristics.json");
     }
 }
