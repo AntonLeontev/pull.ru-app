@@ -26,14 +26,8 @@ class ApiController extends Controller
         return response()->json($regions);
     }
 
-    public function organizationByBrand(Request $request): JsonResponse
+    public function organizationsAndBrands(Request $request): JsonResponse
     {
-        $brands = collect(config('brands.brands'));
-        $organizations = collect(config('brands.organizations'));
-
-        $brand = $brands->where('id', $request->brand_id)->first();
-        $organization = $organizations->where('id', $brand['organization_id'])->first();
-
-        return response()->json($organization);
+        return response()->json(config('brands.brands'));
     }
 }
