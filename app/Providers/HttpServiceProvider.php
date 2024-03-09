@@ -82,5 +82,13 @@ class HttpServiceProvider extends ServiceProvider
                 ->retry(2, 1000)
                 ->baseUrl('https://sm-register.tinkoff.ru');
         });
+
+        Http::macro('cloudpayments', function () {
+            return Http::baseUrl('api.cloudpayments.ru')
+                ->asJson()
+                ->timeout(300)
+                ->connectTimeout(15)
+                ->withBasicAuth(config('services.cloudpayments.public_id'), config('services.cloudpayments.password'));
+        });
     }
 }

@@ -72,4 +72,9 @@ return [
         'taxation' => 'usn_income_outcome',
         'tax' => 'none', // НДС в чеке
     ],
+
+    'cloudpayments' => [
+        'public_id' => env('CLOUDPAYMENTS_ID'),
+        'password' => env('CLOUDPAYMENTS_PASSWORD'),
+    ],
 ];
