@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Src\Domain\Payments\Models\OnlinePayment;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
+use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 
 class Order extends Model
@@ -21,12 +22,14 @@ class Order extends Model
         'tries',
         'moy_sklad_id',
         'payment_status',
+        'payment_type',
         'status',
         'delivery_info',
     ];
 
     protected $casts = [
         'payment_status' => OrderPaymentStatus::class,
+        'payment_type' => OrderPaymentType::class,
         'status' => OrderStatus::class,
     ];
 

@@ -41,6 +41,7 @@ return [
         'login' => env('INSALES_LOGIN'),
         'password' => env('INSALES_PASSWORD'),
         'online_payment_gateway_id' => '5982078',
+        'deliver_payment_gateway_id' => '5470555',
     ],
 
     'moySklad' => [

@@ -6,18 +6,7 @@ use Illuminate\Http\Request;
 
 class OnlinePaymentController extends Controller
 {
-    public function tinkoff(Request $request)
+    public function cloudpaymentsPay(Request $request)
     {
-        return 'OK';
-    }
-
-    public function tinkoffSuccess(Request $request)
-    {
-
-    }
-
-    public function tinkoffFail(Request $request)
-    {
-
     }
 }

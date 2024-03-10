@@ -28,6 +28,6 @@ class ApiController extends Controller
 
     public function organizationsAndBrands(Request $request): JsonResponse
     {
-        return response()->json(config('brands.brands'));
+        return response()->json(config('brands'));
     }
 }

@@ -9,44 +9,23 @@ use Src\Domain\Payments\Enums\OnlinePaymentStatus;
 use Src\Domain\Payments\Models\OnlinePayment;
 use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
+use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
-use Src\Domain\Synchronizer\Jobs\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
 use Src\Domain\Synchronizer\Models\Order;
 
 class InSalesController extends Controller
 {
-    public function ordersCreate(Request $request, TinkoffService $tinkoffService, ResolveDiscount $resolveDiscount)
+    public function ordersCreate(Request $request)
     {
-        if ($request->get('payment_gateway_id') != config('services.inSales.online_payment_gateway_id')) {
-            dispatch(new CreateOrderFromInsales($request->all()));
-
-            return;
-        }
-
-        $request = objectize($request->all());
-
-        $resolveDiscount->handle($request);
-
-        $order = Order::create([
-            'insales_id' => $request->id,
+        Order::create([
+            'insales_id' => $request->json('id'),
             'payment_status' => OrderPaymentStatus::pending,
+            'payment_type' => OrderPaymentType::fromInsales($request->get('payment_gateway_id')),
             'status' => OrderStatus::init,
+            'number' => $request->json('number'),
         ]);
-
-        $response = $tinkoffService->init($request);
-
-        OnlinePayment::create([
-            'order_id' => $order->id,
-            'terminal_key' => $response->json('TerminalKey'),
-            'status' => OnlinePaymentStatus::from($response->json('Status')),
-            'external_id' => $response->json('PaymentId'),
-            'amount' => $response->json('Amount'),
-            'payment_url' => $response->json('PaymentURL'),
-        ]);
-
-        return response()->json(['ok' => true, 'redirect' => $response->json('PaymentURL')]);
     }
 
     public function ordersUpdate(Request $request)
