@@ -88,8 +88,27 @@ readonly class Order implements JsonSerializable
             $location = null;
         } else {
             $deliveryPoint = null;
+
+            $address = $deliveryInfo->deliveryAddress->formatted;
+
+            if (! empty($deliveryInfo->deliveryAddress->apartment)) {
+                $address .= ", кв. {$deliveryInfo->deliveryAddress->apartment}";
+            }
+
+            if (! empty($deliveryInfo->deliveryAddress->entrance)) {
+                $address .= ", {$deliveryInfo->deliveryAddress->entrance} подъезд";
+            }
+
+            if (! empty($deliveryInfo->deliveryAddress->floor)) {
+                $address .= ", {$deliveryInfo->deliveryAddress->floor} этаж";
+            }
+
+            if (! empty($deliveryInfo->deliveryAddress->intercom)) {
+                $address .= ", домофон {$deliveryInfo->deliveryAddress->intercom}";
+            }
+
             $location = new Location(
-                "{$deliveryInfo->deliveryAddress->formatted}, {$deliveryInfo->deliveryAddress->apartment}",
+                $address,
                 $deliveryInfo->deliveryAddress->position[0],
                 $deliveryInfo->deliveryAddress->position[1],
             );

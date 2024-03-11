@@ -9,6 +9,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
+use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Models\Order;
 
 class SendPaidOrderToDelivery implements ShouldQueue
@@ -29,10 +31,12 @@ class SendPaidOrderToDelivery implements ShouldQueue
      */
     public function handle(CreateOrderFromInsales $createAction)
     {
-        InSalesApi::updateOrderPaymentState($this->order->insales_id, 'paid');
+        InSalesApi::updateOrderPaymentState($this->order->insales_id, OrderPaymentStatus::paid->value);
 
         $insalesOrder = InSalesApi::getOrder($this->order->insales_id)->json();
 
         $createAction->handle($insalesOrder);
+
+        InSalesApi::updateOrderState($this->order->insales_id, OrderStatus::dispatched->toInsales());
     }
 }
