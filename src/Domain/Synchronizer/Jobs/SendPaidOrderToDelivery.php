@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Models\Order;
 
-class SendOrderToDelivery implements ShouldQueue
+class SendPaidOrderToDelivery implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,6 +29,8 @@ class SendOrderToDelivery implements ShouldQueue
      */
     public function handle(CreateOrderFromInsales $createAction)
     {
+        InSalesApi::updateOrderPaymentState($this->order->insales_id, 'paid');
+
         $insalesOrder = InSalesApi::getOrder($this->order->insales_id)->json();
 
         $createAction->handle($insalesOrder);

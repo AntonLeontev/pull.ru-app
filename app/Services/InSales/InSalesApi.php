@@ -171,6 +171,16 @@ class InSalesApi
             ]);
     }
 
+    public static function updateOrderPaymentState(int $id, string $state = 'pending'): Response
+    {
+        return Http::inSales()
+            ->put("admin/orders/$id.json", [
+                'order' => [
+                    'financial_status' => $state,
+                ],
+            ]);
+    }
+
     public static function getCustomStatuses(): Response
     {
         return Http::inSales()

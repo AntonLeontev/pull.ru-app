@@ -78,25 +78,27 @@ readonly class Order implements JsonSerializable
 
         $package = new Package($order->number, $items);
 
-        if ($order->delivery_info->type === 'office') {
-            $deliveryPoint = $order->delivery_info->address->code;
+        $deliveryInfo = json_decode($order->comment, false);
+
+        if ($deliveryInfo->deliveryType === 'office') {
+            $deliveryPoint = $deliveryInfo->deliveryAddress->code;
             $location = null;
         } else {
             $deliveryPoint = null;
             $location = new Location(
-                "{$order->delivery_info->address->formatted}, {$order->delivery_info->address->apartment}",
-                $order->delivery_info->address->position[0],
-                $order->delivery_info->address->position[1],
+                "{$deliveryInfo->deliveryAddress->formatted}, {$deliveryInfo->deliveryAddress->apartment}",
+                $deliveryInfo->deliveryAddress->position[0],
+                $deliveryInfo->deliveryAddress->position[1],
             );
         }
 
         return new static(
             $order->number,
-            $order->delivery_info->tariff_id,
+            $deliveryInfo->deliveryTariff->tariff_code,
             config('services.cdek.shipment_point'),
             $recipient,
             [$package],
-            $order->delivery_info->price,
+            $deliveryInfo->deliveryPrice,
             $deliveryPoint,
             $location,
         );

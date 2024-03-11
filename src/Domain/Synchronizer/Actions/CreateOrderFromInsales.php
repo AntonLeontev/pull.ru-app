@@ -10,6 +10,7 @@ use App\Services\MoySklad\Entities\OrderPosition;
 use App\Services\MoySklad\Entities\Organization;
 use App\Services\MoySklad\Entities\Store;
 use App\Services\MoySklad\MoySkladApi;
+use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 use Src\Domain\Synchronizer\Models\Client;
 use Src\Domain\Synchronizer\Models\Order;
 
@@ -35,14 +36,19 @@ class CreateOrderFromInsales
 
         $counterparty = Counterparty::make($client->moy_sklad_id);
 
-        $order = Order::create(['insales_id' => $request->id]);
+        $order = Order::firstOrCreate(
+            ['insales_id' => $request->id],
+            ['payment_type' => OrderPaymentType::fromInsales($request->payment_gateway_id)]
+        );
 
         $assortment = [];
         foreach ($request->order_lines as $insalesProduct) {
             $assortment[] = OrderPosition::fromInsalesOrder($insalesProduct);
         }
 
-        $address = $request->delivery_info->address->formatted ?? $request->delivery_info->address->city.' '.$request->delivery_info->address->address;
+        $deliveryInfo = json_decode($request->comment);
+
+        $address = $deliveryInfo->deliveryAddress->formatted ?? $deliveryInfo->deliveryAddress->city.' '.$deliveryInfo->deliveryAddress->address;
 
         $msOrder = MoySkladApi::createCustomerOrder(
             Organization::make(config('services.moySklad.organization')),
