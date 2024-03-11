@@ -5,8 +5,6 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InSalesApi;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -31,7 +29,6 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(InSalesApi::updateWebhook(23599347, 'https://app.limmite.ru/webhooks/insales/orders_create', 'orders/create')->json());
-        // dd(Http::cloudpayments()->get('test'));
+        dd((string) ((float) 12500));
     });
 }

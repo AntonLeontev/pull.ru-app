@@ -21,8 +21,8 @@ class InSalesController extends Controller
     {
         Order::create([
             'insales_id' => $request->json('id'),
-            'payment_status' => OrderPaymentStatus::pending,
-            'payment_type' => OrderPaymentType::fromInsales($request->get('payment_gateway_id')),
+            'payment_status' => OrderPaymentStatus::from($request->json('financial_status')),
+            'payment_type' => OrderPaymentType::fromInsales($request->json('payment_gateway_id')),
             'status' => OrderStatus::init,
             'number' => $request->json('number'),
         ]);
