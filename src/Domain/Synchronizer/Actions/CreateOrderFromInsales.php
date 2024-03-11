@@ -41,34 +41,38 @@ class CreateOrderFromInsales
             ['payment_type' => OrderPaymentType::fromInsales($request->payment_gateway_id)]
         );
 
-        $assortment = [];
-        foreach ($request->order_lines as $insalesProduct) {
-            $assortment[] = OrderPosition::fromInsalesOrder($insalesProduct);
+        if (is_null($order->moy_sklad_id)) {
+            $assortment = [];
+            foreach ($request->order_lines as $insalesProduct) {
+                $assortment[] = OrderPosition::fromInsalesOrder($insalesProduct);
+            }
+
+            $deliveryInfo = json_decode($request->comment);
+
+            $address = $deliveryInfo->deliveryAddress->formatted ?? $deliveryInfo->deliveryAddress->city.' '.$deliveryInfo->deliveryAddress->address;
+
+            $msOrder = MoySkladApi::createCustomerOrder(
+                Organization::make(config('services.moySklad.organization')),
+                $counterparty,
+                [
+                    'name' => (string) $request->number,
+                    // 'vatEnabled' => false,
+                    'shipmentAddress' => $address,
+                    'positions' => $assortment,
+                    'store' => Store::make(config('services.moySklad.store')),
+                ]
+            )->json();
+
+            $order->update(['moy_sklad_id' => $msOrder['id']]);
         }
 
-        $deliveryInfo = json_decode($request->comment);
+        if (is_null($order->cdek_id)) {
+            $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
 
-        $address = $deliveryInfo->deliveryAddress->formatted ?? $deliveryInfo->deliveryAddress->city.' '.$deliveryInfo->deliveryAddress->address;
+            $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
 
-        $msOrder = MoySkladApi::createCustomerOrder(
-            Organization::make(config('services.moySklad.organization')),
-            $counterparty,
-            [
-                'name' => (string) $request->number,
-                // 'vatEnabled' => false,
-                'shipmentAddress' => $address,
-                'positions' => $assortment,
-                'store' => Store::make(config('services.moySklad.store')),
-            ]
-        )->json();
-
-        $order->update(['moy_sklad_id' => $msOrder['id']]);
-
-        $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
-
-        $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
-
-        $order->update(['cdek_id' => $cdekOrderId]);
+            $order->update(['cdek_id' => $cdekOrderId]);
+        }
 
         foreach ($request->order_lines as $line) {
             cache(['blocked_products.'.$line->product_id => true]);
