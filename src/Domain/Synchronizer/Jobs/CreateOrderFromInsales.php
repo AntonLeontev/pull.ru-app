@@ -8,6 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales as ActionsCreateOrderFromInsales;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
+use Src\Domain\Synchronizer\Models\Order;
 
 class CreateOrderFromInsales implements ShouldQueue
 {
@@ -25,6 +27,9 @@ class CreateOrderFromInsales implements ShouldQueue
      */
     public function handle(ActionsCreateOrderFromInsales $createOrder): void
     {
+        Order::where('insales_id', $this->request['id'])
+            ->update(['status' => OrderStatus::approved]);
+
         $createOrder->handle($this->request);
     }
 }

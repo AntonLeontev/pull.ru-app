@@ -37,6 +37,7 @@ class SendPaidOrderToDelivery implements ShouldQueue
 
         $createAction->handle($insalesOrder);
 
+        $this->order->update(['status' => OrderStatus::dispatched]);
         InSalesApi::updateOrderState($this->order->insales_id, OrderStatus::dispatched->toInsales());
     }
 }
