@@ -26,6 +26,17 @@ enum OrderStatus: string
         return self::from($status['app']);
     }
 
+    public static function fromInsales(string $state): static
+    {
+        $status = self::findState('insales', $state);
+
+        if (is_null($status)) {
+            throw new Exception("Неизвестный статус Insales: $state");
+        }
+
+        return self::from($status['app']);
+    }
+
     public function toMS(): OrderState
     {
         $state = static::findState('app', $this->value);

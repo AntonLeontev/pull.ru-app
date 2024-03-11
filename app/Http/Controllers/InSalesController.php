@@ -11,6 +11,7 @@ use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
 use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
+use Src\Domain\Synchronizer\Jobs\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
 use Src\Domain\Synchronizer\Models\Order;
@@ -34,7 +35,11 @@ class InSalesController extends Controller
 
     public function ordersUpdate(Request $request)
     {
+        $status = OrderStatus::fromInsales($request->custom_status['permalink']);
 
+        if ($status === OrderStatus::approved) {
+            dispatch(new CreateOrderFromInsales($request->all()));
+        }
     }
 
     public function productsCreate(Request $request)
