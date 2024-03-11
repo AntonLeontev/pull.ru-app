@@ -14,11 +14,10 @@ class OnlinePayment extends Model
 
     protected $fillable = [
         'order_id',
-        'terminal_key',
         'status',
-        'external_id',
-        'amount',
-        'payment_url',
+        'transaction_id',
+        'payment_amount',
+        'user_email',
     ];
 
     protected $casts = [

@@ -5,10 +5,10 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
-use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -31,7 +31,7 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dump(OrderPaymentType::fromInsales('5470555'));
+        dd(InSalesApi::updateWebhook(23599347, 'https://app.limmite.ru/webhooks/insales/orders_create', 'orders/create')->json());
         // dd(Http::cloudpayments()->get('test'));
     });
 }

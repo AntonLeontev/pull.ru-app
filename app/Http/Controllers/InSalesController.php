@@ -26,6 +26,10 @@ class InSalesController extends Controller
             'status' => OrderStatus::init,
             'number' => $request->json('number'),
         ]);
+
+        foreach ($request->json('order_lines') as $line) {
+            block_product($line['product_id']);
+        }
     }
 
     public function ordersUpdate(Request $request)
