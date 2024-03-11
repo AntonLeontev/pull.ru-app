@@ -4,6 +4,7 @@ namespace App\Services\CDEK\Entities\Delivery;
 
 use DomainException;
 use JsonSerializable;
+use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
 use Src\Domain\Synchronizer\Models\Variant;
 
 readonly class Order implements JsonSerializable
@@ -49,6 +50,8 @@ readonly class Order implements JsonSerializable
 
     public static function fromInsalesOrderRequest(object $order): static
     {
+        $isPaid = OrderPaymentStatus::from($order->financial_status) === OrderPaymentStatus::paid;
+
         $recipient = new Recipient(
             $order->client->name,
             $order->client->email,
@@ -67,7 +70,7 @@ readonly class Order implements JsonSerializable
             $item = new Item(
                 $orderLine->title,
                 $variant->id,
-                $orderLine->sale_price,
+                $isPaid ? 0 : $orderLine->sale_price,
                 $orderLine->sale_price,
                 $orderLine->weight * 1000,
                 $orderLine->quantity,
@@ -98,7 +101,7 @@ readonly class Order implements JsonSerializable
             config('services.cdek.shipment_point'),
             $recipient,
             [$package],
-            $deliveryInfo->deliveryPrice,
+            $isPaid ? 0 : $deliveryInfo->deliveryPrice,
             $deliveryPoint,
             $location,
         );
