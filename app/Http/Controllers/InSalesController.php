@@ -78,7 +78,7 @@ class InSalesController extends Controller
 
         $productsIds = collect();
 
-        foreach ($$ISOrder->order_lines as $line) {
+        foreach ($ISOrder->order_lines as $line) {
             $productsIds->push($line->product_id);
         }
 
@@ -93,7 +93,6 @@ class InSalesController extends Controller
             $organizations[$id] = $organization;
         }
 
-        // dd($organizations);
         return view('pay.cloudpayments', ['order' => $ISOrder, 'organizations' => $organizations]);
     }
 }

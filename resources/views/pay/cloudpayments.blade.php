@@ -19,7 +19,8 @@
                 tinkoffInstallmentSupport: false
             });
 
-			let order = @json($order);
+			const order = @json($order);
+			const organizations = @json($organizations);
 
             let receipt = {
                 'Items': [],
@@ -28,6 +29,9 @@
                 'isBso': false, //чек является бланком строгой отчётности
                 'amounts': {
                     'electronic': order.total_price, // Сумма оплаты электронными деньгами
+					'advancePayment': 0.00, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
+					'credit': 0.00, // Сумма постоплатой(в кредит) (2 знака после запятой)
+					'provision': 0.00 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
                 }
             };
 
@@ -43,9 +47,9 @@
                     'measurementUnit': 'шт', //единица измерения
                     'AgentSign': 6, //признак агента, тег ОФД 1057, 1222
                     'PurveyorData': { //данные поставщика платежного агента,  тег ОФД 1224
-                        // 'Phone': '+74951234567', // телефон поставщика, тег ОД 1171
-                        'Name': this.productsOrganizations[line.product_id].title, // наименование поставщика, тег ОФД 1225
-                        'Inn': this.productsOrganizations[line.product_id].inn // ИНН поставщика, тег ОФД 1226
+                        'Phone': '+74951234567', // телефон поставщика, тег ОД 1171
+                        'Name': organizations[line.product_id].title, // наименование поставщика, тег ОФД 1225
+                        'Inn': organizations[line.product_id].inn // ИНН поставщика, тег ОФД 1226
                     }
                 })
             })
@@ -61,6 +65,8 @@
                     'object': 4, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
                 })
             }
+
+			console.log(receipt);
 
             widget.pay('charge', {
                 publicId: 'pk_c99424b82aed407cd4b167d280b77',
@@ -78,13 +84,12 @@
                 }
             }, {
                 onSuccess: (options) => { // success
-                    location.href = '/page/order-success'
+                    location.href = 'https://limmite.ru'
                 },
                 onFail: (reason, options) => { // fail
-                    //действие при неуспешной оплате
+                    location.href = 'https://limmite.ru'
                 },
-                onComplete: (paymentResult,
-                options) => { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+                onComplete: (paymentResult, options) => { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
                     //например вызов вашей аналитики Facebook Pixel
                 }
             })
