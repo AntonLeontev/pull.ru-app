@@ -15,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Models\Order;
 
@@ -34,6 +35,12 @@ class SendRecieptForDeliveredCdekOrder implements ShouldQueue
      */
     public function handle(ResolveDiscount $resolveDiscount, CloudPaymentsService $service)
     {
+        if ($this->order->reciept_sent) {
+            Log::channel('telegram')->warning('Попытка повторной отправки фискального чека по заказу '.$this->order->number);
+
+            return;
+        }
+
         $ISOrder = InSalesApi::getOrder($this->order->insales_id)->json();
 
         $ISOrder = objectize($ISOrder);

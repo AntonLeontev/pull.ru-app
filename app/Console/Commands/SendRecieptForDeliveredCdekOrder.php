@@ -40,6 +40,12 @@ class SendRecieptForDeliveredCdekOrder extends Command
             return;
         }
 
+        if ($order->reciept_sent) {
+            $this->info('Чек по этому заказу уже отправлен');
+
+            return;
+        }
+
         dispatch(new JobsSendRecieptForDeliveredCdekOrder($order));
     }
 }
