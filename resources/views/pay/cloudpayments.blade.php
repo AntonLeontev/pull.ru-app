@@ -24,6 +24,7 @@
 
             let receipt = {
                 'Items': [],
+				'taxationSystem': 2,
                 'calculationPlace': 'limmite.ru', //место осуществления расчёта, по умолчанию берется значение из кассы
                 'phone': order.client.phone, //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
                 'isBso': false, //чек является бланком строгой отчётности
@@ -47,7 +48,7 @@
                     'measurementUnit': 'шт', //единица измерения
                     'AgentSign': 6, //признак агента, тег ОФД 1057, 1222
                     'PurveyorData': { //данные поставщика платежного агента,  тег ОФД 1224
-                        'Phone': '+74951234567', // телефон поставщика, тег ОД 1171
+                        // 'Phone': '+74951234567', // телефон поставщика, тег ОД 1171
                         'Name': organizations[line.product_id].title, // наименование поставщика, тег ОФД 1225
                         'Inn': organizations[line.product_id].inn // ИНН поставщика, тег ОФД 1226
                     }
@@ -66,11 +67,8 @@
                 })
             }
 
-			console.log(receipt);
-
             widget.pay('charge', {
-                publicId: 'pk_c99424b82aed407cd4b167d280b77',
-                // publicId: 'pk_211facd05c03ac924464a0ff67758',
+                publicId: '{{ config('services.cloudpayments.public_id') }}',
                 description: 'Оплата товаров в limmite.ru',
                 amount: order.total_price,
                 currency: 'RUB',
