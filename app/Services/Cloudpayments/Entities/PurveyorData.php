@@ -21,4 +21,12 @@ class PurveyorData implements JsonSerializable
             'Phone' => $this->phone,
         ];
     }
+
+    public static function fromConfigOrganization(array $organization): static
+    {
+        return new static(
+            $organization['title'],
+            $organization['inn'],
+        );
+    }
 }

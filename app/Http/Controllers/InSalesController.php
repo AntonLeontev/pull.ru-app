@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\InSales\InSalesApi;
-use App\Services\Tinkoff\TinkoffService;
 use Illuminate\Http\Request;
 use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
@@ -54,7 +53,7 @@ class InSalesController extends Controller
         }
     }
 
-    public function externalPayment(Request $request, TinkoffService $tinkoffService, ResolveDiscount $resolveDiscount)
+    public function externalPayment(Request $request, ResolveDiscount $resolveDiscount)
     {
         $order = Order::where('insales_id', $request->get('order_id'))->first();
 

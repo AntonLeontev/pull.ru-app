@@ -25,12 +25,14 @@ class Order extends Model
         'payment_type',
         'status',
         'delivery_info',
+        'reciept_sent',
     ];
 
     protected $casts = [
         'payment_status' => OrderPaymentStatus::class,
         'payment_type' => OrderPaymentType::class,
         'status' => OrderStatus::class,
+        'reciept_sent' => 'boolean',
     ];
 
     public function onlinePayments(): HasMany

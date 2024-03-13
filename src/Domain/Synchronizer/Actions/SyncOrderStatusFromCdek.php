@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Exceptions\FullfillmentOrderNotCreated;
 use Src\Domain\Synchronizer\Exceptions\FullfillmentOrderNotCreatedOnce;
+use Src\Domain\Synchronizer\Jobs\SendRecieptForDeliveredCdekOrder;
 use Src\Domain\Synchronizer\Models\Order;
 
 class SyncOrderStatusFromCdek
@@ -47,6 +48,10 @@ class SyncOrderStatusFromCdek
 
         if ($newStatus === $order->status) {
             return;
+        }
+
+        if ($newStatus === OrderStatus::delivered) {
+            dispatch(new SendRecieptForDeliveredCdekOrder($order));
         }
 
         DB::transaction(function () use ($order, $newStatus) {
