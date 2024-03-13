@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
+use App\Services\Cloudpayments\Exceptions\CloudPaymentsApiException;
 use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
@@ -84,11 +85,15 @@ class HttpServiceProvider extends ServiceProvider
         });
 
         Http::macro('cloudpayments', function () {
-            return Http::baseUrl('api.cloudpayments.ru')
+            return Http::baseUrl('https://api.cloudpayments.ru')
                 ->asJson()
                 ->timeout(300)
                 ->connectTimeout(15)
-                ->withBasicAuth(config('services.cloudpayments.public_id'), config('services.cloudpayments.password'));
+                ->withBasicAuth(config('services.cloudpayments.public_id'), config('services.cloudpayments.password'))
+                ->throw(function (Response $response) {
+                    throw new CloudPaymentsApiException($response);
+                });
+
         });
     }
 }

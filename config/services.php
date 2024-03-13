@@ -74,5 +74,6 @@ return [
     'cloudpayments' => [
         'public_id' => env('CLOUDPAYMENTS_ID'),
         'password' => env('CLOUDPAYMENTS_PASSWORD'),
+        'inn' => '7203567990',
     ],
 ];
