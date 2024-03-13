@@ -9,7 +9,7 @@ class OnlinePaymentController extends Controller
 {
     public function cloudpaymentsPay(Request $request)
     {
-        dispatch(new BindPaymentToOrder($request->all()));
+        dispatch(new BindPaymentToOrder($request->all()))->onQueue('high');
 
         return response()->json(['code' => 0]);
     }
