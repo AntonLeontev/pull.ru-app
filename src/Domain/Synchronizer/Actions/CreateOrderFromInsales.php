@@ -47,7 +47,7 @@ class CreateOrderFromInsales
                 $assortment[] = OrderPosition::fromInsalesOrder($insalesProduct);
             }
 
-            $deliveryInfo = json_decode($request->comment);
+            $deliveryInfo = get_delivery_info($request);
 
             $address = $deliveryInfo->deliveryAddress->formatted ?? $deliveryInfo->deliveryAddress->city.' '.$deliveryInfo->deliveryAddress->address;
 

@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\InSales\InSalesApi;
 use App\Services\Tinkoff\TinkoffService;
 use Illuminate\Http\Request;
-use Src\Domain\Payments\Enums\OnlinePaymentStatus;
-use Src\Domain\Payments\Models\OnlinePayment;
 use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
 use Src\Domain\Synchronizer\Enums\OrderPaymentType;
@@ -78,17 +76,24 @@ class InSalesController extends Controller
 
         $resolveDiscount->handle($ISOrder);
 
-        $response = $tinkoffService->init($ISOrder);
+        $productsIds = collect();
 
-        OnlinePayment::create([
-            'order_id' => $order->id,
-            'terminal_key' => $response->json('TerminalKey'),
-            'status' => OnlinePaymentStatus::from($response->json('Status')),
-            'external_id' => $response->json('PaymentId'),
-            'amount' => $response->json('Amount'),
-            'payment_url' => $response->json('PaymentURL'),
-        ]);
+        foreach ($$ISOrder->order_lines as $line) {
+            $productsIds->push($line->product_id);
+        }
 
-        return redirect($response->json('PaymentURL'));
+        $organizations = [];
+
+        foreach ($productsIds->unique() as $id) {
+            $characteristics = collect(InSalesApi::getProduct($id)->json('characteristics'));
+
+            $brand = $characteristics->first(fn ($el) => $el['property_id'] == config('services.inSales.brand_property_id'));
+
+            $organization = organization_by_brand_id($brand['id']);
+            $organizations[$id] = $organization;
+        }
+
+        // dd($organizations);
+        return view('pay.cloudpayments', ['order' => $ISOrder, 'organizations' => $organizations]);
     }
 }

@@ -81,7 +81,7 @@ readonly class Order implements JsonSerializable
 
         $package = new Package($order->number, $items);
 
-        $deliveryInfo = json_decode($order->comment, false);
+        $deliveryInfo = get_delivery_info($order);
 
         if ($deliveryInfo->deliveryType === 'office') {
             $deliveryPoint = $deliveryInfo->deliveryAddress->code;

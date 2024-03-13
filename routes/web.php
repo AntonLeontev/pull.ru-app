@@ -13,6 +13,7 @@ use App\Services\Cloudpayments\Entities\Item;
 use App\Services\Cloudpayments\Entities\PurveyorData;
 use App\Services\Cloudpayments\Enums\AgentSign;
 use App\Services\Cloudpayments\Enums\TaxationSystem;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -37,30 +38,32 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
+        dd(InSalesApi::getProduct(421088526)->json());
+
         // dd(FullfillmentApi::getOrderByExtId(1530719072)->json());
 
-        $items = [];
+        // $items = [];
 
-        $items[] = new Item(
-            'Test product',
-            1200.00,
-            1,
-            0,
-            1200,
-            AgentSign::agent,
-            new PurveyorData('ИП Поставщик', '450205667694')
-        );
+        // $items[] = new Item(
+        //     'Test product',
+        //     1200.00,
+        //     1,
+        //     0,
+        //     1200,
+        //     AgentSign::agent,
+        //     new PurveyorData('ИП Поставщик', '450205667694')
+        // );
 
-        $amounts = new Amounts(1200);
+        // $amounts = new Amounts(1200);
 
-        $customerReceipt = new CustomerReceipt(
-            $items,
-            $amounts,
-            TaxationSystem::usn_income,
-            'aner-anton@yandex.ru',
-        );
-        $invoiceId = random_int(900, 999);
+        // $customerReceipt = new CustomerReceipt(
+        //     $items,
+        //     $amounts,
+        //     TaxationSystem::usn_income,
+        //     'aner-anton@yandex.ru',
+        // );
+        // $invoiceId = random_int(900, 999);
 
-        dd(app(CloudPaymentsService::class)->receipt($customerReceipt, $invoiceId));
+        // dd(app(CloudPaymentsService::class)->receipt($customerReceipt, $invoiceId));
     });
 }
