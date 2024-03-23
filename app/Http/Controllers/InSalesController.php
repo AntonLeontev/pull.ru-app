@@ -37,6 +37,10 @@ class InSalesController extends Controller
         if ($status === OrderStatus::approved) {
             dispatch(new CreateOrderFromInsales($request->all()));
         }
+
+        if ($status === OrderStatus::canceled) {
+
+        }
     }
 
     public function productsCreate(Request $request)
