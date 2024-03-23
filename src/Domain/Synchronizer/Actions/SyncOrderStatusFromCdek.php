@@ -19,7 +19,19 @@ class SyncOrderStatusFromCdek
     public function handle(Order $order): void
     {
         if ($order->fullfillment_id === null) {
-            $cdekNumber = CdekApi::getOrder($order->cdek_id)->json('entity.cdek_number');
+            $cdekOrder = CdekApi::getOrder($order->cdek_id);
+            $cdekNumber = $cdekOrder->json('entity.cdek_number');
+
+            if (is_null($cdekNumber)) {
+                $order->update(['is_error' => true]);
+
+                Log::channel('telegram')->error("Заказ {$cdekOrder->json('entity.number')} не создан в Сдек", [
+                    'errors' => $cdekOrder->json('requests.0.errors'),
+                    'statuses' => $cdekOrder->json('entity.statuses'),
+                ]);
+
+                return;
+            }
 
             $order->update(['fullfillment_id' => $cdekNumber]);
         }

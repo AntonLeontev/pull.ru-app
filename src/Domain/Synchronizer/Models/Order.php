@@ -26,6 +26,7 @@ class Order extends Model
         'status',
         'delivery_info',
         'reciept_sent',
+        'is_error',
     ];
 
     protected $casts = [
@@ -33,6 +34,7 @@ class Order extends Model
         'payment_type' => OrderPaymentType::class,
         'status' => OrderStatus::class,
         'reciept_sent' => 'boolean',
+        'is_error' => 'boolean',
     ];
 
     public function onlinePayments(): HasMany
