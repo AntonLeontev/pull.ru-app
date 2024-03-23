@@ -28,7 +28,7 @@ class SyncOrdersStatus extends Command
     public function handle()
     {
         $orders = Order::whereIn('status', ['approved', 'dispatched'])
-            ->where('is_order', false)
+            ->where('is_error', false)
             ->get();
 
         foreach ($orders as $order) {
