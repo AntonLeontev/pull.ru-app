@@ -5,7 +5,8 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
+use App\Services\InSales\InSalesApi;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -30,6 +31,7 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(CdekApi::getOrder('72753034-6e81-443c-9555-2603e359e845')->json());
+        // dd(MoySkladApi::getVariants('productid=18c2c30a-eb69-11ee-0a80-027b001f1aab')->json());
+        dd(InSalesApi::getProduct(429158689)->json());
     });
 }

@@ -20,6 +20,6 @@ class CancelOrderFromInsales
 
         $order->update(['status' => OrderStatus::canceled]);
 
-        MoySkladApi::updateCustomerOrder($request->moy_sklad_id, ['state' => OrderStatus::canceled->toMS()]);
+        MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::canceled->toMS()]);
     }
 }

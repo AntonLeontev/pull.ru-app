@@ -93,10 +93,10 @@ class MoySkladApi
             ->get('/entity/uom');
     }
 
-    public static function getVariants(): Response
+    public static function getVariants(string $filter = ''): Response
     {
         return Http::moySklad()
-            ->get('/entity/variant');
+            ->get("/entity/variant?filter=$filter");
     }
 
     public static function getVariant(string $id): Response
