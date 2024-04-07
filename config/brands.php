@@ -127,6 +127,21 @@ return [
             'organization_id' => 2,
             'title' => 'Moschino',
         ],
+        [
+            'id' => 241689061,
+            'organization_id' => 2,
+            'title' => 'Crocs',
+        ],
+        [
+            'id' => 241693263,
+            'organization_id' => 1,
+            'title' => 'Lacoste',
+        ],
+        [
+            'id' => 241797589,
+            'organization_id' => 1,
+            'title' => 'Converse',
+        ],
     ],
     'organizations' => [
         [
