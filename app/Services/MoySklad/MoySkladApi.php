@@ -268,4 +268,10 @@ class MoySkladApi
         return Http::moySklad()
             ->get('entity/customerorder/metadata');
     }
+
+    public static function createDemand(array $data): Response
+    {
+        return Http::moySklad()
+            ->post('entity/demand', $data);
+    }
 }

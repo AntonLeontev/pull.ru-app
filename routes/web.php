@@ -5,9 +5,11 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InsalesApiService;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
+use Src\Domain\Synchronizer\Jobs\CreateDemandInMS;
+use Src\Domain\Synchronizer\Models\Order;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -30,6 +32,9 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(InsalesApiService::updateCdekTraceInOrder(97319059, '1539211861')->json());
+        // dd(InSalesApi::getOrder(96882303)->json());
+        // $order = Order::where('insales_id', 96882303)->first();
+
+        // dd((new CreateDemandInMS($order))->handle());
     });
 }

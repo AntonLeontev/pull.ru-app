@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Src\Domain\Synchronizer\Events\OrderDelivered;
 use Src\Domain\Synchronizer\Events\ProductCreatingError;
 use Src\Domain\Synchronizer\Events\ProductCreatingSuccess;
 use Src\Domain\Synchronizer\Events\ProductUpdatingError;
@@ -12,7 +13,9 @@ use Src\Domain\Synchronizer\Events\VariantFromMoySkladToCdekError;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToCdekSuccess;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesError;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesSuccess;
+use Src\Domain\Synchronizer\Listeners\CreateDemandInMS;
 use Src\Domain\Synchronizer\Listeners\LogToTelegram;
+use Src\Domain\Synchronizer\Listeners\SendReceipt;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,6 +33,10 @@ class EventServiceProvider extends ServiceProvider
         VariantFromMoySkladToCdekError::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesSuccess::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesError::class => [LogToTelegram::class],
+        OrderDelivered::class => [
+            SendReceipt::class,
+            CreateDemandInMS::class,
+        ],
     ];
 
     /**
