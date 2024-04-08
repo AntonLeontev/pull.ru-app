@@ -39,6 +39,10 @@ class HttpServiceProvider extends ServiceProvider
                         abort($response->status(), $response->json('errors.0.message'));
                     }
 
+                    if ($response->json('errors.0.message') === 'Invalid value type in [to_location] field') {
+                        abort($response->status(), $response->json('errors.0.message'));
+                    }
+
                     throw new CdekApiException($response);
                 });
         });
