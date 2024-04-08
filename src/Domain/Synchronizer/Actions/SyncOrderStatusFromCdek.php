@@ -5,6 +5,7 @@ namespace Src\Domain\Synchronizer\Actions;
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\InSalesApi;
+use App\Services\InSales\InsalesApiService;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,6 +35,7 @@ class SyncOrderStatusFromCdek
             }
 
             $order->update(['fullfillment_id' => $cdekNumber]);
+            InsalesApiService::updateCdekTraceInOrder($order->insales_id, (int) $cdekNumber);
         }
 
         try {

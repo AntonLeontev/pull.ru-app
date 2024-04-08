@@ -161,6 +161,12 @@ class InSalesApi
             ->get("/admin/orders/{$id}.json");
     }
 
+    public static function updateOrder(int $id, array $data): Response
+    {
+        return Http::inSales()
+            ->put("admin/orders/$id.json", $data);
+    }
+
     public static function updateOrderState(int $id, string $permalink): Response
     {
         return Http::inSales()

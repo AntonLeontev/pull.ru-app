@@ -5,7 +5,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InSalesApi;
+use App\Services\InSales\InsalesApiService;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -30,6 +30,6 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(InSalesApi::getCharacteristics(53902709)->json());
+        dd(InsalesApiService::updateCdekTraceInOrder(97319059, '1539211861')->json());
     });
 }
