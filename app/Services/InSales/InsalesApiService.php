@@ -13,7 +13,7 @@ class InsalesApiService
                 'fields_values_attributes' => [
                     [
                         'handle' => 'trace',
-                        'value' => "https://lk.cdek.ru/order-history/trace?orderNumber=$cdekTrace",
+                        'value' => "https://www.cdek.ru/ru/tracking/?order_id=$cdekTrace",
                     ],
                 ],
             ],
