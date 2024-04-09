@@ -27,8 +27,13 @@ class CreateOrderFromInsales implements ShouldQueue
      */
     public function handle(ActionsCreateOrderFromInsales $createOrder): void
     {
-        Order::where('insales_id', $this->request['id'])
-            ->update(['status' => OrderStatus::approved]);
+        $order = Order::where('insales_id', $this->request['id'])->first();
+
+        if ($order->status === OrderStatus::approved && $order->cdek_id !== null) {
+            return;
+        }
+
+        $order->update(['status' => OrderStatus::approved]);
 
         $createOrder->handle($this->request);
     }
