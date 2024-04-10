@@ -27,6 +27,10 @@ Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'va
 
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
+Route::middleware('throttle:60,1')
+    ->post('api/errors', function () {
+        return response()->json(['ok' => true, 'request' => request()->all()]);
+    });
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
