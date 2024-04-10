@@ -10,6 +10,8 @@ enum OrderStatus: string
 {
     case init = 'init';
     case approved = 'approved';
+    case assembling = 'assembling';
+    case assembled = 'assembled';
     case dispatched = 'dispatched';
     case delivered = 'delivered';
     case canceled = 'canceled';
@@ -58,7 +60,7 @@ enum OrderStatus: string
         return $state['cdekff'];
     }
 
-    private static function findState(string $type, string $state): array
+    private static function findState(string $type, string $state): ?array
     {
         return static::states()->first(function ($item) use ($type, $state) {
             if (! isset($item[$type])) {
@@ -74,59 +76,59 @@ enum OrderStatus: string
         return collect([
             [
                 'app' => 'init',
-                'insales' => 'new',
+                'insales' => 'novyy',
             ],
             [
                 'app' => 'approved',
-                'insales' => 'approved',
+                'insales' => 'soglasovan',
                 'cdekff' => 'pending_queued',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
             ],
             [
                 'app' => 'approved',
-                'insales' => 'approved',
+                'insales' => 'soglasovan',
                 'cdekff' => 'confirmed',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
             ],
             [
-                'app' => 'approved',
-                'insales' => 'approved',
+                'app' => 'assembling',
+                'insales' => 'v-sborke',
                 'cdekff' => 'assembling',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
             ],
             [
-                'app' => 'approved',
-                'insales' => 'approved',
+                'app' => 'assembled',
+                'insales' => 'sobran-2',
                 'cdekff' => 'assembled',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
             ],
             [
                 'app' => 'dispatched',
-                'insales' => 'dispatched',
+                'insales' => 'dostavlyaetsya-2',
                 'cdekff' => 'delivery',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
             ],
             [
                 'app' => 'dispatched',
-                'insales' => 'dispatched',
+                'insales' => 'dostavlyaetsya-2',
                 'cdekff' => 'processing',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
             ],
             [
                 'app' => 'delivered',
-                'insales' => 'delivered',
+                'insales' => 'dostavlen',
                 'cdekff' => 'complete',
                 'ms' => '400c64b6-ad4b-11ee-0a80-0dfd005ae9c6',
             ],
             [
                 'app' => 'canceled',
-                'insales' => 'declined',
+                'insales' => 'otmenen',
                 'cdekff' => 'cancel',
                 'ms' => '400c6545-ad4b-11ee-0a80-0dfd005ae9c8',
             ],
             [
                 'app' => 'returned',
-                'insales' => 'returned',
+                'insales' => 'vozvrat',
                 'cdekff' => 'return',
                 'ms' => '400c6500-ad4b-11ee-0a80-0dfd005ae9c7',
             ],
