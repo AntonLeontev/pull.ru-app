@@ -6,12 +6,12 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\FullfillmentApi;
-use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
+Route::any('webhooks/cdek/order-status', [DeliveryController::class, 'orderStatus']);
 
 Route::post('webhooks/online-payments/cloudpayments/pay', [OnlinePaymentController::class, 'cloudpaymentsPay']);
 
@@ -35,7 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        // dd(MoySkladApi::getOrderStates()->json());
-        dd(FullfillmentApi::getOrderByExtId(1537570920)->json());
+        // dd(FullfillmentApi::getOrderByExtId(1537570920)->json());
     });
 }
