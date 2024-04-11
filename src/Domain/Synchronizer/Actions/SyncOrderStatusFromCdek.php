@@ -106,7 +106,7 @@ class SyncOrderStatusFromCdek
 
         if (
             $response->json('_embedded.order.0._embedded.deliveryRequest.state') === 'returning'
-            && $response->json('_embedded.order.0.state') !== 'return'
+            && $response->json('_embedded.order.0.state') === 'delivery'
         ) {
             return $response->json('_embedded.order.0._embedded.deliveryRequest.state');
         }
