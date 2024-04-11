@@ -104,6 +104,13 @@ class SyncOrderStatusFromCdek
             }
         }
 
+        if (
+            $response->json('_embedded.order.0._embedded.deliveryRequest.state') === 'returning'
+            && $response->json('_embedded.order.0.state') !== 'return'
+        ) {
+            return $response->json('_embedded.order.0._embedded.deliveryRequest.state');
+        }
+
         return $response->json('_embedded.order.0.state');
     }
 }

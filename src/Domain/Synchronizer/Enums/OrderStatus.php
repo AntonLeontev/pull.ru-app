@@ -16,6 +16,7 @@ enum OrderStatus: string
     case delivered = 'delivered';
     case canceled = 'canceled';
     case returned = 'returned';
+    case returning = 'returning';
 
     public static function fromCdek(string $state): static
     {
@@ -100,7 +101,7 @@ enum OrderStatus: string
                 'app' => 'assembled',
                 'insales' => 'sobran-2',
                 'cdekff' => 'assembled',
-                'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+                'ms' => '400c63ea-ad4b-11ee-0a80-0dfd005ae9c4',
             ],
             [
                 'app' => 'dispatched',
@@ -125,6 +126,12 @@ enum OrderStatus: string
                 'insales' => 'otmenen',
                 'cdekff' => 'cancel',
                 'ms' => '400c6545-ad4b-11ee-0a80-0dfd005ae9c8',
+            ],
+            [
+                'app' => 'returning',
+                'insales' => 'v-protsesse-vozvrata',
+                'cdekff' => 'returning',
+                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
             ],
             [
                 'app' => 'returned',
