@@ -24,20 +24,20 @@ class DeliveryController extends Controller
 
     public function orderStatus(Request $request)
     {
-        if ($request->attributes['is_return']) {
+        if ($request->json('attributes.is_return')) {
             return;
         }
 
-        $order = Order::where('number', $request->attributes['number'])->first();
+        $order = Order::where('number', $request->json('attributes.number'))->first();
 
         if (is_null($order)) {
-            Log::channel('telegram')->alert('При обновлении статуса не найден заказ '.$request->attributes['number']);
+            Log::channel('telegram')->alert('При обновлении статуса не найден заказ '.$request->json('attributes.number'));
 
             return;
         }
 
-        if ($request->attributes['code'] === 'DELIVERED') {
-            if ($request->attributes['status_reason_code'] == 20) {
+        if ($request->json('attributes.code') === 'DELIVERED') {
+            if ($request->json('attributes.status_reason_code') == 20) {
                 InSalesApi::updateOrderState($order->insales_id, OrderStatus::partlyDelivered->toInsales());
                 $order->update(['status' => OrderStatus::partlyDelivered]);
                 Log::channel('telegram')->info('Заказ '.$order->number.' частично доставлен');
