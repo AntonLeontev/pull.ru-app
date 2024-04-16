@@ -62,6 +62,13 @@ enum OrderStatus: string
         return $state['cdekff'];
     }
 
+    public function level(): int
+    {
+        $state = static::findState('app', $this->value);
+
+        return $state['level'];
+    }
+
     private static function findState(string $type, string $state): ?array
     {
         return static::states()->first(function ($item) use ($type, $state) {
@@ -79,72 +86,84 @@ enum OrderStatus: string
             [
                 'app' => 'init',
                 'insales' => 'novyy',
+                'level' => 0,
             ],
             [
                 'app' => 'approved',
                 'insales' => 'soglasovan',
                 'cdekff' => 'pending_queued',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+                'level' => 1,
             ],
             [
                 'app' => 'approved',
                 'insales' => 'soglasovan',
                 'cdekff' => 'confirmed',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+                'level' => 1,
             ],
             [
                 'app' => 'assembling',
                 'insales' => 'v-sborke',
                 'cdekff' => 'assembling',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+                'level' => 2,
             ],
             [
                 'app' => 'assembled',
                 'insales' => 'sobran-2',
                 'cdekff' => 'assembled',
                 'ms' => '400c63ea-ad4b-11ee-0a80-0dfd005ae9c4',
+                'level' => 3,
             ],
             [
                 'app' => 'dispatched',
                 'insales' => 'dostavlyaetsya-2',
                 'cdekff' => 'delivery',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'level' => 4,
             ],
             [
                 'app' => 'dispatched',
                 'insales' => 'dostavlyaetsya-2',
                 'cdekff' => 'processing',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'level' => 4,
             ],
             [
                 'app' => 'delivered',
                 'insales' => 'dostavlen',
                 'cdekff' => 'complete',
                 'ms' => '400c64b6-ad4b-11ee-0a80-0dfd005ae9c6',
+                'level' => 6,
             ],
             [
                 'app' => 'canceled',
                 'insales' => 'otmenen',
                 'cdekff' => 'cancel',
                 'ms' => '400c6545-ad4b-11ee-0a80-0dfd005ae9c8',
+                'level' => 6,
             ],
             [
                 'app' => 'returning',
                 'insales' => 'v-protsesse-vozvrata',
                 'cdekff' => 'returning',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'level' => 5,
             ],
             [
                 'app' => 'returned',
                 'insales' => 'vozvrat',
                 'cdekff' => 'return',
                 'ms' => '400c6500-ad4b-11ee-0a80-0dfd005ae9c7',
+                'level' => 6,
             ],
             [
                 'app' => 'partly_delivered',
                 'insales' => 'chastichno-dostavlen',
                 // 'cdekff' => 'return',
                 // 'ms' => '400c6500-ad4b-11ee-0a80-0dfd005ae9c7',
+                'level' => 6,
             ],
         ]);
     }

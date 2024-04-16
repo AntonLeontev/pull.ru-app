@@ -10,7 +10,6 @@ use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
-use Src\Domain\Synchronizer\Events\OrderDelivered;
 use Src\Domain\Synchronizer\Exceptions\FullfillmentOrderNotCreated;
 use Src\Domain\Synchronizer\Exceptions\FullfillmentOrderNotCreatedOnce;
 use Src\Domain\Synchronizer\Models\Order;
@@ -60,12 +59,8 @@ class SyncOrderStatusFromCdek
 
         $newStatus = OrderStatus::fromCdek($ffState);
 
-        if ($newStatus === $order->status) {
+        if ($newStatus->level() < $order->status->level()) {
             return;
-        }
-
-        if ($newStatus === OrderStatus::delivered) {
-            event(new OrderDelivered($order));
         }
 
         DB::transaction(function () use ($order, $newStatus) {

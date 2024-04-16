@@ -39,7 +39,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
                     '/webhooks/insales/orders_update' => ['insales', 'orders update'],
                     '/webhooks/moy_sklad/product_update' => ['ms', 'product update'],
                     '/webhooks/moy_sklad/variant_update' => ['ms', 'variant update'],
-                    '/webhooks/cdek/order-status' => ['cdek', 'order status', 'webhook'],
+                    '/webhooks/cdek/order-status' => ['cdek', 'order status', 'webhook', 'order:'.request()->json('attributes.number')],
                     '/api/errors' => ['errors'],
                     default => [],
                 };

@@ -28,12 +28,32 @@ class DeliveryController extends Controller
             return;
         }
 
+        if ($request->json('attributes.code') === 'REMOVED') {
+            return;
+        }
+
         $order = Order::where('number', $request->json('attributes.number'))->first();
 
         if (is_null($order)) {
-            Log::channel('telegram')->alert('При обновлении статуса не найден заказ '.$request->json('attributes.number'));
+            Log::channel('telegram')->alert(sprintf(
+                'При обновлении статуса не найден заказ %s. Новый статус: %s',
+                $request->json('attributes.number'),
+                $request->json('attributes.code'),
+            ));
 
             return;
+        }
+
+        if ($request->json('attributes.code') === 'RECEIVED_AT_SHIPMENT_WAREHOUSE') {
+            MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::dispatched->toMS()]);
+            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched->toInsales());
+            $order->update(['status' => OrderStatus::dispatched]);
+        }
+
+        if ($request->json('attributes.code') === 'NOT_DELIVERED') {
+            MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::returning->toMS()]);
+            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning->toInsales());
+            $order->update(['status' => OrderStatus::returning]);
         }
 
         if ($request->json('attributes.code') === 'DELIVERED') {
