@@ -33,7 +33,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         Telescope::tag(function (IncomingEntry $entry) {
             if ($entry->type === 'request') {
-                $number = $this->getOrderNumber($entry);
+                if ($entry->content['uri'] === '/webhooks/cdek/order-status') {
+                    $number = $this->getOrderNumber($entry);
+                }
 
                 return match ($entry->content['uri']) {
                     '/webhooks/insales/products_create' => ['webhook', 'insales', 'product create'],
@@ -88,14 +90,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
     private function getOrderNumber(IncomingEntry $entry): string
     {
-        if ($entry->content['uri'] === '/webhooks/cdek/order-status') {
-            if (request()->json('attributes.is_return')) {
-                $order = Order::where('fullfillment_id', request()->json('attributes.related_entities.cdek_number'))->first();
+        if (request()->json('attributes.is_return')) {
+            $order = Order::where('fullfillment_id', request()->json('attributes.related_entities.cdek_number'))->first();
 
-                return $order?->number ?? '';
-            }
-
-            return request()->json('attributes.number');
+            return $order?->number ?? '';
         }
+
+        return request()->json('attributes.number');
     }
 }
