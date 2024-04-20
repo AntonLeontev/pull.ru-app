@@ -5,7 +5,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InSalesApi;
+use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
@@ -35,6 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(InSalesApi::getCustomStatuses()->json());
+        dd(CdekApi::getOrder('72753034-1ab0-45c6-99c4-8f73921a6f67')->json());
     });
 }

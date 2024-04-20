@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
+use Src\Domain\Synchronizer\Models\Order;
 
 class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 {
@@ -32,14 +33,16 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         Telescope::tag(function (IncomingEntry $entry) {
             if ($entry->type === 'request') {
+                $number = $this->getOrderNumber($entry);
+
                 return match ($entry->content['uri']) {
-                    '/webhooks/insales/products_create' => ['insales', 'product create'],
-                    '/webhooks/insales/products_update' => ['insales', 'product update'],
-                    '/webhooks/insales/orders_create' => ['insales', 'orders create'],
-                    '/webhooks/insales/orders_update' => ['insales', 'orders update'],
-                    '/webhooks/moy_sklad/product_update' => ['ms', 'product update'],
-                    '/webhooks/moy_sklad/variant_update' => ['ms', 'variant update'],
-                    '/webhooks/cdek/order-status' => ['cdek', 'order status', 'webhook', 'order:'.request()->json('attributes.number')],
+                    '/webhooks/insales/products_create' => ['webhook', 'insales', 'product create'],
+                    '/webhooks/insales/products_update' => ['webhook', 'insales', 'product update'],
+                    '/webhooks/insales/orders_create' => ['webhook', 'insales', 'orders create'],
+                    '/webhooks/insales/orders_update' => ['webhook', 'insales', 'orders update'],
+                    '/webhooks/moy_sklad/product_update' => ['webhook', 'ms', 'product update'],
+                    '/webhooks/moy_sklad/variant_update' => ['webhook', 'ms', 'variant update'],
+                    '/webhooks/cdek/order-status' => ['webhook', 'cdek', 'order status', 'order number:'.$number],
                     '/api/errors' => ['errors'],
                     default => [],
                 };
@@ -81,5 +84,18 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             //     //
             // ]);
         });
+    }
+
+    private function getOrderNumber(IncomingEntry $entry): string
+    {
+        if ($entry->content['uri'] === '/webhooks/cdek/order-status') {
+            if (request()->json('attributes.is_return')) {
+                $order = Order::where('fullfillment_id', request()->json('attributes.related_entities.cdek_number'))->first();
+
+                return $order?->number ?? '';
+            }
+
+            return request()->json('attributes.number');
+        }
     }
 }
