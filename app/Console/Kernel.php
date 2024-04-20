@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('app:cdek-points')->dailyAt('5:00');
 
-        $schedule->command('telescope:prune --hours=48')->daily();
+        $schedule->command('telescope:prune --hours=72')->daily();
 
         $schedule->command('queue:prune-failed --hours=48')->daily();
 
