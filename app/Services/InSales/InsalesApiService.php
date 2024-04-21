@@ -20,6 +20,20 @@ class InsalesApiService
         ]);
     }
 
+    public static function updateKeepFreeDateInOrder(int $insalesOrderId, string $value): Response
+    {
+        return InSalesApi::updateOrder($insalesOrderId, [
+            'order' => [
+                'fields_values_attributes' => [
+                    [
+                        'handle' => 'keep_untill',
+                        'value' => $value,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     public static function updateOrderState(int $id, string $permalink): Response
     {
         return InSalesApi::updateOrder($id, [

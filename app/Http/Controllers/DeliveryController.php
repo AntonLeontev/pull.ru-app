@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Src\Domain\Delivery\Widget\Widget;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
+use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
 use Src\Domain\Synchronizer\Models\Order;
 
@@ -48,6 +49,10 @@ class DeliveryController extends Controller
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::dispatched->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched->toInsales());
             $order->update(['status' => OrderStatus::dispatched]);
+        }
+
+        if ($request->json('attributes.code') === 'ACCEPTED_AT_PICK_UP_POINT') {
+            event(new OrderAcceptedAtPickPoint($order));
         }
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {

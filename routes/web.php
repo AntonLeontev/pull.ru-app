@@ -6,8 +6,8 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
+use App\Services\InSales\InsalesApiService;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\Synchronizer\Actions\CreateOrderFromInsales;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -34,7 +34,7 @@ Route::middleware('throttle:60,1')
     });
 
 if (app()->isLocal()) {
-    Route::get('test', function (CreateOrderFromInsales $action) {
-        dd(CdekApi::getOrder('72753034-1ab0-45c6-99c4-8f73921a6f67')->json());
+    Route::get('test', function (InsalesApiService $service) {
+        // dd(CdekApi::getOrder('72753034-4654-4fb4-9814-9fdfb91d1a13')->json());
     });
 }
