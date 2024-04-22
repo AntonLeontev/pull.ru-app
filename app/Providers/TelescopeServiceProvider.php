@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
@@ -20,9 +21,9 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
-            // if ($this->app->environment('local')) {
-            //     return true;
-            // }
+            if ($this->app->environment('local')) {
+                return true;
+            }
 
             return $entry->isReportableException() ||
                    $entry->isFailedRequest() ||
@@ -93,8 +94,16 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         if (request()->json('attributes.is_return')) {
             $order = Order::where('fullfillment_id', request()->json('attributes.related_entities.cdek_number'))->first();
 
-            return $order?->number ?? '';
+            if (is_null($order)) {
+                Log::channel('telegram')->alert('Telescope: CDEK return order number not found', [request()->json()]);
+
+                return '';
+            }
+
+            return $order->number ?? '';
         }
+
+        Log::channel('telegram')->alert('Telescope: CDEK order number in attributes', [request()->json('attributes')]);
 
         return request()->json('attributes.number');
     }
