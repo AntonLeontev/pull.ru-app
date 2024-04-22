@@ -33,6 +33,10 @@ class DeliveryController extends Controller
             return;
         }
 
+        if (is_null($request->json('attributes.number'))) {
+            return;
+        }
+
         $order = Order::where('number', $request->json('attributes.number'))->first();
 
         if (is_null($order)) {

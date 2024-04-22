@@ -83,6 +83,12 @@ class CdekApi
             ->get('webhooks');
     }
 
+    public static function getWebhook(string $uuid): Response
+    {
+        return Http::cdek()
+            ->get('webhooks/'.$uuid);
+    }
+
     public static function createWebhook(string $url, string $type, bool $retryable = false, bool $additional = false): Response
     {
         return Http::cdek()

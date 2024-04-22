@@ -35,6 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (InsalesApiService $service) {
-        // dd(CdekApi::getOrder('72753034-4654-4fb4-9814-9fdfb91d1a13')->json());
+        dd(CdekApi::getWebhook('69e4da54-a9a7-42a6-a568-6f7c3c666829')->json());
     });
 }
