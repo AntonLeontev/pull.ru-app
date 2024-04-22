@@ -46,6 +46,9 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'RECEIVED_AT_SHIPMENT_WAREHOUSE') {
+            if (is_null($order)) {
+                return;
+            }
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::dispatched->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched->toInsales());
             $order->update(['status' => OrderStatus::dispatched]);
