@@ -105,6 +105,6 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         Log::channel('telegram')->alert('Telescope: CDEK order number in attributes', [request()->json('attributes')]);
 
-        return request()->json('attributes.number');
+        return request()->json('attributes.number') ?? '';
     }
 }
