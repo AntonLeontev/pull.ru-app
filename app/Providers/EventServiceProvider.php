@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
+use Src\Domain\Synchronizer\Events\OrderPartlyDelivered;
 use Src\Domain\Synchronizer\Events\ProductCreatingError;
 use Src\Domain\Synchronizer\Events\ProductCreatingSuccess;
 use Src\Domain\Synchronizer\Events\ProductUpdatingError;
@@ -37,6 +38,9 @@ class EventServiceProvider extends ServiceProvider
         VariantFromMoySkladToInsalesError::class => [LogToTelegram::class],
         OrderAcceptedAtPickPoint::class => [
             SetKeepFreeDateToInsales::class,
+        ],
+        OrderPartlyDelivered::class => [
+            SendReceipt::class,
         ],
         OrderDelivered::class => [
             SendReceipt::class,
