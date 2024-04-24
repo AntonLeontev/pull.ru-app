@@ -37,7 +37,9 @@ class DeliveryController extends Controller
             return;
         }
 
-        $order = Order::where('number', $request->json('attributes.number'))->first();
+        $order = Order::where('number', $request->json('attributes.number'))
+            ->where('status', '!=', OrderStatus::canceled->value)
+            ->first();
 
         if (is_null($order)) {
             Log::channel('telegram')->alert(sprintf(

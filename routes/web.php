@@ -5,7 +5,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
+use App\Services\CDEK\FullfillmentApi;
 use App\Services\InSales\InsalesApiService;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (InsalesApiService $service) {
-        dd(CdekApi::getWebhook('69e4da54-a9a7-42a6-a568-6f7c3c666829')->json());
+        dd(FullfillmentApi::deleteMovement(118213)->json());
     });
 }
