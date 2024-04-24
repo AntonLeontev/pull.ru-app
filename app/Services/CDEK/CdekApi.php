@@ -83,6 +83,18 @@ class CdekApi
         return Http::cdek()->get("orders/$id");
     }
 
+    public static function getOrderByCdekId(int $cdekId): Response
+    {
+        return Http::cdek()
+            ->get("orders?cdek_number=$cdekId");
+    }
+
+    public static function getOrderByImNumber(int $number): Response
+    {
+        return Http::cdek()
+            ->get("orders?im_number=$number");
+    }
+
     public static function getWebhooks(): Response
     {
         return Http::cdek()

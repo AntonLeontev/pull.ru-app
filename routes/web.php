@@ -5,7 +5,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\FullfillmentApi;
+use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\SendRecieptForPartlyDeliveredOrder;
 
@@ -35,6 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (SendRecieptForPartlyDeliveredOrder $action) {
-        dd(FullfillmentApi::getOrderByExtId(1546098595)->json());
+        dd(CdekApi::getOrderByCdekId(1544892780)->json());
     });
 }
