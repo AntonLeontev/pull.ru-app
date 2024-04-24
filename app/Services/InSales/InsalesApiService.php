@@ -3,6 +3,7 @@
 namespace App\Services\InSales;
 
 use Illuminate\Http\Client\Response;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
 
 class InsalesApiService
 {
@@ -34,11 +35,11 @@ class InsalesApiService
         ]);
     }
 
-    public static function updateOrderState(int $id, string $permalink): Response
+    public static function updateOrderState(int $id, OrderStatus $status): Response
     {
         return InSalesApi::updateOrder($id, [
             'order' => [
-                'custom_status_permalink' => $permalink,
+                'custom_status_permalink' => $status->toInsales(),
             ],
         ]);
     }

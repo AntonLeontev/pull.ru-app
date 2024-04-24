@@ -4,7 +4,6 @@ namespace Src\Domain\Synchronizer\Actions;
 
 use App\Services\CDEK\CdekApi;
 use App\Services\CDEK\FullfillmentApi;
-use App\Services\InSales\InSalesApi;
 use App\Services\InSales\InsalesApiService;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\DB;
@@ -57,7 +56,7 @@ class SyncOrderStatusFromCdek
             return;
         }
 
-        $newStatus = OrderStatus::fromCdek($ffState);
+        $newStatus = OrderStatus::fromFF($ffState);
 
         if ($newStatus->level() < $order->status->level()) {
             return;
@@ -82,7 +81,7 @@ class SyncOrderStatusFromCdek
 
     private function setInsalesStatus(Order $order, OrderStatus $newStatus): void
     {
-        InSalesApi::updateOrderState($order->insales_id, $newStatus->toInsales());
+        InsalesApiService::updateOrderState($order->insales_id, $newStatus);
     }
 
     private function tryGetState(Order $order): string

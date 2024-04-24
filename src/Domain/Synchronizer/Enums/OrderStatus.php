@@ -15,11 +15,13 @@ enum OrderStatus: string
     case dispatched = 'dispatched';
     case delivered = 'delivered';
     case canceled = 'canceled';
+    case cancel = 'cancel';
+    case canceling = 'canceling';
     case returned = 'returned';
     case returning = 'returning';
     case partlyDelivered = 'partly_delivered';
 
-    public static function fromCdek(string $state): static
+    public static function fromFF(string $state): static
     {
         $status = self::findState('cdekff', $state);
 
@@ -129,6 +131,16 @@ enum OrderStatus: string
                 'cdekff' => 'processing',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
                 'level' => 4,
+            ],
+            [
+                'app' => 'cancel',
+                'insales' => 'otmenit-zakaz',
+                'level' => 5,
+            ],
+            [
+                'app' => 'canceling',
+                'insales' => 'otmenyaetsya',
+                'level' => 5,
             ],
             [
                 'app' => 'delivered',

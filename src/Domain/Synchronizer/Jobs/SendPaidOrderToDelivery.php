@@ -3,6 +3,7 @@
 namespace Src\Domain\Synchronizer\Jobs;
 
 use App\Services\InSales\InSalesApi;
+use App\Services\InSales\InsalesApiService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -38,6 +39,6 @@ class SendPaidOrderToDelivery implements ShouldQueue
         $createAction->handle($insalesOrder);
 
         $this->order->update(['status' => OrderStatus::dispatched]);
-        InSalesApi::updateOrderState($this->order->insales_id, OrderStatus::dispatched->toInsales());
+        InsalesApiService::updateOrderState($this->order->insales_id, OrderStatus::dispatched);
     }
 }

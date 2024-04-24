@@ -5,10 +5,9 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
+use App\Services\CDEK\FullfillmentApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\Synchronizer\Actions\SendRecieptForPartlyDeliveredOrder;
-use Src\Domain\Synchronizer\Models\Order;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -36,8 +35,6 @@ Route::middleware('throttle:60,1')
 
 if (app()->isLocal()) {
     Route::get('test', function (SendRecieptForPartlyDeliveredOrder $action) {
-        $order = Order::where('cdek_id', '72753034-1ab0-45c6-99c4-8f73921a6f67')->first();
-        $action->handle($order);
-        // dd(CdekApi::getOrder('72753034-1ab0-45c6-99c4-8f73921a6f67')->json());
+        dd(FullfillmentApi::getOrderByExtId(1546098595)->json());
     });
 }

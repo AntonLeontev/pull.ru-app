@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\InSales\InSalesApi;
 use App\Services\InSales\InsalesApiService;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Http\Request;
@@ -56,7 +55,7 @@ class DeliveryController extends Controller
                 return;
             }
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::dispatched->toMS()]);
-            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched->toInsales());
+            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched);
             $order->update(['status' => OrderStatus::dispatched]);
         }
 
@@ -66,13 +65,13 @@ class DeliveryController extends Controller
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::returning->toMS()]);
-            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning->toInsales());
+            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning);
             $order->update(['status' => OrderStatus::returning]);
         }
 
         if ($request->json('attributes.code') === 'DELIVERED') {
             if ($request->json('attributes.status_reason_code') == 20) {
-                InSalesApi::updateOrderState($order->insales_id, OrderStatus::partlyDelivered->toInsales());
+                InsalesApiService::updateOrderState($order->insales_id, OrderStatus::partlyDelivered);
                 $order->update(['status' => OrderStatus::partlyDelivered]);
                 Log::channel('telegram')->info('Заказ '.$order->number.' частично доставлен');
 
@@ -81,7 +80,7 @@ class DeliveryController extends Controller
 
             event(new OrderDelivered($order));
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::delivered->toMS()]);
-            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::delivered->toInsales());
+            InsalesApiService::updateOrderState($order->insales_id, OrderStatus::delivered);
             $order->update(['status' => OrderStatus::delivered]);
         }
     }
