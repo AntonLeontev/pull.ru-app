@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Event;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
 use Src\Domain\Synchronizer\Events\OrderPartlyDelivered;
+use Src\Domain\Synchronizer\Events\OrderTakenByCourier;
 use Src\Domain\Synchronizer\Events\ProductCreatingError;
 use Src\Domain\Synchronizer\Events\ProductCreatingSuccess;
 use Src\Domain\Synchronizer\Events\ProductUpdatingError;
@@ -18,7 +19,9 @@ use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesSuccess;
 use Src\Domain\Synchronizer\Listeners\CreateDemandInMS;
 use Src\Domain\Synchronizer\Listeners\LogToTelegram;
 use Src\Domain\Synchronizer\Listeners\SendReceipt;
+use Src\Domain\Synchronizer\Listeners\SetCourierOrderStatus;
 use Src\Domain\Synchronizer\Listeners\SetKeepFreeDateToInsales;
+use Src\Domain\Synchronizer\Listeners\SetPickPointOrderStatus;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,8 +39,13 @@ class EventServiceProvider extends ServiceProvider
         VariantFromMoySkladToCdekError::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesSuccess::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesError::class => [LogToTelegram::class],
+        OrderTakenByCourier::class => [
+            SetKeepFreeDateToInsales::class,
+            SetCourierOrderStatus::class,
+        ],
         OrderAcceptedAtPickPoint::class => [
             SetKeepFreeDateToInsales::class,
+            SetPickPointOrderStatus::class,
         ],
         OrderPartlyDelivered::class => [
             SendReceipt::class,

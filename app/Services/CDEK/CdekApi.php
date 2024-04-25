@@ -4,7 +4,6 @@ namespace App\Services\CDEK;
 
 use App\Services\CDEK\Entities\Delivery\Order;
 use Illuminate\Http\Client\Response;
-use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Http;
 
 class CdekApi
@@ -68,7 +67,7 @@ class CdekApi
         return Http::cdek()->post('/orders', $order);
     }
 
-    public static function cancelOrder(string $orderUuid): HttpResponse
+    public static function cancelOrder(string $orderUuid): Response
     {
         return Http::cdek()->post("/orders/{$orderUuid}/refusal");
     }

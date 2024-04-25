@@ -13,6 +13,8 @@ enum OrderStatus: string
     case assembling = 'assembling';
     case assembled = 'assembled';
     case dispatched = 'dispatched';
+    case courier = 'courier';
+    case pickpoint = 'pickpoint';
     case delivered = 'delivered';
     case canceled = 'canceled';
     case cancel = 'cancel';
@@ -129,6 +131,20 @@ enum OrderStatus: string
                 'app' => 'dispatched',
                 'insales' => 'dostavlyaetsya-2',
                 'cdekff' => 'processing',
+                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'level' => 4,
+            ],
+            [
+                'app' => 'courier',
+                'insales' => 'peredan-kurieru',
+                'cdekff' => 'delivery',
+                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'level' => 4,
+            ],
+            [
+                'app' => 'pickpoint',
+                'insales' => 'ozhidaet-v-pvz',
+                'cdekff' => 'delivery',
                 'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
                 'level' => 4,
             ],

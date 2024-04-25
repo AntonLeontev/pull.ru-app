@@ -39,7 +39,7 @@ class InSalesController extends Controller
             dispatch(new CreateOrderFromInsales($request->all()))->onQueue('high');
         }
 
-        if ($status === OrderStatus::canceling) {
+        if ($status === OrderStatus::cancel) {
             dispatch(new CancelOrderFromInsales($request->all()))->onQueue('high');
         }
     }
