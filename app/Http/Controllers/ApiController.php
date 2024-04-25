@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RightholdersRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -29,5 +30,10 @@ class ApiController extends Controller
     public function organizationsAndBrands(Request $request): JsonResponse
     {
         return response()->json(config('brands'));
+    }
+
+    public function rightholders(RightholdersRequest $request): JsonResponse
+    {
+        return response()->json(['ok' => true, 'request' => $request->all()]);
     }
 }
