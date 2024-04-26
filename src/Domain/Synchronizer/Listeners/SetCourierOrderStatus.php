@@ -2,13 +2,13 @@
 
 namespace Src\Domain\Synchronizer\Listeners;
 
-use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
-use Src\Domain\Synchronizer\Jobs\SetPickPointOrderStatus as JobsSetPickPointOrderStatus;
+use Src\Domain\Synchronizer\Events\OrderTakenByCourier;
+use Src\Domain\Synchronizer\Jobs\SetCourierOrderStatus as JobsSetCourierOrderStatus;
 
 class SetCourierOrderStatus
 {
-    public function handle(OrderAcceptedAtPickPoint $event): void
+    public function handle(OrderTakenByCourier $event): void
     {
-        dispatch(new JobsSetPickPointOrderStatus($event->order));
+        dispatch(new JobsSetCourierOrderStatus($event->order));
     }
 }
