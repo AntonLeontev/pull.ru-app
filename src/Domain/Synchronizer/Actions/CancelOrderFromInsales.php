@@ -25,6 +25,8 @@ class CancelOrderFromInsales
             InsalesApiService::updateOrderState($request->id, OrderStatus::canceled);
 
             $order->update(['status' => OrderStatus::canceled]);
+
+            return;
         }
 
         if ($order->status === OrderStatus::approved) {
@@ -38,16 +40,22 @@ class CancelOrderFromInsales
 
             Log::channel('telegram')->notice('Отмена несобранного заказа: '.$order->number.' Нужно проконтролировать');
             CdekApi::cancelOrder($order->cdek_id);
+
             // Проверить в сдек. Если еще не собран, то удалить в логистике и отменить в ФФ
+            return;
         }
 
         if ($order->status === OrderStatus::assembled || $order->status === OrderStatus::assembling) {
             $this->cancelAssembled($order);
+
+            return;
         }
 
         if ($order->status->level() >= OrderStatus::dispatched->level()) {
             Log::channel('telegram')->notice('Отмена отправленного заказа: '.$order->number.' Нужно проконтролировать');
             CdekApi::cancelOrder($order->cdek_id);
+
+            return;
         }
     }
 
