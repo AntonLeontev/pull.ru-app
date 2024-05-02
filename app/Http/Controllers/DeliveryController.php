@@ -10,6 +10,7 @@ use Src\Domain\Delivery\Widget\Widget;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
+use Src\Domain\Synchronizer\Events\OrderTakenByCourier;
 use Src\Domain\Synchronizer\Models\Order;
 
 class DeliveryController extends Controller
@@ -61,6 +62,10 @@ class DeliveryController extends Controller
 
         if ($request->json('attributes.code') === 'ACCEPTED_AT_PICK_UP_POINT') {
             event(new OrderAcceptedAtPickPoint($order));
+        }
+
+        if ($request->json('attributes.code') === 'TAKEN_BY_COURIER') {
+            event(new OrderTakenByCourier($order));
         }
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {
