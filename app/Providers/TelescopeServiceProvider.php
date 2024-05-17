@@ -92,7 +92,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     private function getOrderNumber(IncomingEntry $entry): string
     {
         if (request()->json('attributes.is_return')) {
-            $order = Order::where('cdek_id', request()->json('attributes.related_entities.uuid'))->first();
+            $order = Order::where('cdek_id', request()->json('attributes.related_entities.0.uuid'))->first();
 
             if (is_null($order)) {
                 Log::channel('telegram')->alert('Telescope: CDEK return order number not found', [request()->json()]);
