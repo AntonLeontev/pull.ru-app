@@ -7,6 +7,7 @@ use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Src\Domain\Delivery\Widget\Widget;
+use Src\Domain\FinancialAccounting\Jobs\CreateOperationsInAccountingSystem;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
@@ -72,6 +73,8 @@ class DeliveryController extends Controller
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::returning->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning);
             $order->update(['status' => OrderStatus::returning]);
+
+            dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
         }
 
         if ($request->json('attributes.code') === 'DELIVERED') {
@@ -80,6 +83,8 @@ class DeliveryController extends Controller
                 $order->update(['status' => OrderStatus::partlyDelivered]);
                 Log::channel('telegram')->info('Заказ '.$order->number.' частично доставлен');
 
+                dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
+
                 return;
             }
 
@@ -87,6 +92,8 @@ class DeliveryController extends Controller
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::delivered->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::delivered);
             $order->update(['status' => OrderStatus::delivered]);
+
+            dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
         }
     }
 }

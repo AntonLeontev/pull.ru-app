@@ -5,9 +5,11 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InSalesApi;
+use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\Synchronizer\Actions\SendRecieptForPartlyDeliveredOrder;
+use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
+use Src\Domain\FinancialAccounting\DTO\CdekOrderDTO;
+use Src\Domain\Synchronizer\Models\Order;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -35,7 +37,26 @@ Route::middleware('throttle:60,1')
     });
 
 if (app()->isLocal()) {
-    Route::get('test', function (SendRecieptForPartlyDeliveredOrder $action) {
-        dd(InSalesApi::getCustomStatuses()->json());
+    Route::get('test', function (CreateOperationsFromOrder $action) {
+        // $response = CdekApi::getOrderByCdekId(1529445146);
+
+        // if ($response->json('entity.sender.company') === 'Фулфилмент' && is_null($response->json('entity.number'))) {
+        // 	return;
+        // }
+
+        // $orderDto = CdekOrderDTO::fromResponse($response);
+
+        // if ($orderDto->isReturn) {
+        // 	$order = Order::where('cdek_id', $orderDto->directOrderUuid)->first();
+
+        // 	$orderDto->number = $order?->number;
+        // }
+
+        // dd($orderDto);
+        // $action->handle($orderDto);
+
+        // dump(
+        //     // CdekApi::getOrder()->json()
+        // );
     });
 }

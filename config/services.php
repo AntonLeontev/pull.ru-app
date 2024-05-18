@@ -77,4 +77,30 @@ return [
         'password' => env('CLOUDPAYMENTS_PASSWORD'),
         'inn' => '7203567990',
     ],
+
+    'planfact' => [
+        'api_key' => env('PLANFACT_API_KEY'),
+        'accounts' => [
+            'cdek' => 623684,
+        ],
+        'operation_categories' => [
+            'income' => [
+                'delivery' => 7809642,
+                'men' => 7805725,
+                'women' => 7805728,
+            ],
+            'outcome' => [
+                'return' => 7806987, // Возврат на складе ФФ
+                'delivery_return_orders' => 7806218, // Доставка возвратных заказов
+                'delivery_direct_orders' => 7806214, // Доставка прямых заказов
+                'acceptance' => 7806990, // приемка
+                'assembly' => 7806985, // сборка
+                'warehouse_insurance' => 7806989, // страховка
+                'storage' => 7806988, // хранение
+            ],
+        ],
+        'projects' => [
+            'limmite' => 998968,
+        ],
+    ],
 ];

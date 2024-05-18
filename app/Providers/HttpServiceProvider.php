@@ -7,6 +7,7 @@ use App\Services\CDEK\Exceptions\FullfillmentApiException;
 use App\Services\Cloudpayments\Exceptions\CloudPaymentsApiException;
 use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
+use App\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -98,6 +99,20 @@ class HttpServiceProvider extends ServiceProvider
                     throw new CloudPaymentsApiException($response);
                 });
 
+        });
+
+        Http::macro('planfact', function () {
+            return Http::withHeaders(['X-ApiKey' => config('services.planfact.api_key')])
+                ->when(! app()->isProduction(), function ($request) {
+                    return $request->withOptions(['verify' => false]);
+                })
+                ->timeout(8)
+                ->asJson()
+                ->acceptJson()
+                ->baseUrl('https://api.planfact.io')
+                ->throw(function (Response $response) {
+                    throw new PlanfactBadRequestException($response);
+                });
         });
     }
 }

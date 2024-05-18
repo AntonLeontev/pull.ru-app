@@ -72,11 +72,6 @@ class CdekApi
         return Http::cdek()->post("/orders/{$orderUuid}/refusal");
     }
 
-    public static function getOrders()
-    {
-        return Http::cdek()->get('orders');
-    }
-
     public static function getOrder(string $id)
     {
         return Http::cdek()->get("orders/$id");
