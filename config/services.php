@@ -103,4 +103,9 @@ return [
             'limmite' => 998968,
         ],
     ],
+
+    'telegram' => [
+        'bot' => env('TELEGRAM_BOT_TOKEN'),
+        'chat' => env('TELEGRAM_CHAT_ID'),
+    ],
 ];

@@ -8,6 +8,7 @@ use App\Services\Cloudpayments\Exceptions\CloudPaymentsApiException;
 use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Planfact\Exceptions\PlanfactBadRequestException;
+use App\Services\Telegram\Exceptions\TelegramException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -112,6 +113,15 @@ class HttpServiceProvider extends ServiceProvider
                 ->baseUrl('https://api.planfact.io')
                 ->throw(function (Response $response) {
                     throw new PlanfactBadRequestException($response);
+                });
+        });
+
+        Http::macro('telegram', function () {
+            return Http::baseUrl('https://api.telegram.org/bot'.config('services.telegram.bot'))
+                ->retry(3, 100)
+                ->timeout(10)
+                ->throw(function (Response $response) {
+                    throw new TelegramException();
                 });
         });
     }
