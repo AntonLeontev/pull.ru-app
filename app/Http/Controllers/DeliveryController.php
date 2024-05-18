@@ -27,6 +27,13 @@ class DeliveryController extends Controller
     public function orderStatus(Request $request)
     {
         if ($request->json('attributes.is_return')) {
+            if (
+                $request->json('attributes.code') === 'DELIVERED' ||
+                $request->json('attributes.code') === 'NOT_DELIVERED'
+            ) {
+                dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
+            }
+
             return;
         }
 
