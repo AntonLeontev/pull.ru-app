@@ -24,7 +24,7 @@ class CreateOperationsFromOrder
     public function handle(CdekOrderDTO $dto): void
     {
         // Доходы по заказу
-        if ($dto->transactedPayment) {
+        if ($dto->paymentSum > 0) {
             $this->handleIncomes($dto);
         }
 
