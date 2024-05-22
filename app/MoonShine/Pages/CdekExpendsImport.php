@@ -37,7 +37,7 @@ class CdekExpendsImport extends Page
                 fields: [
                     File::make('Файл', 'file'),
                 ]
-            )->submit('Импорт'),
+            )->submit('Импорт')->async(),
         ];
     }
 }

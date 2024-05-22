@@ -27,6 +27,6 @@ class ImportOperationsFromCdekFile implements ShouldQueue
      */
     public function handle(ImportsCdekExpendsImport $import): void
     {
-        Excel::import($import, $this->importModel->file);
+        Excel::import($import, $this->importModel->file, 'public');
     }
 }
