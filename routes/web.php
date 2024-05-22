@@ -8,6 +8,7 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\CDEK\CdekApi;
+use App\Services\CDEK\Enums\AdditionalOrderStatus;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 
@@ -40,7 +41,7 @@ if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
         dump(
-            CdekApi::getOrderByImNumber(1147)->json()
+            // AdditionalOrderStatus::from(CdekApi::getOrderByImNumber(1158)->json('entity.statuses.0.reason_code'))->reason()
         );
     });
 }
