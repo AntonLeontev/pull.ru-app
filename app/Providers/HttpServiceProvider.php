@@ -117,11 +117,11 @@ class HttpServiceProvider extends ServiceProvider
         });
 
         Http::macro('telegram', function () {
-            return Http::baseUrl('https://api.telegram.org/bot'.config('services.telegram.bot'))
+            return Http::baseUrl('https://api.telegram.org/bot'.config('services.telegram.limmite_bot_token'))
                 ->retry(3, 100)
                 ->timeout(10)
                 ->throw(function (Response $response) {
-                    throw new TelegramException();
+                    throw new TelegramException($response->json('description'));
                 });
         });
     }

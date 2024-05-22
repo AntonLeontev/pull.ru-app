@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\MoonShine\Pages\CdekFileLoading;
 use Closure;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
@@ -48,7 +49,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
                     new MoonShineUserRoleResource()
                 ),
             ]),
-
+            // MenuItem::make('Загрузка расходов СДЭК', CdekFileLoading::make('Загрузка расходов СДЭК', 'cdek_loading'))
         ];
     }
 
@@ -83,7 +84,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             ->infoText('34, 65, 124');
 
         moonshineColors()
-            ->body('27, 37, 59', dark: true)
+            ->body('#111111', dark: true)
             ->dark('83, 103, 132', 50, dark: true)
             ->dark('74, 90, 121', 100, dark: true)
             ->dark('65, 81, 114', 200, dark: true)
@@ -92,7 +93,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             ->dark('41, 53, 82', 500, dark: true)
             ->dark('40, 51, 78', 600, dark: true)
             ->dark('39, 45, 69', 700, dark: true)
-            ->dark('27, 37, 59', 800, dark: true)
+            ->dark('#111111', 800, dark: true)
             ->dark('15, 23, 42', 900, dark: true)
             ->successBg('17, 157, 17', dark: true)
             ->successText('178, 255, 178', dark: true)

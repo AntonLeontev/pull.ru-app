@@ -12,7 +12,7 @@ return [
     'dir' => 'app/MoonShine',
     'namespace' => 'App\MoonShine',
 
-    'title' => env('MOONSHINE_TITLE', 'MoonShine'),
+    'title' => env('MOONSHINE_TITLE', 'Limmite Admin'),
     'logo' => env('MOONSHINE_LOGO', '/vendor/moonshine/admin-logo.svg'),
     'logo_small' => env('MOONSHINE_LOGO_SMALL', '/vendor/moonshine/admin-logo.svg'),
 
@@ -57,7 +57,7 @@ return [
     ],
 
     'pages' => [
-        'dashboard' => App\MoonShine\Pages\Dashboard::class,
+        'dashboard' => App\MoonShine\Pages\CdekExpendsImport::class,
         'profile' => ProfilePage::class,
     ],
 
@@ -91,8 +91,6 @@ return [
         'pipelines' => [],
     ],
     'locales' => [
-        'en',
-        'ru',
     ],
 
     'global_search' => [

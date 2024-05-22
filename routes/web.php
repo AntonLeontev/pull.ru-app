@@ -2,11 +2,11 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\CdekExpendsImportController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 
@@ -39,7 +39,7 @@ if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
         dump(
-            // CdekApi::getOrder()->json()
+            str('-3940,85')->replace('-', '')->toFloat()
         );
     });
 }
@@ -53,4 +53,6 @@ Route::prefix(config('moonshine.route.prefix', ''))
                 Route::post('/authenticate', 'authenticateFirstFactor')->name('authenticate');
                 Route::post('/authenticate2f', 'authenticateSecondFactor')->name('authenticate2f');
             });
+
+        Route::post('cdek-expends-import/create', [CdekExpendsImportController::class, 'create'])->name('cdek-expends-import.create');
     });

@@ -23,7 +23,7 @@ class AdminAuthController extends AuthenticateController
             ['code' => random_int(11111, 99999)],
         );
 
-        TelegramService::sendMessage("$code->code - код для входа");
+        TelegramService::notification("$code->code - код для входа. Пользователь ".$request->get('username'));
 
         return view('admin.auth.login2f', [
             'username' => $request->get('username'),

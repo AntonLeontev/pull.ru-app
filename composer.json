@@ -15,6 +15,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/telescope": "^4.17",
         "laravel/tinker": "^2.8",
+        "maatwebsite/excel": "^3.1",
         "moonshine/moonshine": "^2.13"
     },
     "require-dev": {

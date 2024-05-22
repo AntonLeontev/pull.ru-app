@@ -105,7 +105,14 @@ return [
     ],
 
     'telegram' => [
-        'bot' => env('TELEGRAM_BOT_TOKEN'),
-        'chat' => env('TELEGRAM_CHAT_ID'),
+        'limmite_bot_token' => env('TELEGRAM_LIMMITE_BOT_TOKEN'),
+        'limmite_notifications' => [
+            'chat' => env('TELEGRAM_NOTIFICATION_CHAT_ID'),
+            'thread' => env('TELEGRAM_NOTIFICATION_THREAD'),
+        ],
+        'limmite_logs' => [
+            'chat' => env('TELEGRAM_SYNC_CHAT_ID'),
+            'thread' => env('TELEGRAM_SYNC_THREAD'),
+        ],
     ],
 ];

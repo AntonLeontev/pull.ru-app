@@ -81,14 +81,6 @@ return [
             'level' => 'debug',
         ],
 
-        'sync_log' => [
-            'driver' => 'custom',
-            'via' => Logger\TelegramLogger::class,
-            'chat_id' => env('TELEGRAM_SYNC_CHAT_ID'),
-            'token' => env('TELEGRAM_SYNC_BOT_TOKEN'),
-            'level' => 'debug',
-        ],
-
         'papertrail' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
