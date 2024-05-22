@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Synchronizer\Models;
 
+use App\Events\OrderCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,6 +36,10 @@ class Order extends Model
         'status' => OrderStatus::class,
         'reciept_sent' => 'boolean',
         'is_error' => 'boolean',
+    ];
+
+    protected $dispatchesEvents = [
+        'created' => OrderCreated::class,
     ];
 
     public function onlinePayments(): HasMany

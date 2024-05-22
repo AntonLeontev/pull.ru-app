@@ -7,6 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
+use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 
@@ -39,7 +40,7 @@ if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
         dump(
-            str('-3940,85')->replace('-', '')->toFloat()
+            CdekApi::getOrderByImNumber(1147)->json()
         );
     });
 }

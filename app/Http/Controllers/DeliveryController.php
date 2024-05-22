@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderNotDelivered;
 use App\Services\InSales\InsalesApiService;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Http\Request;
@@ -81,6 +82,7 @@ class DeliveryController extends Controller
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning);
             $order->update(['status' => OrderStatus::returning]);
 
+            event(new OrderNotDelivered($order));
             dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
         }
 

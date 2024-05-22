@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCreated;
+use App\Events\OrderNotDelivered;
+use App\Listeners\SendOrderCreatedTelegramNotification;
+use App\Listeners\SendOrderDeliveredTelegramNotification;
+use App\Listeners\SendOrderPartlyDeliveredTelegramNotification;
+use App\Listeners\SentOrderNotDeliveredTelegramNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
@@ -39,6 +45,11 @@ class EventServiceProvider extends ServiceProvider
         VariantFromMoySkladToCdekError::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesSuccess::class => [LogToTelegram::class],
         VariantFromMoySkladToInsalesError::class => [LogToTelegram::class],
+
+        OrderCreated::class => [
+            SendOrderCreatedTelegramNotification::class,
+        ],
+
         OrderTakenByCourier::class => [
             SetKeepFreeDateToInsales::class,
             SetCourierOrderStatus::class,
@@ -49,10 +60,16 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPartlyDelivered::class => [
             SendReceipt::class,
+            SendOrderPartlyDeliveredTelegramNotification::class,
         ],
         OrderDelivered::class => [
             SendReceipt::class,
             CreateDemandInMS::class,
+            SendOrderDeliveredTelegramNotification::class,
+        ],
+
+        OrderNotDelivered::class => [
+            SentOrderNotDeliveredTelegramNotification::class,
         ],
     ];
 
