@@ -23,10 +23,11 @@
                 method="POST"
                 :errors="false"
             >
-			<input type="hidden" name="username" value="{{ $username }}">
-			<input type="hidden" name="password" value="{{ $password }}">
-			<input type="hidden" name="remember" value="{{ $remember }}">
-                <div class="form-flex-col">
+				<input type="hidden" name="username" value="{{ $username }}">
+				<input type="hidden" name="password" value="{{ $password }}">
+				<input type="hidden" name="remember" value="{{ $remember }}">
+
+                <div class="form-flex-col" style="margin-bottom: 10px">
                     <x-moonshine::form.input-wrapper
                         name="code"
                         label="Код из сообщения"
@@ -47,9 +48,9 @@
 
                 </div>
 
-                <x-slot:button type="submit" class="w-full btn-lg">
+                <x-moonshine::form.button type="submit" class="w-full btn-lg">
                     Отправить
-                </x-slot:button>
+                </x-moonshine::form.button>
             </x-moonshine::form>
 
             <p class="text-center text-2xs">
