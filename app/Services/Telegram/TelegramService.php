@@ -13,6 +13,9 @@ class TelegramService
                 'chat_id' => $chatId,
                 'text' => $text,
                 'message_thread_id' => $messageThreadId,
+                'link_preview_options' => [
+                    'is_disabled' => true,
+                ],
             ]);
     }
 
