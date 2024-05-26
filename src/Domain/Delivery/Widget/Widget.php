@@ -36,16 +36,17 @@ class Widget
             $this->sendValidationError('Action is required');
         }
 
-        $this->getAuthToken();
-
-        switch ($this->requestData['action']) {
-            case 'offices':
-                return $this->getOffices();
-            case 'calculate':
-                return $this->calculate();
-            default:
-                $this->sendValidationError('Unknown action');
+        if ($this->requestData['action'] === 'offices') {
+            return $this->getOffices();
         }
+
+        if ($this->requestData['action'] === 'calculate') {
+            $this->getAuthToken();
+
+            return $this->calculate();
+        }
+
+        $this->sendValidationError('Unknown action');
     }
 
     private function sendValidationError($message)
