@@ -71,4 +71,9 @@ enum AdditionalOrderStatus: int
             default => 'Неизвестный статус',
         };
     }
+
+    public function __toString(): string
+    {
+        return $this->reason();
+    }
 }

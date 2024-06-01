@@ -1,5 +1,7 @@
 <?php
 
+use MoonShine\Models\MoonshineUser;
+
 return [
 
     /*
@@ -40,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'moonshine' => [
+            'driver' => 'session',
+            'provider' => 'moonshine',
+        ],
     ],
 
     /*
@@ -65,10 +72,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'moonshine' => [
+            'driver' => 'eloquent',
+            'model' => MoonshineUser::class,
+        ],
     ],
 
     /*
