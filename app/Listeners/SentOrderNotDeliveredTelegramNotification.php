@@ -15,7 +15,7 @@ class SentOrderNotDeliveredTelegramNotification implements ShouldQueue
     public function handle(OrderNotDelivered $event): void
     {
         $response = CdekApi::getOrderByImNumber($event->order->number);
-        $reason = AdditionalOrderStatus::from($response->json('entity.statuses.0.reason_code'));
+        $reason = AdditionalOrderStatus::from($response->json('entity.statuses.0.reason_code'))->reason();
 
         $messages = collect(['Заказ '.$event->order->number.' не доставлен.']);
         $messages->push('Причина: '.$reason);
