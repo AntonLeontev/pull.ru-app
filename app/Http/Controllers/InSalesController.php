@@ -35,6 +35,12 @@ class InSalesController extends Controller
     {
         $status = OrderStatus::fromInsales($request->custom_status['permalink']);
 
+        if ($status === OrderStatus::init) {
+            Order::where('insales_id', $request->id)
+                ->first()
+                ->update(['payment_status' => OrderPaymentStatus::from($request->financial_status)]);
+        }
+
         if ($status === OrderStatus::approved) {
             dispatch(new CreateOrderFromInsales($request->all()))->onQueue('high');
         }
