@@ -8,8 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 use Src\Domain\FinancialAccounting\DTO\CdekOrderDTO;
+use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Models\Order;
 
 class CreateOperationsInAccountingSystem implements ShouldQueue
@@ -38,6 +40,13 @@ class CreateOperationsInAccountingSystem implements ShouldQueue
 
         if ($orderDto->isReturn) {
             $order = Order::where('cdek_id', $orderDto->directOrderUuid)->first();
+
+            // TODO delete
+            if ($order->status == OrderStatus::returned) {
+                Log::channel('telegram')->info('Дубль заказа возврата: '.$order->number);
+
+                return;
+            }
 
             $orderDto->number = $order?->number;
         }

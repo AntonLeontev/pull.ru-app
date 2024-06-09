@@ -26,8 +26,13 @@ class PlanfactApi
         $query = [];
 
         if ($accountId) {
-            $query['filter.accountId'] = config('services.planfact.accounts.cdek');
+            $query['filter.accountId'] = $accountId;
         }
+
+        // if ($fromDate) {
+        //     $query['sorting.field'] = 'LastModificationDate';
+        //     $query['sorting.direction'] = 'Desc';
+        // }
 
         return Http::planfact()->get('/api/v1/operations', $query);
     }

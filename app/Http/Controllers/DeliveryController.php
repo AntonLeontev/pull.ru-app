@@ -76,7 +76,7 @@ class DeliveryController extends Controller
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {
             if ($order->status->level > OrderStatus::returning->level) {
-                Log::channel('telegram')->info('Заказ '.$order->number.' уже возвращен, но мы повторно получили статус не доставлен из сдек');
+                Log::channel('telegram')->info('Дубль сдек '.$order->number.' NOT_DELIVERED');
 
                 return;
             }
@@ -91,7 +91,7 @@ class DeliveryController extends Controller
 
         if ($request->json('attributes.code') === 'DELIVERED') {
             if ($order->status === OrderStatus::partlyDelivered || $order->status === OrderStatus::delivered) {
-                Log::channel('telegram')->info('Заказ '.$order->number.' уже доставлен, но мы повторно получили статус доставлен из сдек');
+                Log::channel('telegram')->info('Дубль сдек '.$order->number.' '.$request->json('attributes.code'));
 
                 return;
             }

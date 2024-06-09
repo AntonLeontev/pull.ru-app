@@ -7,7 +7,8 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
+use App\Services\Planfact\PlanfactApi;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 
@@ -39,8 +40,12 @@ Route::middleware('throttle:60,1')
 if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
+        $operations = collect(PlanfactApi::getOperations(config('services.planfact.accounts.cdek'), Carbon::parse('2024-06-09'))->json('data.items'));
+
         dump(
-            CdekApi::getOrderByImNumber(1174)->json()
+            $operations->filter(function ($operation) {
+                return Carbon::parse($operation['createDate'])->betweenIncluded(now()->startOfDay(), now()->endOfDay());
+            })
         );
     });
 }
