@@ -61,9 +61,6 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'RECEIVED_AT_SHIPMENT_WAREHOUSE') {
-            if (is_null($order)) {
-                return;
-            }
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::dispatched->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::dispatched);
             $order->update(['status' => OrderStatus::dispatched]);
@@ -78,6 +75,12 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {
+            if ($order->status->level > OrderStatus::returning->level) {
+                Log::channel('telegram')->info('Заказ '.$order->number.' уже возвращен, но мы повторно получили статус не доставлен из сдек');
+
+                return;
+            }
+
             MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::returning->toMS()]);
             InsalesApiService::updateOrderState($order->insales_id, OrderStatus::returning);
             $order->update(['status' => OrderStatus::returning]);
@@ -87,6 +90,12 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'DELIVERED') {
+            if ($order->status === OrderStatus::partlyDelivered && $order->status === OrderStatus::delivered) {
+                Log::channel('telegram')->info('Заказ '.$order->number.' уже доставлен, но мы повторно получили статус доставлен из сдек');
+
+                return;
+            }
+
             if ($request->json('attributes.status_reason_code') == 20) {
                 InsalesApiService::updateOrderState($order->insales_id, OrderStatus::partlyDelivered);
                 $order->update(['status' => OrderStatus::partlyDelivered]);
