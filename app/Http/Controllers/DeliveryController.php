@@ -90,7 +90,7 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'DELIVERED') {
-            if ($order->status === OrderStatus::partlyDelivered && $order->status === OrderStatus::delivered) {
+            if ($order->status === OrderStatus::partlyDelivered || $order->status === OrderStatus::delivered) {
                 Log::channel('telegram')->info('Заказ '.$order->number.' уже доставлен, но мы повторно получили статус доставлен из сдек');
 
                 return;
