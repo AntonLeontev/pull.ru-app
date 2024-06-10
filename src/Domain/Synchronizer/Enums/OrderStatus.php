@@ -138,14 +138,14 @@ enum OrderStatus: string
                 'app' => 'courier',
                 'insales' => 'peredan-kurieru',
                 'cdekff' => 'delivery',
-                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'ms' => 'c83d06fc-26fa-11ef-0a80-060300373366',
                 'level' => 4,
             ],
             [
                 'app' => 'pickpoint',
                 'insales' => 'ozhidaet-v-pvz',
                 'cdekff' => 'delivery',
-                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'ms' => 'c83d07c8-26fa-11ef-0a80-060300373367',
                 'level' => 4,
             ],
             [
@@ -176,7 +176,7 @@ enum OrderStatus: string
                 'app' => 'returning',
                 'insales' => 'v-protsesse-vozvrata',
                 'cdekff' => 'returning',
-                'ms' => '400c6431-ad4b-11ee-0a80-0dfd005ae9c5',
+                'ms' => 'c83d0479-26fa-11ef-0a80-060300373365',
                 'level' => 5,
             ],
             [
