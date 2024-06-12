@@ -75,7 +75,7 @@ class DeliveryController extends Controller
         }
 
         if ($request->json('attributes.code') === 'NOT_DELIVERED') {
-            if ($order->status->level > OrderStatus::returning->level) {
+            if ($order->status->level() > OrderStatus::returning->level()) {
                 Log::channel('telegram')->info('Дубль сдек '.$order->number.' NOT_DELIVERED');
 
                 return;
