@@ -142,22 +142,22 @@ class Widget
             $data = [
                 'tariff_codes' => [
                     [
-                        'tariff_code' => 234,
-                        'tariff_name' => 'Экономичная посылка склад-склад',
+                        'tariff_code' => 136,
+                        'tariff_name' => 'Посылка склад-склад',
                         // "tariff_description" => "Услуга экономичной наземной доставки товаров для компаний, осуществляющих дистанционную торговлю",
                         'delivery_mode' => 2,
                         'delivery_sum' => 0,
-                        // "period_min" => 2,
-                        // "period_max" => 2
+                        'period_min' => 1,
+                        'period_max' => 5,
                     ],
                     [
-                        'tariff_code' => 233,
-                        'tariff_name' => 'Экономичная посылка склад-дверь',
+                        'tariff_code' => 137,
+                        'tariff_name' => 'Посылка склад-дверь',
                         // "tariff_description" => "Услуга экономичной наземной доставки товаров для компаний, осуществляющих дистанционную торговлю.",
                         'delivery_mode' => 1,
                         'delivery_sum' => 0,
-                        // "period_min" => 2,
-                        // "period_max" => 2
+                        'period_min' => 1,
+                        'period_max' => 5,
                     ],
                 ],
             ];
