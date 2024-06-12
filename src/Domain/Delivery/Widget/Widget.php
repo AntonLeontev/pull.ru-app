@@ -136,7 +136,32 @@ class Widget
 
     protected function calculate()
     {
-        $data = Http::cdek()->post('calculator/tarifflist', $this->requestData)->json();
+        try {
+            $data = Http::cdek()->post('calculator/tarifflist', $this->requestData)->json();
+        } catch (\Throwable $th) {
+            $data = [
+                'tariff_codes' => [
+                    [
+                        'tariff_code' => 234,
+                        'tariff_name' => 'Экономичная посылка склад-склад',
+                        // "tariff_description" => "Услуга экономичной наземной доставки товаров для компаний, осуществляющих дистанционную торговлю",
+                        'delivery_mode' => 2,
+                        'delivery_sum' => 0,
+                        // "period_min" => 2,
+                        // "period_max" => 2
+                    ],
+                    [
+                        'tariff_code' => 233,
+                        'tariff_name' => 'Экономичная посылка склад-дверь',
+                        // "tariff_description" => "Услуга экономичной наземной доставки товаров для компаний, осуществляющих дистанционную торговлю.",
+                        'delivery_mode' => 1,
+                        'delivery_sum' => 0,
+                        // "period_min" => 2,
+                        // "period_max" => 2
+                    ],
+                ],
+            ];
+        }
 
         return $data;
     }
