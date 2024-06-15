@@ -13,6 +13,10 @@ add('shared_files', []);
 add('shared_dirs', []);
 add('writable_dirs', []);
 
+task('supervisor:restart', function () {
+    run('sudo supervisorctl restart all');
+});
+
 // Hosts
 
 host('5.35.83.237')
@@ -22,3 +26,4 @@ host('5.35.83.237')
 // Hooks
 
 after('deploy:failed', 'deploy:unlock');
+after('deploy:success', 'supervisor:restart');
