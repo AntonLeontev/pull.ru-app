@@ -21,7 +21,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
-            if ($entry->content['uri'] === '/keep-alive') {
+            if ($entry->type === 'request' && $entry->content['uri'] === '/keep-alive') {
                 return false;
             }
 
