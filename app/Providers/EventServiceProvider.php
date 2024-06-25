@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Events\OrderCreated;
 use App\Events\OrderNotDelivered;
+use App\Listeners\GetLocationByIp;
 use App\Listeners\SendOrderCreatedTelegramNotification;
 use App\Listeners\SendOrderDeliveredTelegramNotification;
 use App\Listeners\SendOrderPartlyDeliveredTelegramNotification;
@@ -48,6 +49,7 @@ class EventServiceProvider extends ServiceProvider
 
         OrderCreated::class => [
             SendOrderCreatedTelegramNotification::class,
+            GetLocationByIp::class,
         ],
 
         OrderTakenByCourier::class => [

@@ -35,6 +35,20 @@ class InsalesApiService
         ]);
     }
 
+    public static function updateLocationByIp(int $insalesOrderId, string $value): Response
+    {
+        return InSalesApi::updateOrder($insalesOrderId, [
+            'order' => [
+                'fields_values_attributes' => [
+                    [
+                        'handle' => 'location_by_id',
+                        'value' => $value,
+                    ],
+                ],
+            ],
+        ]);
+    }
+
     public static function updateOrderState(int $id, OrderStatus $status): Response
     {
         return InSalesApi::updateOrder($id, [

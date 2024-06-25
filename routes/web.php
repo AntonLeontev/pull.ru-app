@@ -7,7 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\MoySklad\MoySkladApi;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Route;
 use Src\Domain\FinancialAccounting\Actions\CreateOperationsFromOrder;
 
@@ -40,8 +40,9 @@ Route::get('/keep-alive', function () {
 if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
-        dump(
-            MoySkladApi::getOrderStates()->json()
+        dd(
+            collect(InSalesApi::getOrder(103118300)->json('fields_values'))
+                ->where('handle', 'ip_address')->pluck('value')->first()
         );
     });
 }
