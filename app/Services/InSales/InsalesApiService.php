@@ -41,7 +41,7 @@ class InsalesApiService
             'order' => [
                 'fields_values_attributes' => [
                     [
-                        'handle' => 'location_by_id',
+                        'handle' => 'address_by_ip',
                         'value' => $value,
                     ],
                 ],

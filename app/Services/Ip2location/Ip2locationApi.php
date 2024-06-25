@@ -9,6 +9,10 @@ class Ip2locationApi
 {
     public static function location(string $ip): Response
     {
-        return Http::ip2location()->get('/?ip='.$ip);
+        return Http::ip2location()
+            ->withQueryParameters([
+                'ip' => $ip,
+            ])
+            ->get('/');
     }
 }
