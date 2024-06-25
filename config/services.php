@@ -115,4 +115,8 @@ return [
             'thread' => env('TELEGRAM_SYNC_THREAD'),
         ],
     ],
+
+    'ip2location' => [
+        'key' => env('IP2LOCATION_KEY'),
+    ],
 ];

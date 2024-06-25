@@ -124,5 +124,10 @@ class HttpServiceProvider extends ServiceProvider
                     throw new TelegramException($response->json('description'));
                 });
         });
+
+        Http::macro('ip2location', function () {
+            return Http::baseUrl('https://api.ip2location.io')
+                ->withQueryParameters(['key' => config('services.ip2location.key')]);
+        });
     }
 }

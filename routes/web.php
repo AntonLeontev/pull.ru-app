@@ -33,6 +33,10 @@ Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndB
 Route::get('api/additition-data', [ApiController::class, 'addititionData']);
 Route::middleware('throttle:60,1')->post('api/rightholders', [ApiController::class, 'rightholders']);
 
+Route::get('/keep-alive', function () {
+    return response()->json(['ok' => true]);
+});
+
 if (app()->isLocal()) {
     Route::get('test', function (CreateOperationsFromOrder $action) {
 
