@@ -38,6 +38,10 @@ class SetOrderLocation implements ShouldQueue
                 ->pluck('value')
                 ->first();
 
+            if (empty($ip)) {
+                return;
+            }
+
             $locationDTO = $ip2LocationService->location($ip);
 
             InsalesApiService::updateLocationByIp($this->order->insales_id, $locationDTO);
