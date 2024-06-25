@@ -21,12 +21,12 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
         $this->hideSensitiveRequestDetails();
 
         Telescope::filter(function (IncomingEntry $entry) {
-            if ($this->app->environment('local')) {
-                return true;
-            }
-
             if ($entry->content['uri'] === '/keep-alive') {
                 return false;
+            }
+
+            if ($this->app->environment('local')) {
+                return true;
             }
 
             return $entry->isReportableException() ||
