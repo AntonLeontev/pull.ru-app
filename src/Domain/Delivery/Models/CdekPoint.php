@@ -79,7 +79,7 @@ class CdekPoint extends Model
             'location' => [
                 'country_code' => $this->country_code,
                 // 'region_code' => $this->region_code,
-                // 'region' => $this->region,
+                'region' => $this->region,
                 'city_code' => $this->city_code,
                 'city' => $this->city,
                 // 'fias_guid' => $this->fias_guid,

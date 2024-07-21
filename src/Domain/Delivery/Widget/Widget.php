@@ -130,7 +130,7 @@ class Widget
 
                 $query->where('type', $this->requestData['type']);
             })
-            ->get(['code', 'name', 'work_time', 'type', 'weight_min', 'weight_max', 'country_code', 'city_code', 'city', 'longitude', 'latitude', 'address', 'dimensions']);
+            ->get(['code', 'name', 'work_time', 'type', 'weight_min', 'weight_max', 'country_code', 'city_code', 'region', 'city', 'longitude', 'latitude', 'address', 'dimensions']);
 
     }
 
