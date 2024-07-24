@@ -7,9 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\InSales\InSalesApi;
-use App\Services\InSales\InsalesApiService;
-use App\Services\Ip2location\Ip2LocationService;
+use App\Services\CDEK\FullfillmentApi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -39,16 +37,10 @@ Route::get('/keep-alive', function () {
 });
 
 if (app()->isLocal()) {
-    Route::get('test', function (Ip2LocationService $ip2LocationService) {
+    Route::get('test', function () {
+        $res = FullfillmentApi::getProductsByOrderId(32875823, 5);
 
-        $ip = collect(InSalesApi::getOrder(103123688)->json('fields_values'))
-            ->where('handle', 'ip_address')->pluck('value')->first();
-
-        dump($ip);
-
-        $locationDTO = $ip2LocationService->location($ip);
-        dump($locationDTO);
-        InsalesApiService::updateLocationByIp(103123688, $locationDTO);
+        dd($res->json());
     });
 }
 
