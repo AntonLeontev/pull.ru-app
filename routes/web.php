@@ -38,7 +38,7 @@ Route::get('/keep-alive', function () {
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        $res = FullfillmentApi::getProductsByOrderId(32875823, 5);
+        $res = FullfillmentApi::getOrderById(32875823);
 
         dd($res->json());
     });

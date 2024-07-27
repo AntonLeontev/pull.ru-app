@@ -50,6 +50,10 @@ class SyncOrderStatusFromCdek
             return;
         }
 
+        if ($ffState === 'complete') {
+            return;
+        }
+
         if (in_array($ffState, ['pending_error', 'pending', 'partly_reserved'])) {
             Log::channel('telegram')->warning("Заказ №{$order->number}. Ошибки в ФФ");
 
