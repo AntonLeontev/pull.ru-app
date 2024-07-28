@@ -30,7 +30,7 @@ Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'va
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
 Route::get('api/additition-data', [ApiController::class, 'addititionData']);
-Route::get('api/footer-subscribe', [ApiController::class, 'footerSubscribe']);
+Route::middleware('throttle:10,60')->post('api/footer-subscribe', [ApiController::class, 'footerSubscribe']);
 Route::middleware('throttle:60,1')->post('api/rightholders', [ApiController::class, 'rightholders']);
 
 Route::get('/keep-alive', function () {
