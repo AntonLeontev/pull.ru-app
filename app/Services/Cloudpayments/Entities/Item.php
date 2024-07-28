@@ -11,13 +11,13 @@ use JsonSerializable;
 class Item implements JsonSerializable
 {
     /**
-     * @param  string  $label Наименование товара или услуги
-     * @param  string  $price Цена за единицу товара/услуги
-     * @param  string  $quantity Количество
-     * @param  string  $vat Ставка НДС услуги/товара
-     * @param  string  $amount Price * Quantity c учетом скидки
-     * @param  AgentSign|null  $agentSign Признак агента, тег ОФД 1222
-     * @param  PurveyorData|null  $purveyorData Данные поставщика платежного агента, тег ОФД 1224
+     * @param  string  $label  Наименование товара или услуги
+     * @param  string  $price  Цена за единицу товара/услуги
+     * @param  string  $quantity  Количество
+     * @param  string  $vat  Ставка НДС услуги/товара
+     * @param  string  $amount  Price * Quantity c учетом скидки
+     * @param  AgentSign|null  $agentSign  Признак агента, тег ОФД 1222
+     * @param  PurveyorData|null  $purveyorData  Данные поставщика платежного агента, тег ОФД 1224
      */
     public function __construct(
         public string $label,
@@ -27,8 +27,7 @@ class Item implements JsonSerializable
         public string $amount,
         public ?AgentSign $agentSign = null,
         public ?PurveyorData $purveyorData = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

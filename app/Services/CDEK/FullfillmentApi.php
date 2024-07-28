@@ -92,13 +92,13 @@ class FullfillmentApi
 
     public static function createSimpleProduct(
         string $name,
-        string|int|float $price = null,
-        string $article = null,
-        int $extId = null,
-        string|int|float $purchasePrice = null,
-        string $image = null,
-        Weight $weight = null,
-        Dimensions $dimensions = null,
+        string|int|float|null $price = null,
+        ?string $article = null,
+        ?int $extId = null,
+        string|int|float|null $purchasePrice = null,
+        ?string $image = null,
+        ?Weight $weight = null,
+        ?Dimensions $dimensions = null,
         array $barcodes = [],
     ): Response {
         return Http::cdekff()
@@ -140,7 +140,7 @@ class FullfillmentApi
             ->post('products/order', $data);
     }
 
-    public static function createMovement(int $warehouseId, int $extId = null): Response
+    public static function createMovement(int $warehouseId, ?int $extId = null): Response
     {
         return Http::cdekff()
             ->post('storage/movements/document', [

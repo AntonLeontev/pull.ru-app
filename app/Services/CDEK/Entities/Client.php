@@ -7,8 +7,7 @@ readonly class Client extends AbstractEntity
     public function __construct(
         public string $name,
         public string $email = '',
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

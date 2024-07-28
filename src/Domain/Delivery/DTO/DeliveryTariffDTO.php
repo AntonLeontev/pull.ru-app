@@ -17,8 +17,7 @@ readonly class DeliveryTariffDTO implements JsonSerializable
         public int $intervalMaxDays = 0,
         public ?string $company = null,
         public ?string $description = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

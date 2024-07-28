@@ -4,9 +4,7 @@ namespace App\Services\MoySklad\Entities;
 
 readonly class Volume extends AbstractEntity
 {
-    public function __construct(public ?float $volume)
-    {
-    }
+    public function __construct(public ?float $volume) {}
 
     public function jsonSerialize(): float
     {

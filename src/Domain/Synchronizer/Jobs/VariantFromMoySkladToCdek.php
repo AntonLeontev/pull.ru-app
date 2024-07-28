@@ -16,9 +16,7 @@ class VariantFromMoySkladToCdek implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $variant)
-    {
-    }
+    public function __construct(private array $variant) {}
 
     /**
      * Execute the job.

@@ -32,8 +32,7 @@ class ISVariant
         public array $pricesInSiteCurrency = [],
         public array $variantFieldValues = [],
         public ?Collection $optionValues = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

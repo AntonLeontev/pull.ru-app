@@ -4,9 +4,7 @@ namespace App\Services\CDEK\Entities;
 
 readonly class Weight extends AbstractEntity
 {
-    public function __construct(public ?int $grams)
-    {
-    }
+    public function __construct(public ?int $grams) {}
 
     #[\ReturnTypeWillChange]
     public function jsonSerialize(): int

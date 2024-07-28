@@ -10,8 +10,7 @@ class PurveyorData implements JsonSerializable
         public string $name,
         public string $inn,
         public ?string $phone = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

@@ -7,7 +7,7 @@ use JsonSerializable;
 readonly class Package implements JsonSerializable
 {
     /**
-     * @param  float  $weight Вес (в граммах)
+     * @param  float  $weight  Вес (в граммах)
      */
     public function __construct(
         public string $number,
@@ -16,8 +16,7 @@ readonly class Package implements JsonSerializable
         public ?int $length = null,
         public ?int $width = null,
         public ?int $height = null,
-    ) {
-    }
+    ) {}
 
     public function addItem(Item $item): void
     {

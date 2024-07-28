@@ -19,7 +19,7 @@ class DeliveryController extends Controller
 {
     public function widget()
     {
-        $service = new Widget();
+        $service = new Widget;
         $data = $service->process($_GET, file_get_contents('php://input'));
 
         return response()->json($data);

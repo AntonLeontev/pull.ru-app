@@ -15,9 +15,7 @@ class SyncOrderStatus implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function handle(SyncOrderStatusFromCdek $action): void
     {

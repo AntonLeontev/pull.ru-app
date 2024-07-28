@@ -12,8 +12,7 @@ class ISProperty
         public ?bool $backoffice = null,
         public ?string $permalink = null,
         public ?string $title = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

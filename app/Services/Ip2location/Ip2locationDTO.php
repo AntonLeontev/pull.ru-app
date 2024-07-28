@@ -20,8 +20,7 @@ readonly class Ip2locationDTO implements Stringable
         public string $asn,
         public string $as,
         public bool $isProxy,
-    ) {
-    }
+    ) {}
 
     public static function fromResponse(Response $response): static
     {

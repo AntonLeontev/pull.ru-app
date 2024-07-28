@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class TelegramService
 {
-    public static function sendMessage(int $chatId, string $text, int $messageThreadId = null): void
+    public static function sendMessage(int $chatId, string $text, ?int $messageThreadId = null): void
     {
         Http::telegram()
             ->post('/sendMessage', [

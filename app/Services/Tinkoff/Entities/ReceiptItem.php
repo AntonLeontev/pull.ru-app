@@ -13,8 +13,7 @@ readonly class ReceiptItem implements JsonSerializable
         public int $quantity,
         public int $amount,
         public PaymentObject $paymentObject,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

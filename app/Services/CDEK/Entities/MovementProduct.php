@@ -7,11 +7,11 @@ use JsonSerializable;
 readonly class MovementProduct implements JsonSerializable
 {
     /**
-     * @param  int  $productId идентификатор товара
-     * @param  int  $shopId идентификатор магазина
-     * @param  int  $movementId идентификатор перемещения
-     * @param  string  $sku идентификатор товара для приемки (ean13 штрихкод)
-     * @param  int  $quantity ожидаемое количество
+     * @param  int  $productId  идентификатор товара
+     * @param  int  $shopId  идентификатор магазина
+     * @param  int  $movementId  идентификатор перемещения
+     * @param  string  $sku  идентификатор товара для приемки (ean13 штрихкод)
+     * @param  int  $quantity  ожидаемое количество
      */
     public function __construct(
         public int $productId,
@@ -19,8 +19,7 @@ readonly class MovementProduct implements JsonSerializable
         public int $movementId,
         public string $sku,
         public int $quantity,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

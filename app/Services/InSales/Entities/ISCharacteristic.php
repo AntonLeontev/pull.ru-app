@@ -10,8 +10,7 @@ class ISCharacteristic
         public ?int $position = null,
         public ?string $title = null,
         public ?string $permalink = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

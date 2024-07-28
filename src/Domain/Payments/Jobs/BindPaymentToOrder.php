@@ -20,9 +20,7 @@ class BindPaymentToOrder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private array $request)
-    {
-    }
+    public function __construct(private array $request) {}
 
     /**
      * Execute the job.

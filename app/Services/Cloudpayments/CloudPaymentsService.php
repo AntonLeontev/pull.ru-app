@@ -7,9 +7,7 @@ use App\Services\Cloudpayments\Enums\Type;
 
 class CloudPaymentsService
 {
-    public function __construct(public CloudPaymentsApi $api)
-    {
-    }
+    public function __construct(public CloudPaymentsApi $api) {}
 
     public function receipt(CustomerReceipt $customerReceipt, string $invoiceId)
     {

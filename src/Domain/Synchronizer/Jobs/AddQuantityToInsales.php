@@ -21,9 +21,7 @@ class AddQuantityToInsales implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public array $products)
-    {
-    }
+    public function __construct(public array $products) {}
 
     /**
      * Execute the job.

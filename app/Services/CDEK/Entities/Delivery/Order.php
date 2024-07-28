@@ -18,8 +18,7 @@ readonly class Order implements JsonSerializable
         public float $deliveryCost = 0,
         public ?string $deliveryPoint = null,
         public ?Location $toLocation = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

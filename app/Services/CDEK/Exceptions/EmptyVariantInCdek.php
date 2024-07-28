@@ -2,6 +2,4 @@
 
 namespace App\Services\CDEK\Exceptions;
 
-class EmptyVariantInCdek extends CdekException
-{
-}
+class EmptyVariantInCdek extends CdekException {}

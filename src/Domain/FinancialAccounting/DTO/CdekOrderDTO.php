@@ -21,8 +21,7 @@ class CdekOrderDTO
         public ?string $deliveryDate,
         public ?string $directOrderUuid = null,
         public ?string $returnOrderUuid = null,
-    ) {
-    }
+    ) {}
 
     public static function fromResponse(Response $resposne): static
     {

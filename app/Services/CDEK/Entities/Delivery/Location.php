@@ -10,8 +10,7 @@ readonly class Location implements JsonSerializable
         public string $address,
         public ?float $longitude = null,
         public ?float $latitude = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

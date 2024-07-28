@@ -4,9 +4,7 @@ namespace App\Services\CDEK\Entities;
 
 readonly class PaymentState extends AbstractEntity
 {
-    public function __construct(public string $state)
-    {
-    }
+    public function __construct(public string $state) {}
 
     public function jsonSerialize(): string
     {

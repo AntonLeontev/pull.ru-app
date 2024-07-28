@@ -7,9 +7,7 @@ use App\Services\Tinkoff\Enums\PaymentObject;
 
 class TinkoffService
 {
-    public function __construct(public TinkoffApi $api)
-    {
-    }
+    public function __construct(public TinkoffApi $api) {}
 
     public function init(object $request)
     {

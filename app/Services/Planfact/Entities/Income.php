@@ -18,8 +18,7 @@ readonly class Income implements JsonSerializable
         public ?int $operationCategoryId = null,
         public ?string $externalId = null,
         public ?string $comment = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

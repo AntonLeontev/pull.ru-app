@@ -8,7 +8,7 @@ readonly class SalePrice extends AbstractEntity
 
     public string $priceTypeId;
 
-    public function __construct(string|int|float|null $value, string $priceTypeId = null)
+    public function __construct(string|int|float|null $value, ?string $priceTypeId = null)
     {
         $this->value = (float) (($value ?? 0) * 100);
 

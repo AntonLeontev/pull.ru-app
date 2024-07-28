@@ -4,6 +4,4 @@ namespace App\Services\MoySklad\Exceptions;
 
 use Exception;
 
-class ImageCreatingException extends Exception
-{
-}
+class ImageCreatingException extends Exception {}

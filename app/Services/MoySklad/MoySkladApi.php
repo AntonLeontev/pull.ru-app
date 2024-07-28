@@ -203,8 +203,8 @@ class MoySkladApi
 
     public static function createIndividualCounterparty(
         string $name,
-        string $email = null,
-        string $phone = null,
+        ?string $email = null,
+        ?string $phone = null,
     ): Response {
         return Http::moySklad()
             ->post('entity/counterparty', [
@@ -221,7 +221,7 @@ class MoySkladApi
             ->get('entity/store');
     }
 
-    public static function getMoves(int $limit = null, string $expand = null): Response
+    public static function getMoves(?int $limit = null, ?string $expand = null): Response
     {
         $query = 'entity/move?order=created,desc';
 
@@ -243,7 +243,7 @@ class MoySkladApi
             ->get("entity/move/$id");
     }
 
-    public static function getMovePositions(string $id, int $limit = null, int $offset = null, string $expand = null): Response
+    public static function getMovePositions(string $id, ?int $limit = null, ?int $offset = null, ?string $expand = null): Response
     {
         $query = "entity/move/$id/positions?";
 

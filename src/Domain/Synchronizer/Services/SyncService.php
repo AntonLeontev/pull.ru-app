@@ -17,10 +17,7 @@ use Src\Domain\Synchronizer\Models\Variant;
 
 class SyncService
 {
-    public function __construct(public SyncCategoriesFromInsales $categorySync, public SyncOptionsFromInsales $syncOptions)
-    {
-
-    }
+    public function __construct(public SyncCategoriesFromInsales $categorySync, public SyncOptionsFromInsales $syncOptions) {}
 
     public function actualInsalesCategories(array $product): Collection
     {

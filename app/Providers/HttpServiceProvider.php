@@ -10,6 +10,7 @@ use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use App\Services\Telegram\Exceptions\TelegramException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
+use App\Services\Unisender\Exceptions\UnisenderException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
@@ -57,7 +58,7 @@ class HttpServiceProvider extends ServiceProvider
                 ->baseUrl('https://myshop-cdw517.myinsales.ru')
                 ->throw(function (Response $response) {
                     if ($response->status() === 429) {
-                        throw new InsalesRateLimitException();
+                        throw new InsalesRateLimitException;
                     }
                 });
         });
@@ -128,6 +129,17 @@ class HttpServiceProvider extends ServiceProvider
         Http::macro('ip2location', function () {
             return Http::baseUrl('https://api.ip2location.io')
                 ->withQueryParameters(['key' => config('services.ip2location.key')]);
+        });
+
+        Http::macro('unisender', function () {
+            return Http::baseUrl('https://api.unisender.com/ru/api')
+                ->asForm()
+                ->retry(1, 100)
+                ->timeout(10)
+                ->connectTimeout(5)
+                ->throw(function (Response $response) {
+                    throw new UnisenderException($response->json('error'));
+                });
         });
     }
 }

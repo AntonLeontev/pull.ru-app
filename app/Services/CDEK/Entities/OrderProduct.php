@@ -12,8 +12,7 @@ readonly class OrderProduct extends AbstractEntity
         public int $cdekId,
         public int $count,
         public int|float $price,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

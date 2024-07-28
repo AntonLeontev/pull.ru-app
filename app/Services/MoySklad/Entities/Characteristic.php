@@ -4,9 +4,7 @@ namespace App\Services\MoySklad\Entities;
 
 readonly class Characteristic extends AbstractEntity
 {
-    public function __construct(public string $id, public string $value)
-    {
-    }
+    public function __construct(public string $id, public string $value) {}
 
     public function jsonSerialize(): ?array
     {

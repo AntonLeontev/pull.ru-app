@@ -96,9 +96,9 @@ class SyncOrderStatusFromCdek
             $order->increment('tries');
 
             if ($order->tries > 1) {
-                throw new FullfillmentOrderNotCreated();
+                throw new FullfillmentOrderNotCreated;
             } else {
-                throw new FullfillmentOrderNotCreatedOnce();
+                throw new FullfillmentOrderNotCreatedOnce;
             }
         }
 

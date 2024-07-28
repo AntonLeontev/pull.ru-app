@@ -18,8 +18,7 @@ class CreateOperationsFromOrder
     public function __construct(
         public PlanfactService $planfactService,
         public MoySkladApi $moySkladApi,
-    ) {
-    }
+    ) {}
 
     public function handle(CdekOrderDTO $dto): void
     {

@@ -14,9 +14,7 @@ readonly class Client implements JsonSerializable
         public ?bool $registered = null,
         public ?string $surname = null,
         public ?string $middlename = null,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $clientData): static
     {

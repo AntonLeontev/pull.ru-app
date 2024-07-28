@@ -9,8 +9,7 @@ class ISOptionName
         public ?int $position = null,
         public ?bool $navigational = null,
         public ?string $title = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

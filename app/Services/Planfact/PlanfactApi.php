@@ -21,7 +21,7 @@ class PlanfactApi
         return Http::planfact()->get('/api/v1/accounts');
     }
 
-    public static function getOperations(int $accountId = null): Response
+    public static function getOperations(?int $accountId = null): Response
     {
         $query = [];
 
@@ -42,7 +42,7 @@ class PlanfactApi
         return Http::planfact()->delete("/api/v1/operations/{$operationId}");
     }
 
-    public static function getOperationCategories(OperationCategoryType $type = null, string $title = null): Response
+    public static function getOperationCategories(?OperationCategoryType $type = null, ?string $title = null): Response
     {
         $query = [];
 
@@ -57,7 +57,7 @@ class PlanfactApi
         return Http::planfact()->get('/api/v1/operationcategories', $query);
     }
 
-    public static function getContrAgents(string $title = null): Response
+    public static function getContrAgents(?string $title = null): Response
     {
         $query = [];
 
@@ -68,7 +68,7 @@ class PlanfactApi
         return Http::planfact()->get('/api/v1/contragents', $query);
     }
 
-    public static function createContrAgent(string $title, string $inn = null, string $kpp = null, string $account = null, string $externalId = null): Response
+    public static function createContrAgent(string $title, ?string $inn = null, ?string $kpp = null, ?string $account = null, ?string $externalId = null): Response
     {
         return Http::planfact()->post('/api/v1/contragents', [
             'title' => $title,
@@ -85,7 +85,7 @@ class PlanfactApi
         ]);
     }
 
-    public static function updateContrAgent(int $id, string $title = null, string $inn = null, string $kpp = null, string $account = null, string $externalId = null): Response
+    public static function updateContrAgent(int $id, ?string $title = null, ?string $inn = null, ?string $kpp = null, ?string $account = null, ?string $externalId = null): Response
     {
         return Http::planfact()->put("/api/v1/contragents/{$id}", [
             'title' => $title,
@@ -107,7 +107,7 @@ class PlanfactApi
         return Http::planfact()->get("/api/v1/contragents/{$id}");
     }
 
-    public static function createProject(string $title, string $description = null, string $externalID = null): Response
+    public static function createProject(string $title, ?string $description = null, ?string $externalID = null): Response
     {
         return Http::planfact()->post('/api/v1/projects', [
             'title' => $title,
@@ -127,7 +127,7 @@ class PlanfactApi
         return Http::planfact()->post('/api/v1/operations/outcome', $outcome);
     }
 
-    public static function updateOutcome(int $id, string $date, int $contrAgentId, int $projectId, float $value, string $externalId, int $categoryId, string $comment = null, bool $isCommitted = false): Response
+    public static function updateOutcome(int $id, string $date, int $contrAgentId, int $projectId, float $value, string $externalId, int $categoryId, ?string $comment = null, bool $isCommitted = false): Response
     {
         return Http::planfact()->put("/api/v1/operations/outcome/{$id}", [
             'operationDate' => $date,

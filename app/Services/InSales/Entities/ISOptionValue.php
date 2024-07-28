@@ -10,8 +10,7 @@ class ISOptionValue
         public ?int $position = null,
         public ?string $title = null,
         public ?string $imageUrl = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

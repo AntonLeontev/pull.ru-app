@@ -20,9 +20,7 @@ use Src\Domain\Synchronizer\Services\SyncService;
 
 class CreateProductFromInsales
 {
-    public function __construct(public SyncService $syncService)
-    {
-    }
+    public function __construct(public SyncService $syncService) {}
 
     public function handle(array $request, bool $withBlocking = true): void
     {

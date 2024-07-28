@@ -11,9 +11,7 @@ use Src\Domain\Synchronizer\Models\Order;
 
 class CancelOrderFromInsales
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(array $request): void
     {

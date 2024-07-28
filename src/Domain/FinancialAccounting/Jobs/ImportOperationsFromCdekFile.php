@@ -18,9 +18,7 @@ class ImportOperationsFromCdekFile implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public CdekExpendsImport $importModel)
-    {
-    }
+    public function __construct(public CdekExpendsImport $importModel) {}
 
     /**
      * Execute the job.

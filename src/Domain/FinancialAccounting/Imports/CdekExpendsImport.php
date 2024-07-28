@@ -15,9 +15,7 @@ use Src\Domain\FinancialAccounting\Models\CdekTransaction;
 
 class CdekExpendsImport implements ToCollection, WithChunkReading, WithHeadingRow
 {
-    public function __construct(public PlanfactService $planfactService)
-    {
-    }
+    public function __construct(public PlanfactService $planfactService) {}
 
     public function collection(Collection $rows)
     {

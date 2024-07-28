@@ -4,10 +4,7 @@ namespace Src\Domain\Synchronizer\Events;
 
 class VariantFromMoySkladToCdekSuccess extends AbstractEventForLogging
 {
-    public function __construct(public string $name, public int $id)
-    {
-
-    }
+    public function __construct(public string $name, public int $id) {}
 
     public function getMessage(): string
     {

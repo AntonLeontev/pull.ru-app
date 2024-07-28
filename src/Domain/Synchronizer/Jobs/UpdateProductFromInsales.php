@@ -16,9 +16,7 @@ class UpdateProductFromInsales implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private array $request)
-    {
-    }
+    public function __construct(private array $request) {}
 
     /**
      * Execute the job.

@@ -4,9 +4,7 @@ namespace App\Services\MoySklad\Entities;
 
 readonly class Organization extends AbstractEntity
 {
-    public function __construct(public string $id)
-    {
-    }
+    public function __construct(public string $id) {}
 
     public function jsonSerialize(): mixed
     {

@@ -8,9 +8,7 @@ readonly class OrderState extends AbstractEntity
 {
     use Makeable;
 
-    public function __construct(public string $id)
-    {
-    }
+    public function __construct(public string $id) {}
 
     public function jsonSerialize(): array
     {

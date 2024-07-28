@@ -11,8 +11,7 @@ readonly class Address extends AbstractEntity
         public int|string $floor,
         public int|string $apartment,
         public int|string $intercom,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

@@ -16,9 +16,7 @@ use Src\Domain\Synchronizer\Models\Order;
 
 class CreateOrderFromInsales
 {
-    public function __construct(public ResolveDiscount $resolveDiscount)
-    {
-    }
+    public function __construct(public ResolveDiscount $resolveDiscount) {}
 
     public function handle(array $request): void
     {

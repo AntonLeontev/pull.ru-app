@@ -4,9 +4,7 @@ namespace App\Services\MoySklad\Entities;
 
 readonly class Unit extends AbstractEntity
 {
-    public function __construct(public ?string $id)
-    {
-    }
+    public function __construct(public ?string $id) {}
 
     public function jsonSerialize(): ?array
     {

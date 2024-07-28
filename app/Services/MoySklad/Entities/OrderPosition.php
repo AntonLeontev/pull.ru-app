@@ -15,8 +15,7 @@ readonly class OrderPosition extends AbstractEntity
         public float|int $discount,
         public float|int $vat,
         public MSProduct|MSVariant $assortment,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

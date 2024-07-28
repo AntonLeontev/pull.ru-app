@@ -10,8 +10,7 @@ readonly class Recipient implements JsonSerializable
         public string $name,
         public string $email,
         public string $phone,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

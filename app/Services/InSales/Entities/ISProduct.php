@@ -33,8 +33,7 @@ class ISProduct
         public array $productFieldValues = [],
         public ?Collection $variants = null,
         public array $productBundleComponents = [],
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

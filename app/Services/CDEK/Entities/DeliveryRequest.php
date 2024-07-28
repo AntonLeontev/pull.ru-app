@@ -6,9 +6,7 @@ use App\Services\CDEK\FullfillmentApi;
 
 readonly class DeliveryRequest extends AbstractEntity
 {
-    public function __construct(public int $rate, public int $price, public ?int $servicePointId = null, int|float $discount = null)
-    {
-    }
+    public function __construct(public int $rate, public int $price, public ?int $servicePointId = null, int|float|null $discount = null) {}
 
     public function jsonSerialize(): array
     {
@@ -29,7 +27,7 @@ readonly class DeliveryRequest extends AbstractEntity
         return $data;
     }
 
-    public static function fromInsales(int $rate, int $price, int|string $servicePoint = null): static
+    public static function fromInsales(int $rate, int $price, int|string|null $servicePoint = null): static
     {
         if (is_string($servicePoint) && ! is_numeric($servicePoint)) {
             $id = FullfillmentApi::pointByCode($servicePoint)->json('_embedded.servicePoints.0.id');

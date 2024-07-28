@@ -18,9 +18,7 @@ class CreateOrderFromInsales implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public array $request)
-    {
-    }
+    public function __construct(public array $request) {}
 
     /**
      * Execute the job.

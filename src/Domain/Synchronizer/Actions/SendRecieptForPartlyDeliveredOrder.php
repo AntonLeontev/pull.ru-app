@@ -19,9 +19,7 @@ use Src\Domain\Synchronizer\Models\Variant;
 
 class SendRecieptForPartlyDeliveredOrder
 {
-    public function __construct(public CloudPaymentsService $service)
-    {
-    }
+    public function __construct(public CloudPaymentsService $service) {}
 
     public function handle(Order $order)
     {

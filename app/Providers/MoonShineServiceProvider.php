@@ -42,11 +42,11 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuGroup::make(static fn () => __('moonshine::ui.resource.system'), [
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.admins_title'),
-                    new MoonShineUserResource()
+                    new MoonShineUserResource
                 ),
                 MenuItem::make(
                     static fn () => __('moonshine::ui.resource.role_title'),
-                    new MoonShineUserRoleResource()
+                    new MoonShineUserRoleResource
                 ),
             ]),
             // MenuItem::make('Загрузка расходов СДЭК', CdekFileLoading::make('Загрузка расходов СДЭК', 'cdek_loading'))

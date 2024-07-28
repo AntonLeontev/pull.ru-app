@@ -11,9 +11,7 @@ use Illuminate\Http\Client\Response;
  */
 class PlanfactService
 {
-    public function __construct(public PlanfactApi $api)
-    {
-    }
+    public function __construct(public PlanfactApi $api) {}
 
     public function __call(string $name, array $arguments): Response
     {

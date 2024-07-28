@@ -22,9 +22,7 @@ class UpdateProductFromInsales
 {
     private Product $product;
 
-    public function __construct(public SyncService $syncService, public SyncOptionsFromInsales $syncOptions)
-    {
-    }
+    public function __construct(public SyncService $syncService, public SyncOptionsFromInsales $syncOptions) {}
 
     public function handle(array $request): void
     {

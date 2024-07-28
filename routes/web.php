@@ -7,7 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\FullfillmentApi;
+use App\Services\Unisender\UnisenderApi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -30,6 +30,7 @@ Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'va
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
 Route::get('api/additition-data', [ApiController::class, 'addititionData']);
+Route::get('api/footer-subscribe', [ApiController::class, 'footerSubscribe']);
 Route::middleware('throttle:60,1')->post('api/rightholders', [ApiController::class, 'rightholders']);
 
 Route::get('/keep-alive', function () {
@@ -38,7 +39,7 @@ Route::get('/keep-alive', function () {
 
 if (app()->isLocal()) {
     Route::get('test', function () {
-        $res = FullfillmentApi::getOrderById(32875823);
+        $res = UnisenderApi::subscribe(1, ['email' => 'aner-anton@ya.ru']);
 
         dd($res->json());
     });

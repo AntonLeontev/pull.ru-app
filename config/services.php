@@ -119,4 +119,8 @@ return [
     'ip2location' => [
         'key' => env('IP2LOCATION_KEY'),
     ],
+
+    'unisender' => [
+        'key' => env('UNISENDER_KEY'),
+    ],
 ];

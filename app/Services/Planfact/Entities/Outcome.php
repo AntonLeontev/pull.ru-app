@@ -18,8 +18,7 @@ readonly class Outcome implements JsonSerializable
         public ?int $operationCategoryId = null,
         public ?string $externalId = null,
         public ?string $comment = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

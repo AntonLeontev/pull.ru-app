@@ -5,16 +5,15 @@ namespace App\Services\CDEK\Entities;
 readonly class Dimensions extends AbstractEntity
 {
     /**
-     * @param  int|string|float|null  $x in mm
-     * @param  int|string|float|null  $y in mm
-     * @param  int|string|float|null  $z in mm
+     * @param  int|string|float|null  $x  in mm
+     * @param  int|string|float|null  $y  in mm
+     * @param  int|string|float|null  $z  in mm
      */
     public function __construct(
         public int|string|float|null $x = null,
         public int|string|float|null $y = null,
         public int|string|float|null $z = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): ?array
     {
@@ -34,9 +33,9 @@ readonly class Dimensions extends AbstractEntity
     }
 
     /**
-     * @param  int|string|float  $x in cm
-     * @param  int|string|float  $y in cm
-     * @param  int|string|float  $z in cm
+     * @param  int|string|float  $x  in cm
+     * @param  int|string|float  $y  in cm
+     * @param  int|string|float  $z  in cm
      */
     public static function fromCentimetres(
         int|string|float $x,
@@ -53,7 +52,7 @@ readonly class Dimensions extends AbstractEntity
     public static function fromInsalesDimensions(?string $dimensions): static
     {
         if (is_null($dimensions)) {
-            return new static();
+            return new static;
         }
 
         $dimensions = preg_split('~x|х~', $dimensions);

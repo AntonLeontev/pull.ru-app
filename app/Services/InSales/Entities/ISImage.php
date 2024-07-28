@@ -20,8 +20,7 @@ class ISImage
         public ?string $compactUrl = null,
         public ?string $largeUrl = null,
         public ?string $filename = null,
-    ) {
-    }
+    ) {}
 
     public static function fromRequest(array $data): static
     {

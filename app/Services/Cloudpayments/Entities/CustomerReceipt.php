@@ -13,8 +13,7 @@ class CustomerReceipt implements JsonSerializable
         public ?TaxationSystem $taxationSystem = null,
         public ?string $email = null,
         public ?string $phone = null,
-    ) {
-    }
+    ) {}
 
     public function jsonSerialize(): array
     {

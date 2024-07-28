@@ -17,9 +17,7 @@ class ProductFromMoySkladToCdek implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private Variant $dbVariant, private array $MSProduct)
-    {
-    }
+    public function __construct(private Variant $dbVariant, private array $MSProduct) {}
 
     /**
      * Execute the job.

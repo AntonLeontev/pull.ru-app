@@ -13,18 +13,18 @@ class CloudPaymentsApi
     /**
      * Метод формирования кассового чека
      *
-     * @param  string  $inn ИНН вашей организации или ИП, на который зарегистрирована касса
-     * @param  Type  $type Признак расчета
-     * @param  CustomerReceipt  $customerReceipt Состав чека
-     * @param  string|null  $invoiceId Номер заказа в вашей системе
-     * @param  string|null  $accountId Идентификатор пользователя в вашей системе
+     * @param  string  $inn  ИНН вашей организации или ИП, на который зарегистрирована касса
+     * @param  Type  $type  Признак расчета
+     * @param  CustomerReceipt  $customerReceipt  Состав чека
+     * @param  string|null  $invoiceId  Номер заказа в вашей системе
+     * @param  string|null  $accountId  Идентификатор пользователя в вашей системе
      */
     public static function receipt(
         string $inn,
         Type $type,
         CustomerReceipt $customerReceipt,
-        string $invoiceId = null,
-        string $accountId = null,
+        ?string $invoiceId = null,
+        ?string $accountId = null,
     ): Response {
         $response = Http::cloudpayments()
             ->post('/kkt/receipt', [

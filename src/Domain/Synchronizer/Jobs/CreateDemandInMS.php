@@ -22,9 +22,7 @@ class CreateDemandInMS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function handle(): void
     {

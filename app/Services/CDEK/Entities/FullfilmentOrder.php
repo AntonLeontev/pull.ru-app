@@ -12,8 +12,7 @@ readonly class FullfilmentOrder extends AbstractEntity
         public DeliveryRequest $deliveryRequest,
         public ?Address $address = null,
         public int|string|null $externalId = null,
-    ) {
-    }
+    ) {}
 
     public static function fromInsalesOrderRequest(object $request): static
     {

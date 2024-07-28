@@ -18,9 +18,9 @@ class InSalesApi
         string $address,
         string $topic,
         string $formatType = 'json',
-        int $warehouseId = null,
-        int $salesChannelId = null,
-        int $batchSize = null,
+        ?int $warehouseId = null,
+        ?int $salesChannelId = null,
+        ?int $batchSize = null,
     ): Response {
         return Http::inSales()
             ->post('admin/webhooks.json', [
@@ -37,8 +37,8 @@ class InSalesApi
 
     public static function updateWebhook(
         int $id,
-        string $address = null,
-        string $topic = null,
+        ?string $address = null,
+        ?string $topic = null,
         string $formatType = 'json',
     ): Response {
         $data = ['webhook' => []];
@@ -124,9 +124,9 @@ class InSalesApi
     }
 
     public static function getProducts(
-        int $fromId = null,
+        ?int $fromId = null,
         int $perPage = 10,
-        Carbon $updatedSince = null
+        ?Carbon $updatedSince = null
     ): Response {
         return Http::inSales()
             ->get('/admin/products.json', [
