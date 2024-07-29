@@ -12,6 +12,7 @@ use Src\Domain\FinancialAccounting\Jobs\CreateOperationsInAccountingSystem;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Events\OrderAcceptedAtPickPoint;
 use Src\Domain\Synchronizer\Events\OrderDelivered;
+use Src\Domain\Synchronizer\Events\OrderPartlyDelivered;
 use Src\Domain\Synchronizer\Events\OrderTakenByCourier;
 use Src\Domain\Synchronizer\Models\Order;
 
@@ -97,9 +98,10 @@ class DeliveryController extends Controller
             }
 
             if ($request->json('attributes.status_reason_code') == 20) {
+                event(new OrderPartlyDelivered($order));
+                MoySkladApi::updateCustomerOrder($order->moy_sklad_id, ['state' => OrderStatus::partlyDelivered->toMS()]);
                 InsalesApiService::updateOrderState($order->insales_id, OrderStatus::partlyDelivered);
                 $order->update(['status' => OrderStatus::partlyDelivered]);
-                Log::channel('telegram')->info('Заказ '.$order->number.' частично доставлен');
 
                 dispatch(new CreateOperationsInAccountingSystem($request->json('uuid')));
 

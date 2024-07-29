@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Synchronizer\Jobs;
 
+use App\Services\CDEK\CdekApi;
 use App\Services\InSales\InSalesApi;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\CustomerOrder;
@@ -28,6 +29,7 @@ class CreateDemandInMS implements ShouldQueue
     {
         try {
             $insalesOrder = InSalesApi::getOrder($this->order->insales_id);
+            $cdekOrderItems = collect(CdekApi::getOrderByImNumber($this->order->number)->json('entity.packages.0.items'));
             $clientInsalesId = $insalesOrder->json('client.id');
             $client = Client::where('insales_id', $clientInsalesId)->first();
             $counterparty = Counterparty::make($client->moy_sklad_id);
@@ -39,7 +41,15 @@ class CreateDemandInMS implements ShouldQueue
                 $position = [];
                 $variant = Variant::where('insales_id', $line['variant_id'])->first();
 
-                $position['quantity'] = $line['quantity'];
+                $cdekOrderItem = $cdekOrderItems->where('ware_key', $variant->id)->first();
+                if (is_null($cdekOrderItem)) {
+                    throw new \Exception('Не найдена модификация '.$variant->id.' в заказе сдека');
+                }
+                if ($cdekOrderItem['delivery_amount'] === 0) {
+                    continue;
+                }
+
+                $position['quantity'] = $cdekOrderItem['delivery_amount'];
                 $position['price'] = $line['full_sale_price'] * 100;
                 $position['assortment'] = MSVariant::make($variant->moy_sklad_id);
                 $position['reserve'] = $line['reserved_quantity'];

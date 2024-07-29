@@ -62,6 +62,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderPartlyDelivered::class => [
             SendReceipt::class,
+            CreateDemandInMS::class,
             SendOrderPartlyDeliveredTelegramNotification::class,
         ],
         OrderDelivered::class => [

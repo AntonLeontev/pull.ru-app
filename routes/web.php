@@ -7,7 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\Unisender\UnisenderApi;
+use App\Services\CDEK\CdekApi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -37,9 +37,9 @@ Route::get('/keep-alive', function () {
     return response()->json(['ok' => true]);
 });
 
-if (app()->isLocal()) {
+if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function () {
-        $res = UnisenderApi::subscribe(1, ['email' => 'aner-anton@ya.ru']);
+        $res = CdekApi::getOrderByImNumber(1201);
 
         dd($res->json());
     });

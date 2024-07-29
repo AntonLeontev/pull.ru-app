@@ -190,7 +190,7 @@ enum OrderStatus: string
                 'app' => 'partly_delivered',
                 'insales' => 'chastichno-dostavlen',
                 // 'cdekff' => 'return',
-                // 'ms' => '400c6500-ad4b-11ee-0a80-0dfd005ae9c7',
+                'ms' => 'ee56e978-4daf-11ef-0a80-072c005b65f0',
                 'level' => 6,
             ],
         ]);
