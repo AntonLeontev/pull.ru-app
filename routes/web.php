@@ -7,7 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
-use App\Services\CDEK\CdekApi;
+use App\Services\InSales\InSalesApi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -39,7 +39,7 @@ Route::get('/keep-alive', function () {
 
 if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function () {
-        $res = CdekApi::getOrderByImNumber(1201);
+        $res = InSalesApi::getCustomStatuses();
 
         dd($res->json());
     });

@@ -115,7 +115,7 @@ enum OrderStatus: string
             ],
             [
                 'app' => 'assembled',
-                'insales' => 'sobran-2',
+                'insales' => 'sobran-9fe101',
                 'cdekff' => 'assembled',
                 'ms' => '400c63ea-ad4b-11ee-0a80-0dfd005ae9c4',
                 'level' => 3,
