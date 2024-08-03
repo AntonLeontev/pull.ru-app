@@ -263,6 +263,12 @@ class MoySkladApi
             ->get($query);
     }
 
+    public static function addMovePositions(string $moveId, array $positions): Response
+    {
+        return Http::moySklad()
+            ->post("entity/move/$moveId/positions", $positions);
+    }
+
     public static function getOrderStates(): Response
     {
         return Http::moySklad()
