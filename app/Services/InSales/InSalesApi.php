@@ -84,7 +84,23 @@ class InSalesApi
     public static function getClients(): Response
     {
         return Http::inSales()
-            ->get('admin/clients.json');
+            ->get('admin/clients.json?per_page=100');
+    }
+
+    public static function updateClient(int $id, array $data): Response
+    {
+        return Http::inSales()
+            ->put("admin/clients/$id.json", [
+                'client' => $data,
+            ]);
+    }
+
+    public static function createClient(array $data): Response
+    {
+        return Http::inSales()
+            ->post('admin/clients.json', [
+                'client' => $data,
+            ]);
     }
 
     public static function getVariants(int $productId): Response

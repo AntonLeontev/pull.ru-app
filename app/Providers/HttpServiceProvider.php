@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
 use App\Services\Cloudpayments\Exceptions\CloudPaymentsApiException;
+use App\Services\Dicards\Exceptions\DicardsException;
 use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Planfact\Exceptions\PlanfactBadRequestException;
@@ -139,6 +140,21 @@ class HttpServiceProvider extends ServiceProvider
                 ->connectTimeout(5)
                 ->throw(function (Response $response) {
                     throw new UnisenderException($response->json('error'));
+                });
+        });
+
+        Http::macro('dicards', function () {
+            return Http::baseUrl('https://get.dicards.ru/dicards-api')
+                ->asJson()
+                ->retry(1, 500)
+                ->timeout(10)
+                ->connectTimeout(5)
+                ->withOptions([
+                    'allow_redirects' => ['strict' => true],
+                ])
+                ->throw(function (Response $response) {
+                    $error = $response->json('detail') ?? $response->json('error') ?? 'Неизвестная ошибка';
+                    throw new DicardsException($error);
                 });
         });
     }

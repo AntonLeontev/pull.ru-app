@@ -52,24 +52,13 @@ return [
         'store' => 'fb225577-cf32-11ee-0a80-141200432325', // pull
         'price_id' => '3f7ac9c1-ad4b-11ee-0a80-0dfd005ae996',
         'old_price_id' => 'f5850725-cef7-11ee-0a80-0f3f003357ed',
+        'default_customer_id' => '40044568-ad4b-11ee-0a80-0dfd005ae9ae',
         'enabled' => env('SYNC_MOY_SKLAD'),
         'fields_to_update' => [
             'salePrices',
             'buyPrices',
             'Старая цена',
         ],
-    ],
-
-    'tinkoff' => [
-        'merchant_id' => env('TINKOFF_MERCHANT_ID'),
-        'terminal_id' => env('TINKOFF_TERMINAL_ID'),
-        'terminal' => env('TINKOFF_TERMINAL'),
-        'password' => env('TINKOFF_PASSWORD'),
-        'notification_url' => env('APP_URL').'/webhooks/online-payments/tinkoff',
-        'success_url' => null,
-        'fail_url' => null,
-        'taxation' => 'usn_income_outcome',
-        'tax' => 'none', // НДС в чеке
     ],
 
     'cloudpayments' => [
@@ -122,5 +111,10 @@ return [
 
     'unisender' => [
         'key' => env('UNISENDER_KEY'),
+    ],
+
+    'dicards' => [
+        'api_key' => env('DICARDS_API_KEY'),
+        'api_id' => env('DICARDS_API_ID'),
     ],
 ];

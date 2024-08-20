@@ -215,6 +215,18 @@ class MoySkladApi
             ]);
     }
 
+    public static function getCounterparties(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/counterparty');
+    }
+
+    public static function updateCounterparty(string $id, array $data): Response
+    {
+        return Http::moySklad()
+            ->put("entity/counterparty/$id", $data);
+    }
+
     public static function getStores(): Response
     {
         return Http::moySklad()
@@ -279,5 +291,23 @@ class MoySkladApi
     {
         return Http::moySklad()
             ->post('entity/demand', $data);
+    }
+
+    public static function getBonusprograms(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/bonusprogram');
+    }
+
+    public static function getBonustransactions(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/bonustransaction');
+    }
+
+    public static function getDiscounts(): Response
+    {
+        return Http::moySklad()
+            ->get('entity/discount');
     }
 }
