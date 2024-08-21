@@ -34,4 +34,18 @@ class DicardsService
     {
         return $this->api->getCardLink($id)->json('link');
     }
+
+    public function updateCardDiscount(int|string $id, int $discount, bool $push = true)
+    {
+        $data = [
+            'values' => [
+                [
+                    'label' => 'СКИДКА',
+                    'value' => $discount.'%',
+                ],
+            ],
+        ];
+
+        return $this->api->updateCard($id, $data, true, $push);
+    }
 }

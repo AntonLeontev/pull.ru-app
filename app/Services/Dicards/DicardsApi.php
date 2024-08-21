@@ -67,6 +67,24 @@ class DicardsApi
             ->get("passes/$id");
     }
 
+    public static function updateCard(int|string $id, array $data, bool $withValues, bool $push)
+    {
+
+        $baseUrl = "passes/$id";
+        $params = [];
+
+        if ($withValues) {
+            $params['withValues'] = 'true';
+        }
+        if ($push) {
+            $params['push'] = 'true';
+        }
+
+        return Http::dicards()
+            ->withToken(static::getToken())
+            ->put("$baseUrl?".http_build_query($params), $data);
+    }
+
     public static function getCardLink(int|string $id)
     {
         return Http::dicards()

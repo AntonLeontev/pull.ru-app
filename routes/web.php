@@ -8,6 +8,7 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Services\Dicards\DicardsService;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -38,7 +39,11 @@ Route::get('/keep-alive', function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (DicardsService $service) {});
+    Route::get('test', function (DicardsService $service) {
+        // $c = MoySkladApi::getCounterparties()->collect('rows')->first();
+        // dd($c);
+
+    });
 }
 
 Route::prefix(config('moonshine.route.prefix', ''))
