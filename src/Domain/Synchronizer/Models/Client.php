@@ -11,11 +11,13 @@ class Client extends Model
 
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'phone',
         'insales_id',
         'moy_sklad_id',
-        'is_registered',
+        'birthday',
+        'discount_card',
     ];
 
     protected $casts = [

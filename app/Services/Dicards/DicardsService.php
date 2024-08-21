@@ -2,6 +2,8 @@
 
 namespace App\Services\Dicards;
 
+use Src\Domain\Synchronizer\Models\Client;
+
 class DicardsService
 {
     public function __construct(public DicardsApi $api) {}
@@ -10,13 +12,23 @@ class DicardsService
         string|int $number,
         string $name,
         string $phone,
-        string $birthday,
+        ?string $birthday = null,
     ) {
         return $this->api->createCard(
             $number,
             $name,
             $phone,
             $birthday,
+        )->json();
+    }
+
+    public function createCardForClient(Client $client)
+    {
+        return $this->api->createCard(
+            $client->discount_card,
+            $client->name,
+            $client->phone,
+            $client->birthday,
         )->json();
     }
 

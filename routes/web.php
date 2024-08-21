@@ -7,6 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
+use App\Http\Controllers\RegisterClientController;
 use App\Services\Dicards\DicardsService;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,11 @@ Route::middleware('throttle:60,1')->post('api/rightholders', [ApiController::cla
 
 Route::get('/keep-alive', function () {
     return response()->json(['ok' => true]);
+});
+
+Route::controller(RegisterClientController::class)->group(function () {
+    Route::get('register', 'show');
+    Route::post('register', 'create')->middleware(['precognitive']);
 });
 
 if (config('app.url') === 'http://localhost:8000') {

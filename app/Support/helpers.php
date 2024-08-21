@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\CDEK\CdekApi;
+use Src\Domain\Synchronizer\Models\Client;
 
 if (! function_exists('objectize')) {
     function objectize(array $input): object
@@ -48,5 +49,27 @@ if (! function_exists('organization_by_brand_id')) {
         $brand = $brands->first(fn ($el) => $el['id'] == $brandId);
 
         return $organizations->first(fn ($el) => $el['id'] == $brand['organization_id']);
+    }
+}
+
+if (! function_exists('next_discount_card_number')) {
+    function next_discount_card_number(): int
+    {
+        if (cache('last_discount_card_number')) {
+            $number = ((int) cache('last_discount_card_number')) + 1;
+            cache(['last_discount_card_number' => $number]);
+
+            return $number;
+        }
+
+        $number = Client::max('discount_card');
+
+        $nextNumber = empty($number)
+            ? 100001
+            : ((int) $number) + 1;
+
+        cache(['last_discount_card_number' => $nextNumber]);
+
+        return $nextNumber;
     }
 }

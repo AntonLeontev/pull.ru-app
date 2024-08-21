@@ -28,7 +28,7 @@ class DicardsApi
         int|string $number,
         string $name,
         string $phone,
-        string $birthday,
+        ?string $birthday,
     ): Response {
         return Http::dicards()
             ->withToken(static::getToken())
