@@ -37,6 +37,6 @@ class ClientRegisterRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $this->merge(['phone' => '+'.preg_replace('~\D~', '', $this->get('phone'))]);
+        $this->merge(['phone' => normalize_phone($this->get('phone'))]);
     }
 }

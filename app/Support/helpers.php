@@ -73,3 +73,10 @@ if (! function_exists('next_discount_card_number')) {
         return $nextNumber;
     }
 }
+
+if (! function_exists('normalize_phone')) {
+    function normalize_phone(string $phone): string
+    {
+        return '+'.preg_replace('~\D~', '', $phone);
+    }
+}

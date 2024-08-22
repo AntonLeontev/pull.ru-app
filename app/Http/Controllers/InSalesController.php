@@ -9,9 +9,12 @@ use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
 use Src\Domain\Synchronizer\Enums\OrderPaymentType;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
 use Src\Domain\Synchronizer\Jobs\CancelOrderFromInsales;
+use Src\Domain\Synchronizer\Jobs\CreateClientInMS;
+use Src\Domain\Synchronizer\Jobs\CreateDicardsCard;
 use Src\Domain\Synchronizer\Jobs\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
+use Src\Domain\Synchronizer\Models\Client;
 use Src\Domain\Synchronizer\Models\Order;
 
 class InSalesController extends Controller
@@ -64,7 +67,34 @@ class InSalesController extends Controller
         }
     }
 
-    public function clientCreate(Request $request) {}
+    public function clientCreate(Request $request)
+    {
+        if (! $request->get('registered')) {
+            return;
+        }
+
+        if (! $request->get('type') !== 'Client::Individual') {
+            return;
+        }
+
+        $phone = normalize_phone($request->get('phone'));
+        $client = Client::where('phone', $phone)->first();
+
+        if (! is_null($client)) {
+            return;
+        }
+
+        $client = Client::create([
+            'insales_id' => $request->get('id'),
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'phone' => $phone,
+            'discount_card' => next_discount_card_number(),
+        ]);
+
+        dispatch(new CreateClientInMS($client))->onQueue('high');
+        dispatch(new CreateDicardsCard($client))->onQueue('high');
+    }
 
     public function externalPayment(Request $request, ResolveDiscount $resolveDiscount)
     {
