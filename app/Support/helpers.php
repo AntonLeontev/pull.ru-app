@@ -65,7 +65,7 @@ if (! function_exists('next_discount_card_number')) {
         $number = Client::max('discount_card');
 
         $nextNumber = empty($number)
-            ? 100001
+            ? 100030
             : ((int) $number) + 1;
 
         cache(['last_discount_card_number' => $nextNumber]);

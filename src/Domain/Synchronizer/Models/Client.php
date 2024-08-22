@@ -18,6 +18,7 @@ class Client extends Model
         'moy_sklad_id',
         'birthday',
         'discount_card',
+        'discount_percent',
     ];
 
     protected $casts = [

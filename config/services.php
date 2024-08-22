@@ -53,6 +53,7 @@ return [
         'price_id' => '3f7ac9c1-ad4b-11ee-0a80-0dfd005ae996',
         'old_price_id' => 'f5850725-cef7-11ee-0a80-0f3f003357ed',
         'default_customer_id' => '40044568-ad4b-11ee-0a80-0dfd005ae9ae',
+        'personal_discount_id' => '04ee0de3-5f2c-11ef-0a80-0dd8000016c5',
         'enabled' => env('SYNC_MOY_SKLAD'),
         'fields_to_update' => [
             'salePrices',

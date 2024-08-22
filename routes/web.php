@@ -10,6 +10,7 @@ use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Services\Dicards\DicardsService;
 use App\Services\MoySklad\MoySkladApi;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -48,7 +49,7 @@ if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (DicardsService $service) {
         // $c = MoySkladApi::getCounterparties()->collect('rows')->first();
         // dd($c);
-
+        Log::channel('telegram')->alert('Не удалось выдать скидочную карту новому пользователю: ', ['test']);
     });
 }
 

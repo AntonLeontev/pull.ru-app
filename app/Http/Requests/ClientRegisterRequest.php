@@ -12,7 +12,7 @@ class ClientRegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'surname' => ['required', 'string', 'max:50'],
             'birthday' => ['required', 'date', 'max:50'],
-            'phone' => ['required', 'string', 'size:18', 'starts_with:+7'],
+            'phone' => ['required', 'string', 'size:12', 'starts_with:+79'],
             'email' => ['required', 'email', 'max:50'],
         ];
     }
@@ -35,7 +35,7 @@ class ClientRegisterRequest extends FormRequest
         ];
     }
 
-    protected function passedValidation()
+    protected function prepareForValidation()
     {
         $this->merge(['phone' => '+'.preg_replace('~\D~', '', $this->get('phone'))]);
     }

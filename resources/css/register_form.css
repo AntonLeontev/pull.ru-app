@@ -101,3 +101,9 @@
 	border: none;
 	cursor: pointer;
 }
+
+.result-message {
+	padding: 0 10px;
+	max-width: 450px;
+	text-align: center;
+}

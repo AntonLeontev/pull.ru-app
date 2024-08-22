@@ -4,6 +4,7 @@ namespace App\Services\InSales;
 
 use Illuminate\Http\Client\Response;
 use Src\Domain\Synchronizer\Enums\OrderStatus;
+use Src\Domain\Synchronizer\Models\Client;
 
 class InsalesApiService
 {
@@ -65,5 +66,19 @@ class InsalesApiService
                 'financial_status' => $state,
             ],
         ]);
+    }
+
+    public function createClientFromClient(Client $client): object
+    {
+        return InSalesApi::createClient([
+            'name' => $client->name,
+            'surname' => $client->surname,
+            'middlename' => '',
+            'registered' => true,
+            'subscribe' => true,
+            'email' => $client->email,
+            'password' => str()->random(10),
+            'phone' => $client->phone,
+        ])->object();
     }
 }

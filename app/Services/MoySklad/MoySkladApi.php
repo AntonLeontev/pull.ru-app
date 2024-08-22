@@ -4,6 +4,7 @@ namespace App\Services\MoySklad;
 
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\Organization;
+use App\Services\MoySklad\Entities\PersonalDiscount;
 use App\Services\MoySklad\Entities\Product;
 use App\Services\MoySklad\Enums\WebhookAction;
 use Illuminate\Http\Client\Response;
@@ -205,14 +206,30 @@ class MoySkladApi
         string $name,
         ?string $email = null,
         ?string $phone = null,
+        string|int|null $discountCard = null,
+        ?int $discountPercent = null,
     ): Response {
+        $data = [
+            'name' => $name,
+            'companyType' => 'individual',
+            'email' => $email,
+            'phone' => $phone,
+            'discountCardNumber' => (string) $discountCard,
+        ];
+
+        if (! is_null($discountPercent)) {
+            $discount = new PersonalDiscount(config('services.moySklad.personal_discount_id'));
+            $data['discounts'] = [
+                [
+                    'discount' => $discount,
+                    'personalDiscount' => $discountPercent,
+                ],
+            ];
+        }
+
         return Http::moySklad()
-            ->post('entity/counterparty', [
-                'name' => $name,
-                'companyType' => 'individual',
-                'email' => $email,
-                'phone' => $phone,
-            ]);
+            ->withHeader('X-Lognex-WebHook-Disable', '1')
+            ->post('entity/counterparty', $data);
     }
 
     public static function getCounterparties(): Response
@@ -224,6 +241,9 @@ class MoySkladApi
     public static function updateCounterparty(string $id, array $data): Response
     {
         return Http::moySklad()
+            ->withHeaders([
+                'X-Lognex-WebHook-Disable' => '1',
+            ])
             ->put("entity/counterparty/$id", $data);
     }
 
