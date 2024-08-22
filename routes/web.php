@@ -9,6 +9,7 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Services\Dicards\DicardsService;
+use App\Services\MoySklad\Enums\WebhookAction;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +30,7 @@ Route::post('webhooks/insales/client_create', [InSalesController::class, 'client
 
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
+Route::post('webhooks/moy_sklad/counterparty_create', [MoySkladController::class, 'counterpartyCreate']);
 
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
@@ -47,8 +49,12 @@ Route::controller(RegisterClientController::class)->group(function () {
 
 if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (DicardsService $service) {
-        // $c = MoySkladApi::getCounterparties()->collect('rows')->first();
-        // dd($c);
+        $c = MoySkladApi::createWebhook(
+            'https://app.limmite.ru/webhooks/moy_sklad/counterparty_create',
+            WebhookAction::create,
+            'counterparty'
+        )->json();
+        dd($c);
     });
 }
 

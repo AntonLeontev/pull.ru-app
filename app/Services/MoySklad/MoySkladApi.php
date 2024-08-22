@@ -155,15 +155,20 @@ class MoySkladApi
             ->get('entity/webhook');
     }
 
-    public static function createWebhook(string $url, WebhookAction $action, string $entityType, string $diffType = 'NONE')
+    public static function createWebhook(string $url, WebhookAction $action, string $entityType, ?string $diffType = null)
     {
+        $data = [
+            'url' => $url,
+            'action' => $action->value,
+            'entityType' => $entityType,
+        ];
+
+        if (! is_null($diffType)) {
+            $data['diffType'] = $diffType;
+        }
+
         return Http::moySklad()
-            ->post('entity/webhook', [
-                'url' => $url,
-                'action' => $action->value,
-                'entityType' => $entityType,
-                'diffType' => $diffType,
-            ]);
+            ->post('entity/webhook', $data);
     }
 
     public static function updateWebhook(string $id, string $url, WebhookAction $action, string $entityType, string $diffType = 'NONE')

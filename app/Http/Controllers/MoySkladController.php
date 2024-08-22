@@ -17,4 +17,6 @@ class MoySkladController extends Controller
     {
         dispatch(new UpdateVariantFromMoySklad($request->toArray()));
     }
+
+    public function counterpartyCreate(Request $request) {}
 }
