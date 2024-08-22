@@ -10,7 +10,6 @@ use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Services\Dicards\DicardsService;
 use App\Services\MoySklad\MoySkladApi;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -26,6 +25,7 @@ Route::withoutMiddleware()
     ->name('create');
 Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate'])->name('update');
 Route::post('webhooks/insales/external-payment', [InSalesController::class, 'externalPayment']);
+Route::post('webhooks/insales/client_create', [InSalesController::class, 'clientCreate']);
 
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
@@ -49,7 +49,6 @@ if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (DicardsService $service) {
         // $c = MoySkladApi::getCounterparties()->collect('rows')->first();
         // dd($c);
-        Log::channel('telegram')->alert('Не удалось выдать скидочную карту новому пользователю: ', ['test']);
     });
 }
 

@@ -64,6 +64,8 @@ class InSalesController extends Controller
         }
     }
 
+    public function clientCreate(Request $request) {}
+
     public function externalPayment(Request $request, ResolveDiscount $resolveDiscount)
     {
         $order = Order::where('insales_id', $request->get('order_id'))->first();
