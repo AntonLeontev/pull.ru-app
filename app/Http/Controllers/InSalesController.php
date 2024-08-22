@@ -73,7 +73,7 @@ class InSalesController extends Controller
             return;
         }
 
-        if (! $request->get('type') !== 'Client::Individual') {
+        if ($request->get('type') !== 'Client::Individual') {
             return;
         }
 
