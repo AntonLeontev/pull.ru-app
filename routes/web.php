@@ -9,7 +9,6 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Services\Dicards\DicardsService;
-use App\Services\MoySklad\Enums\WebhookAction;
 use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
 
@@ -49,11 +48,7 @@ Route::controller(RegisterClientController::class)->group(function () {
 
 if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (DicardsService $service) {
-        $c = MoySkladApi::createWebhook(
-            'https://app.limmite.ru/webhooks/moy_sklad/counterparty_create',
-            WebhookAction::create,
-            'counterparty'
-        )->json();
+        $c = MoySkladApi::getCounterparty('7f7c1d5c-60a2-11ef-0a80-1707002dce69')->object();
         dd($c);
     });
 }

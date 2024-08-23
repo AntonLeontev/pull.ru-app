@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\CDEK\CdekApi;
+use Illuminate\Support\Facades\Log;
 use Src\Domain\Synchronizer\Models\Client;
 
 if (! function_exists('objectize')) {
@@ -78,5 +79,12 @@ if (! function_exists('normalize_phone')) {
     function normalize_phone(string $phone): string
     {
         return '+'.preg_replace('~\D~', '', $phone);
+    }
+}
+
+if (! function_exists('telegram_log')) {
+    function telegram_log(string $message, array $context = []): void
+    {
+        Log::channel('telegram')->info($message, $context);
     }
 }

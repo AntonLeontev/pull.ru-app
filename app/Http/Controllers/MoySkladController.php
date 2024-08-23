@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Src\Domain\Synchronizer\Jobs\CreateCounterPartyFromMoySklad;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromMoySklad;
 use Src\Domain\Synchronizer\Jobs\UpdateVariantFromMoySklad;
 
@@ -18,5 +19,8 @@ class MoySkladController extends Controller
         dispatch(new UpdateVariantFromMoySklad($request->toArray()));
     }
 
-    public function counterpartyCreate(Request $request) {}
+    public function counterpartyCreate(Request $request)
+    {
+        dispatch(new CreateCounterPartyFromMoySklad($request->toArray()));
+    }
 }

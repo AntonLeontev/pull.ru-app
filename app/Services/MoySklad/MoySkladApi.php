@@ -252,6 +252,12 @@ class MoySkladApi
             ->put("entity/counterparty/$id", $data);
     }
 
+    public static function getCounterparty(string $id): Response
+    {
+        return Http::moySklad()
+            ->get("entity/counterparty/$id");
+    }
+
     public static function getStores(): Response
     {
         return Http::moySklad()
