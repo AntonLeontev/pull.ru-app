@@ -31,11 +31,12 @@ class CreateDicardsCard implements ShouldQueue
             $service->createCardForClient($this->client);
         } catch (\Throwable $th) {
             $message = sprintf(
-                'Не удалось создать скидочную карту пользователя в дикардс: id %s, %s, %s, %s',
+                'Не удалось создать скидочную карту пользователя в дикардс: id %s, %s, %s, %s. Причина: %s',
                 $this->client->id,
                 $this->client->name,
                 $this->client->surname,
                 $this->client->phone,
+				$th->getMessage(),
             );
             Log::channel('telegram')->critical($message);
 

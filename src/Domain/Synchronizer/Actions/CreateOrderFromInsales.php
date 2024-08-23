@@ -11,6 +11,7 @@ use App\Services\MoySklad\Entities\Organization;
 use App\Services\MoySklad\Entities\Store;
 use App\Services\MoySklad\MoySkladApi;
 use Src\Domain\Synchronizer\Enums\OrderPaymentType;
+use Src\Domain\Synchronizer\Jobs\CreateDicardsCard;
 use Src\Domain\Synchronizer\Models\Client;
 use Src\Domain\Synchronizer\Models\Order;
 
@@ -25,6 +26,10 @@ class CreateOrderFromInsales
         $this->resolveDiscount->handle($request);
 
         $client = $this->getClientFromInsales(InSalesClient::fromObject($request->client));
+
+		if (is_null($client->discount_card) && $client->is_registered) {
+			dispatch(new CreateDicardsCard($client));
+		}
 
         if (is_null($client->moy_sklad_id) && $client->is_registered) {
             $msClient = MoySkladApi::createIndividualCounterparty($client->name, $client->email, $client->phone)->json();
