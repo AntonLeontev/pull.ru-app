@@ -85,7 +85,6 @@ class CreateOrderFromInsales
                 'name' => $client->name,
                 'phone' => $client->phone,
                 'email' => $client->email,
-                'is_registered' => $client->registered,
             ]
         );
     }
