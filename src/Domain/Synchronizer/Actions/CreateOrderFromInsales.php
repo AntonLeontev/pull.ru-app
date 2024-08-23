@@ -26,13 +26,21 @@ class CreateOrderFromInsales
 
         $client = $this->getClientFromInsales(InSalesClient::fromObject($request->client));
 
-        if (is_null($client->moy_sklad_id)) {
+        if (is_null($client->moy_sklad_id) && $client->is_registered) {
             $msClient = MoySkladApi::createIndividualCounterparty($client->name, $client->email, $client->phone)->json();
 
             $client->update(['moy_sklad_id' => $msClient['id']]);
+
+            $counterparty = Counterparty::make($client->moy_sklad_id);
         }
 
-        $counterparty = Counterparty::make($client->moy_sklad_id);
+        if (! is_null($client->moy_sklad_id)) {
+            $counterparty = Counterparty::make($client->moy_sklad_id);
+        }
+
+        if (! $client->is_registered) {
+            $counterparty = Counterparty::make(config('services.moySklad.default_customer_id'));
+        }
 
         $order = Order::firstOrCreate(
             ['insales_id' => $request->id],
@@ -64,13 +72,13 @@ class CreateOrderFromInsales
             $order->update(['moy_sklad_id' => $msOrder['id']]);
         }
 
-        if (is_null($order->cdek_id)) {
-            $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
+        // if (is_null($order->cdek_id)) {
+        //     $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
 
-            $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
+        //     $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
 
-            $order->update(['cdek_id' => $cdekOrderId]);
-        }
+        //     $order->update(['cdek_id' => $cdekOrderId]);
+        // }
 
         foreach ($request->order_lines as $line) {
             cache(['blocked_products.'.$line->product_id => true]);
@@ -85,6 +93,7 @@ class CreateOrderFromInsales
                 'name' => $client->name,
                 'phone' => $client->phone,
                 'email' => $client->email,
+                'is_registered' => $client->registered,
             ]
         );
     }

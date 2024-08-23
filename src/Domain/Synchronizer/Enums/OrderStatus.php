@@ -23,6 +23,8 @@ enum OrderStatus: string
     case returning = 'returning';
     case partlyDelivered = 'partly_delivered';
 
+    case test = 'test-soglasovan';
+
     public static function fromFF(string $state): static
     {
         $status = self::findState('cdekff', $state);
@@ -103,6 +105,12 @@ enum OrderStatus: string
                 'app' => 'approved',
                 'insales' => 'soglasovan',
                 'cdekff' => 'confirmed',
+                'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
+                'level' => 1,
+            ],
+            [
+                'app' => 'test-soglasovan',
+                'insales' => 'test-soglasovan',
                 'ms' => '400c639b-ad4b-11ee-0a80-0dfd005ae9c3',
                 'level' => 1,
             ],

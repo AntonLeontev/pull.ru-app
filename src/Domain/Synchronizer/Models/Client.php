@@ -19,9 +19,10 @@ class Client extends Model
         'birthday',
         'discount_card',
         'discount_percent',
+        'is_registered',
     ];
 
     protected $casts = [
-
+        'is_registered' => 'boolean',
     ];
 }

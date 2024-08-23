@@ -45,6 +45,10 @@ class InSalesController extends Controller
                 ->update(['payment_status' => OrderPaymentStatus::from($request->financial_status)]);
         }
 
+        if ($status === OrderStatus::test) {
+            dispatch(new CreateOrderFromInsales($request->all()))->onQueue('high');
+        }
+
         if ($status === OrderStatus::approved) {
             dispatch(new CreateOrderFromInsales($request->all()))->onQueue('high');
         }
@@ -97,16 +101,24 @@ class InSalesController extends Controller
 
     public function clientCreate(Request $request)
     {
+        $phone = normalize_phone($request->get('phone'));
+
         if (! $request->get('registered')) {
-            return;
+            Client::create([
+                'insales_id' => $request->get('id'),
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'phone' => $phone,
+            ]);
         }
 
         if ($request->get('type') !== 'Client::Individual') {
             return;
         }
 
-        $phone = normalize_phone($request->get('phone'));
-        $client = Client::where('phone', $phone)->first();
+        $client = Client::where('phone', $phone)
+            ->where('is_registered', true)
+            ->first();
 
         if (! is_null($client)) {
             return;
@@ -118,6 +130,7 @@ class InSalesController extends Controller
             'email' => $request->get('email'),
             'phone' => $phone,
             'discount_card' => next_discount_card_number(),
+            'is_registered' => true,
         ]);
 
         dispatch(new CreateClientInMS($client))->onQueue('high');

@@ -36,7 +36,7 @@ readonly class Client implements JsonSerializable
             $clientData->email,
             $clientData->name,
             $clientData->phone,
-            $clientData->registered,
+            $clientData->registered ?? false,
             $clientData->surname,
             $clientData->middlename,
         );
