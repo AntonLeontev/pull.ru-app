@@ -27,9 +27,9 @@ class CreateOrderFromInsales
 
         $client = $this->getClientFromInsales(InSalesClient::fromObject($request->client));
 
-		if (is_null($client->discount_card) && $client->is_registered) {
-			dispatch(new CreateDicardsCard($client));
-		}
+        if (is_null($client->discount_card) && $client->is_registered) {
+            dispatch(new CreateDicardsCard($client));
+        }
 
         if (is_null($client->moy_sklad_id) && $client->is_registered) {
             $msClient = MoySkladApi::createIndividualCounterparty($client->name, $client->email, $client->phone)->json();
@@ -77,13 +77,13 @@ class CreateOrderFromInsales
             $order->update(['moy_sklad_id' => $msOrder['id']]);
         }
 
-        // if (is_null($order->cdek_id)) {
-        //     $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
+        if (is_null($order->cdek_id)) {
+            $cdekOrder = DeliveryOrder::fromInsalesOrderRequest($request);
 
-        //     $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
+            $cdekOrderId = CdekApi::createOrder($cdekOrder)->json('entity.uuid');
 
-        //     $order->update(['cdek_id' => $cdekOrderId]);
-        // }
+            $order->update(['cdek_id' => $cdekOrderId]);
+        }
 
         foreach ($request->order_lines as $line) {
             cache(['blocked_products.'.$line->product_id => true]);

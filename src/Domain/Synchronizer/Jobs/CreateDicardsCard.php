@@ -36,7 +36,7 @@ class CreateDicardsCard implements ShouldQueue
                 $this->client->name,
                 $this->client->surname,
                 $this->client->phone,
-				$th->getMessage(),
+                $th->getMessage(),
             );
             Log::channel('telegram')->critical($message);
 
