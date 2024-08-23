@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InSales\InSalesApi;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Src\Domain\Synchronizer\Actions\ResolveDiscount;
 use Src\Domain\Synchronizer\Enums\OrderPaymentStatus;
@@ -66,6 +67,8 @@ class InSalesController extends Controller
             dispatch(new UpdateProductFromInsales($product))->delay(now()->addSeconds(3));
         }
     }
+
+    public function getDiscount(): JsonResponse {}
 
     public function clientCreate(Request $request)
     {

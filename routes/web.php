@@ -26,6 +26,7 @@ Route::withoutMiddleware()
 Route::post('webhooks/insales/products_update', [InSalesController::class, 'productsUpdate'])->name('update');
 Route::post('webhooks/insales/external-payment', [InSalesController::class, 'externalPayment']);
 Route::post('webhooks/insales/client_create', [InSalesController::class, 'clientCreate']);
+Route::post('webhooks/insales/get_discount', [InSalesController::class, 'getDiscount']);
 
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
