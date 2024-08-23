@@ -27,7 +27,7 @@ class ResolveDiscount
         }
 
         // *100 это в копейках
-        $discount = $order->discount->full_amount * 100;
+        $discount = $priceWithoutDiscount - $order->items_price * 100;
 
         $distributedDiscount = 0;
 

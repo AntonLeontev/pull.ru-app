@@ -68,7 +68,32 @@ class InSalesController extends Controller
         }
     }
 
-    public function getDiscount(): JsonResponse {}
+    public function getDiscount(Request $request): JsonResponse
+    {
+        if (! $request->client['id']) {
+            return response()->json([
+                'errors' => [
+                    'Пользователь не зарегистрирован',
+                ],
+            ]);
+        }
+
+        $client = Client::where('insales_id', $request->client['id'])->first();
+
+        if (is_null($client)) {
+            return response()->json([
+                'errors' => [
+                    'Пользователь не найден',
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'discount' => $client->discount_percent,
+            'discount_type' => 'PERCENT',
+            'title' => "Скидка по карте {$client->discount_card}",
+        ]);
+    }
 
     public function clientCreate(Request $request)
     {
