@@ -13,7 +13,7 @@
 		processing: false,
 		message: null, 
 
-		form: $form('post', '/register', {
+		form: $form('post', location.href, {
 			name: '',
 			surname: '',
 			birthday: '',
@@ -79,21 +79,9 @@
 								@change="form.validate('surname')"
 							>
 						</label>
-						<div class="input__error" x-text="form.errors.surname">Сообщение об ошибке</div>
+						<div class="input__error" x-text="form.errors.surname"></div>
 					</div>
 		
-					<div class="input" :class="form.invalid('birthday') && 'input_error'">
-						<label class="input__label">
-							<div class="input__title">День рождения</div>
-							<input type="date" class="input__value" 
-								name="birthday"
-								x-model="form.birthday"
-								@change="form.validate('birthday')"
-							>
-						</label>
-						<div class="input__error" x-text="form.errors.birthday">Сообщение об ошибке</div>
-					</div>
-	
 					<div class="input" :class="form.invalid('phone') && 'input_error'">
 						<label class="input__label">
 							<div class="input__title">Телефон</div>
@@ -117,6 +105,18 @@
 							>
 						</label>
 						<div class="input__error" x-text="form.errors.email"></div>
+					</div>
+
+					<div class="input" :class="form.invalid('birthday') && 'input_error'">
+						<label class="input__label">
+							<div class="input__title">День рождения</div>
+							<input type="date" class="input__value" 
+								name="birthday"
+								x-model="form.birthday"
+								@change="form.validate('birthday')"
+							>
+						</label>
+						<div class="input__error" x-text="form.errors.birthday"></div>
 					</div>
 				</div>
 	

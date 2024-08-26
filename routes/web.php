@@ -8,9 +8,9 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
-use App\Services\Dicards\DicardsService;
-use App\Services\MoySklad\MoySkladApi;
+use App\Services\MoySklad\MSApiService;
 use Illuminate\Support\Facades\Route;
+use Src\Domain\Synchronizer\Models\Client;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -45,12 +45,22 @@ Route::get('/keep-alive', function () {
 Route::controller(RegisterClientController::class)->group(function () {
     Route::get('register', 'show');
     Route::post('register', 'create')->middleware(['precognitive']);
+    Route::get('register_for_cashier', 'showForCashier');
+    Route::post('register_for_cashier', 'createForCashier')->middleware(['precognitive']);
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (DicardsService $service) {
-        $c = MoySkladApi::getCounterparty('7f7c1d5c-60a2-11ef-0a80-1707002dce69')->object();
-        dd($c);
+    Route::get('test', function (MSApiService $service) {
+
+        // $c = Client::where('id', 36)->first();
+        // // добавить фильтрацию по датам
+        // dd($service->getPurchasesAmount($c));
+
+        $n = now();
+        $f = now()->addDays(3);
+
+        $n < $f;
+
     });
 }
 

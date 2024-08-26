@@ -76,8 +76,12 @@ if (! function_exists('next_discount_card_number')) {
 }
 
 if (! function_exists('normalize_phone')) {
-    function normalize_phone(string $phone): string
+    function normalize_phone(?string $phone): ?string
     {
+        if (is_null($phone)) {
+            return null;
+        }
+
         return '+'.preg_replace('~\D~', '', $phone);
     }
 }
