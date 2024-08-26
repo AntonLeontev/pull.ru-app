@@ -60,4 +60,11 @@ class DicardsService
 
         return $this->api->updateCard($id, $data, true, $push);
     }
+
+    public function updateClientDiscount(Client $client, int $discount, bool $push = true)
+    {
+        $client->update(['discount_percent' => $discount]);
+
+        $this->updateCardDiscount($client->discount_card, $discount, $push);
+    }
 }

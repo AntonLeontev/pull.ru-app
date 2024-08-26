@@ -23,4 +23,8 @@ class MoySkladController extends Controller
     {
         dispatch(new CreateCounterPartyFromMoySklad($request->toArray()));
     }
+
+    public function retaildemandCreate(Request $request) {}
+
+    public function retailsalesreturnCreate(Request $request) {}
 }

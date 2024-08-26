@@ -207,6 +207,36 @@ class MoySkladApi
             ->put("entity/customerorder/$id", $data);
     }
 
+    public static function getCustomerOrders(array $query = []): Response
+    {
+        $url = 'entity/customerorder';
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
+    public static function getRetailDemand(array $query = []): Response
+    {
+        $url = 'entity/retaildemand';
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
+    public static function getRetailSalesReturn(array $query = []): Response
+    {
+        $url = 'entity/retailsalesreturn';
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
     public static function createIndividualCounterparty(
         string $name,
         ?string $email = null,

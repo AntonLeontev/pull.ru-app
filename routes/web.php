@@ -10,7 +10,7 @@ use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Services\MoySklad\MSApiService;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\Synchronizer\Models\Client;
+use Src\Domain\DiscountSystem\DiscountSystemService;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -31,6 +31,8 @@ Route::post('webhooks/insales/get_discount', [InSalesController::class, 'getDisc
 Route::post('webhooks/moy_sklad/product_update', [MoySkladController::class, 'productUpdate']);
 Route::post('webhooks/moy_sklad/variant_update', [MoySkladController::class, 'variantUpdate']);
 Route::post('webhooks/moy_sklad/counterparty_create', [MoySkladController::class, 'counterpartyCreate']);
+Route::post('webhooks/moy_sklad/retaildemand_create', [MoySkladController::class, 'retaildemandCreate']);
+Route::post('webhooks/moy_sklad/retailsalesreturn_create', [MoySkladController::class, 'retailsalesreturnCreate']);
 
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
@@ -50,18 +52,7 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (MSApiService $service) {
-
-        // $c = Client::where('id', 36)->first();
-        // // добавить фильтрацию по датам
-        // dd($service->getPurchasesAmount($c));
-
-        $n = now();
-        $f = now()->addDays(3);
-
-        $n < $f;
-
-    });
+    Route::get('test', function (MSApiService $service, DiscountSystemService $discountService) {});
 }
 
 Route::prefix(config('moonshine.route.prefix', ''))
