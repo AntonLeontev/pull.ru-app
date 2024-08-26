@@ -25,6 +25,7 @@ use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesError;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesSuccess;
 use Src\Domain\Synchronizer\Listeners\CreateDemandInMS;
 use Src\Domain\Synchronizer\Listeners\LogToTelegram;
+use Src\Domain\Synchronizer\Listeners\ScheduleDiscountUpdatingFromDeliveredOrder;
 use Src\Domain\Synchronizer\Listeners\SendReceipt;
 use Src\Domain\Synchronizer\Listeners\SetCourierOrderStatus;
 use Src\Domain\Synchronizer\Listeners\SetKeepFreeDateToInsales;
@@ -69,6 +70,7 @@ class EventServiceProvider extends ServiceProvider
             SendReceipt::class,
             CreateDemandInMS::class,
             SendOrderDeliveredTelegramNotification::class,
+            ScheduleDiscountUpdatingFromDeliveredOrder::class,
         ],
 
         OrderNotDelivered::class => [

@@ -27,7 +27,7 @@ class SetDiscountByPurchases implements ShouldQueue
         try {
             $action->handle($this->client);
         } catch (\Throwable $th) {
-            throw new \Exception("Не удалось обновить процент скидки пользователя c id {$this->client->id}. ".$th->getMessage());
+            $this->fail(new \Exception("Не удалось обновить процент скидки пользователя c id {$this->client->id}. ".$th->getMessage()));
         }
     }
 }

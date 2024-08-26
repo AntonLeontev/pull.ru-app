@@ -207,6 +207,16 @@ class MoySkladApi
             ->put("entity/customerorder/$id", $data);
     }
 
+    public static function getCustomerOrder(string $id, array $query = []): Response
+    {
+        $url = "entity/customerorder/$id";
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
     public static function getCustomerOrders(array $query = []): Response
     {
         $url = 'entity/customerorder';
@@ -217,7 +227,7 @@ class MoySkladApi
             ->get("$url?$params");
     }
 
-    public static function getRetailDemand(array $query = []): Response
+    public static function getRetailDemands(array $query = []): Response
     {
         $url = 'entity/retaildemand';
 
@@ -227,9 +237,29 @@ class MoySkladApi
             ->get("$url?$params");
     }
 
-    public static function getRetailSalesReturn(array $query = []): Response
+    public static function getRetailDemand(string $id, array $query = []): Response
+    {
+        $url = "entity/retaildemand/$id";
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
+    public static function getRetailSalesReturns(array $query = []): Response
     {
         $url = 'entity/retailsalesreturn';
+
+        $params = http_build_query($query);
+
+        return Http::moySklad()
+            ->get("$url?$params");
+    }
+
+    public static function getRetailSalesReturn(string $id, array $query = []): Response
+    {
+        $url = "entity/retailsalesreturn/$id";
 
         $params = http_build_query($query);
 

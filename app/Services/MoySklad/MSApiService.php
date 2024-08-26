@@ -51,13 +51,13 @@ class MSApiService
             $filters[] = 'created<'.$toDate->format('Y-m-d H:i:s');
         }
 
-        $demandsSum = MoySkladApi::getRetailDemand([
+        $demandsSum = MoySkladApi::getRetailDemands([
             'filter' => implode(';', $filters),
         ])
             ->collect('rows')
             ->sum('sum') / 100;
 
-        $returnsSum = MoySkladApi::getRetailSalesReturn([
+        $returnsSum = MoySkladApi::getRetailSalesReturns([
             'filter' => implode(';', $filters),
         ])
             ->collect('rows')

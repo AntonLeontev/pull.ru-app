@@ -8,9 +8,8 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
-use App\Services\MoySklad\MSApiService;
+use App\Services\MoySklad\MoySkladApi;
 use Illuminate\Support\Facades\Route;
-use Src\Domain\DiscountSystem\DiscountSystemService;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
 Route::any('webhooks/delivery/widget', [DeliveryController::class, 'widget']);
@@ -52,7 +51,11 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (MSApiService $service, DiscountSystemService $discountService) {});
+    Route::get('test', function () {
+        $c = MoySkladApi::getRetailDemand('1d1dc5fe-63c8-11ef-0a80-11d800490064', ['expand' => 'agent'])->json('agent.id');
+
+        dd($c);
+    });
 }
 
 Route::prefix(config('moonshine.route.prefix', ''))
