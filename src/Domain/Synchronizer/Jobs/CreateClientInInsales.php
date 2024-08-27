@@ -31,9 +31,9 @@ class CreateClientInInsales implements ShouldQueue
         try {
             $client = $insalesApiService->createClientFromClient($this->client);
 
-            $this->client->update(['insales_id' => $client->id]);
+            $this->client->update(['insales_id' => $client->id, 'is_registered' => true]);
         } catch (InsalesRateLimitException $e) {
-            return $this->release(300);
+            $this->release(300);
         } catch (\Throwable $th) {
             $message = sprintf(
                 'Не удалось создать пользователя в инсейлс: id %s, %s, %s, %s, %s',
