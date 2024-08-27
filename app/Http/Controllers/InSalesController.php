@@ -116,6 +116,10 @@ class InSalesController extends Controller
             return;
         }
 
+        if (Client::where('insales_id', $request->get('id'))->exists()) {
+            return;
+        }
+
         $client = Client::where('phone', $phone)
             ->where('is_registered', true)
             ->first();
