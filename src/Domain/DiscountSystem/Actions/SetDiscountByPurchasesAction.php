@@ -22,6 +22,8 @@ class SetDiscountByPurchasesAction
         $discountPercent = $this->discountService->percentByPurchases($sum);
 
         if ($discountPercent !== $client->discount_percent) {
+            $this->msApiService->updateClientDiscount($client, $discountPercent);
+
             $this->dicardsService->updateClientDiscount($client, $discountPercent);
         }
     }

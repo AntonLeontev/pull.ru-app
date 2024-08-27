@@ -5,6 +5,7 @@ namespace App\Services\MoySklad;
 use App\Services\MoySklad\Entities\Counterparty;
 use App\Services\MoySklad\Entities\CustomerOrder;
 use App\Services\MoySklad\Entities\Organization;
+use App\Services\MoySklad\Entities\PersonalDiscount;
 use App\Services\MoySklad\Entities\Store;
 use Carbon\Carbon;
 use Src\Domain\Synchronizer\Models\Client;
@@ -40,7 +41,6 @@ class MSApiService
     {
         $filters = [
             "agent=https://api.moysklad.ru/api/remap/1.2/entity/counterparty/{$client->moy_sklad_id}",
-            // "created>=2024-06-01 00:00:00",
         ];
 
         if (! is_null($fromDate)) {
@@ -70,15 +70,22 @@ class MSApiService
             'limit' => 100,
         ])
             ->collect('rows')
-            // ->map(static function ($el) {
-            //     return [
-            //         'state' => $el['state']['name'],
-            //         'sum' => $el['sum'] / 100,
-            //         'created' => $el['created'],
-            //     ];
-            // })
             ->sum('sum') / 100;
 
         return $demandsSum + $ordersSum - $returnsSum;
+    }
+
+    public function updateClientDiscount(Client $client, int $discountPercent): void
+    {
+        $discount = new PersonalDiscount(config('services.moySklad.personal_discount_id'));
+
+        MoySkladApi::updateCounterparty($client->moy_sklad_id, [
+            'discounts' => [
+                [
+                    'discount' => $discount,
+                    'personalDiscount' => $discountPercent,
+                ],
+            ],
+        ]);
     }
 }
