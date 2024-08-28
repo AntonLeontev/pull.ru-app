@@ -28,7 +28,9 @@ class RegisterClientController extends Controller
         DicardsService $dicardsService,
         MSApiService $msService,
     ) {
-        $client = Client::where('phone', $request->get('phone'))->first();
+        $client = Client::where('phone', $request->get('phone'))
+            ->where('is_registered', true)
+            ->first();
 
         if (! is_null($client)) {
             $link = $dicardsService->getCardLink($client->discount_card);
