@@ -45,9 +45,9 @@ Route::get('/keep-alive', function () {
 
 Route::controller(RegisterClientController::class)->group(function () {
     Route::get('register', 'show');
-    Route::post('register', 'create')->middleware(['precognitive']);
+    Route::post('register', 'create')->middleware(['precognitive', 'throttle:50,1']);
     Route::get('register_for_cashier', 'showForCashier');
-    Route::post('register_for_cashier', 'createForCashier')->middleware(['precognitive']);
+    Route::post('register_for_cashier', 'createForCashier')->middleware(['precognitive', 'throttle:50,1']);
 });
 
 if (config('app.url') === 'http://localhost:8000') {
