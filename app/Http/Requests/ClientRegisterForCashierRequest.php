@@ -13,7 +13,7 @@ class ClientRegisterForCashierRequest extends FormRequest
             'name' => ['required', 'string', 'max:50'],
             'surname' => ['required', 'string', 'max:50'],
             'birthday' => ['required', 'date', 'max:50'],
-            'phone' => ['required', 'string', 'size:12', 'starts_with:+79', Rule::unique('users')->where(fn ($query) => $query->where('is_registered', 1))],
+            'phone' => ['required', 'string', 'size:12', 'starts_with:+79', Rule::unique('clients')->where(fn ($query) => $query->where('is_registered', 1))],
             'email' => ['required', 'email', 'max:50', 'unique:clients,email'],
         ];
     }
