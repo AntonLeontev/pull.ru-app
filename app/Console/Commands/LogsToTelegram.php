@@ -37,9 +37,9 @@ class LogsToTelegram extends Command
             return;
         }
 
-        $logs->each(static function ($log) use ($message) {
-            $message .= $log->text.' '.$log->created_at->format('H:i:s');
-        });
+        foreach ($logs as $log) {
+            $message .= $log->text.' '.$log->created_at->format('H:i:s')."\n";
+        }
 
         TelegramService::log($message);
 
