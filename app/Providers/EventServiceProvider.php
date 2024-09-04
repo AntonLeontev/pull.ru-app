@@ -24,7 +24,7 @@ use Src\Domain\Synchronizer\Events\VariantFromMoySkladToCdekSuccess;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesError;
 use Src\Domain\Synchronizer\Events\VariantFromMoySkladToInsalesSuccess;
 use Src\Domain\Synchronizer\Listeners\CreateDemandInMS;
-use Src\Domain\Synchronizer\Listeners\LogToTelegram;
+use Src\Domain\Synchronizer\Listeners\CreateTelegramLog;
 use Src\Domain\Synchronizer\Listeners\ScheduleDiscountUpdatingFromDeliveredOrder;
 use Src\Domain\Synchronizer\Listeners\SendReceipt;
 use Src\Domain\Synchronizer\Listeners\SetCourierOrderStatus;
@@ -39,14 +39,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        ProductCreatingSuccess::class => [LogToTelegram::class],
-        ProductUpdatingSuccess::class => [LogToTelegram::class],
-        ProductCreatingError::class => [LogToTelegram::class],
-        ProductUpdatingError::class => [LogToTelegram::class],
-        VariantFromMoySkladToCdekSuccess::class => [LogToTelegram::class],
-        VariantFromMoySkladToCdekError::class => [LogToTelegram::class],
-        VariantFromMoySkladToInsalesSuccess::class => [LogToTelegram::class],
-        VariantFromMoySkladToInsalesError::class => [LogToTelegram::class],
+        ProductCreatingSuccess::class => [CreateTelegramLog::class],
+        ProductUpdatingSuccess::class => [CreateTelegramLog::class],
+        ProductCreatingError::class => [CreateTelegramLog::class],
+        ProductUpdatingError::class => [CreateTelegramLog::class],
+        VariantFromMoySkladToCdekSuccess::class => [CreateTelegramLog::class],
+        VariantFromMoySkladToCdekError::class => [CreateTelegramLog::class],
+        VariantFromMoySkladToInsalesSuccess::class => [CreateTelegramLog::class],
+        VariantFromMoySkladToInsalesError::class => [CreateTelegramLog::class],
 
         OrderCreated::class => [
             SendOrderCreatedTelegramNotification::class,

@@ -10,6 +10,7 @@ use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use App\Services\MoySklad\Exceptions\MoySkladApiException;
 use App\Services\Planfact\Exceptions\PlanfactBadRequestException;
 use App\Services\Telegram\Exceptions\TelegramException;
+use App\Services\Telegram\Exceptions\TelegramRateLimitException;
 use App\Services\Tinkoff\Exceptions\TinkoffApiException;
 use App\Services\Unisender\Exceptions\UnisenderException;
 use Illuminate\Http\Client\Response;
@@ -123,6 +124,10 @@ class HttpServiceProvider extends ServiceProvider
                 ->retry(3, 100)
                 ->timeout(10)
                 ->throw(function (Response $response) {
+                    if (str_starts_with($response->json('description'), 'Too Many Requests')) {
+                        throw new TelegramRateLimitException($response->json('description'));
+                    }
+
                     throw new TelegramException($response->json('description'));
                 });
         });

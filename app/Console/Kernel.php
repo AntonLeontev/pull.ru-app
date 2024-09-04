@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:prune-failed --hours=48')->daily();
 
         $schedule->command('sync:orders-status')->hourly();
+
+        $schedule->command('app:logs-to-telegram')->everyTwentySeconds();
     }
 
     /**
