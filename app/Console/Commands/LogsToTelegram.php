@@ -31,10 +31,15 @@ class LogsToTelegram extends Command
 
         $logs = TelegramLog::query()
             ->take(30)
-            ->get()
-            ->each(static function ($log) use ($message) {
-                $message .= $log->text.' '.$log->created_at->format('H:i:s');
-            });
+            ->get();
+
+        if ($logs->isEmpty()) {
+            return;
+        }
+
+        $logs->each(static function ($log) use ($message) {
+            $message .= $log->text.' '.$log->created_at->format('H:i:s');
+        });
 
         TelegramService::log($message);
 

@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('sync:orders-status')->hourly();
 
-        $schedule->command('app:logs-to-telegram')->everyTwentySeconds();
+        $schedule->command('app:logs-to-telegram')->everyTwentySeconds()->runInBackground();
     }
 
     /**
