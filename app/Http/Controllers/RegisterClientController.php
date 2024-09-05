@@ -6,7 +6,9 @@ use App\Http\Requests\ClientRegisterForCashierRequest;
 use App\Http\Requests\ClientRegisterRequest;
 use App\Services\Dicards\DicardsService;
 use App\Services\MoySklad\MSApiService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Src\Domain\Synchronizer\Jobs\CreateClientInInsales;
 use Src\Domain\Synchronizer\Jobs\CreateDicardsCard;
 use Src\Domain\Synchronizer\Models\Client;
@@ -74,5 +76,14 @@ class RegisterClientController extends Controller
 
         $msClient = $msService->createCounterpartyFromClient($client);
         $client->update(['moy_sklad_id' => $msClient->id]);
+    }
+
+    public function registerFromMain(Request $request, MSApiService $msService): void
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'max: 50', 'string'],
+            'email' => ['required', 'email:rfc,dns', 'max:100', Rule::unique('clients')->where(fn ($query) => $query->where('is_registered', 1))],
+            'phone' => ['required', 'string', 'size:12', 'starts_with:+79', Rule::unique('clients')->where(fn ($query) => $query->where('is_registered', 1))],
+        ]);
     }
 }

@@ -53,6 +53,7 @@ Route::controller(RegisterClientController::class)->group(function () {
     Route::post('register', 'create')->middleware(['precognitive', 'throttle:50,1']);
     Route::get('register_for_cashier', 'showForCashier');
     Route::post('register_for_cashier', 'createForCashier')->middleware(['precognitive', 'throttle:50,1']);
+    Route::post('api/register-from-main', 'registerFromMain');
 });
 
 if (config('app.url') === 'http://localhost:8000') {
