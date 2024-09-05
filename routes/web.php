@@ -53,8 +53,8 @@ Route::controller(RegisterClientController::class)->group(function () {
 if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (UnisenderService $service) {
         // $c = $service->getContact('aner-anton@yandex.ru');
-        $c = $service->api->getFields()->json();
-        dd($c);
+        $c = $service->subscribeFromFooterForm(['email' => 'aner-anton@yandex.ru', 'sex' => '2']);
+        // dd($c);
     });
 }
 

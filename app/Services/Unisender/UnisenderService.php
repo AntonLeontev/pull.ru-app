@@ -8,10 +8,9 @@ class UnisenderService
 {
     public function __construct(public UnisenderApi $api) {}
 
-    public function subscribeFromFooterForm(array $data): void
+    public function subscribeFromFooterForm(string $email, Gender $gender): void
     {
-        $gender = Gender::fromForm($data['sex']);
-        $this->api->subscribe(1, ['email' => $data['email'], 'gender' => $gender->value]);
+        $this->api->subscribe(1, ['email' => $email, 'gender' => $gender->value]);
     }
 
     public function getContact(string $email): object
