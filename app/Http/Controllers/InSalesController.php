@@ -14,6 +14,7 @@ use Src\Domain\Synchronizer\Jobs\CreateClientInMS;
 use Src\Domain\Synchronizer\Jobs\CreateDicardsCard;
 use Src\Domain\Synchronizer\Jobs\CreateOrderFromInsales;
 use Src\Domain\Synchronizer\Jobs\CreateProductFromInsales;
+use Src\Domain\Synchronizer\Jobs\SubscribeRegisteredFromInsales;
 use Src\Domain\Synchronizer\Jobs\UpdateProductFromInsales;
 use Src\Domain\Synchronizer\Models\Client;
 use Src\Domain\Synchronizer\Models\Order;
@@ -139,6 +140,7 @@ class InSalesController extends Controller
 
         dispatch(new CreateClientInMS($client))->onQueue('high');
         dispatch(new CreateDicardsCard($client))->onQueue('high');
+        dispatch(new SubscribeRegisteredFromInsales($client))->onQueue('high');
     }
 
     public function externalPayment(Request $request, ResolveDiscount $resolveDiscount)

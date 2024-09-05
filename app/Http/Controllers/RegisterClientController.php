@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Src\Domain\Synchronizer\Jobs\CreateClientInInsales;
 use Src\Domain\Synchronizer\Jobs\CreateDicardsCard;
+use Src\Domain\Synchronizer\Jobs\SubscribeRegisteredFromCashbox;
+use Src\Domain\Synchronizer\Jobs\SubscribeRegisteredFromMain;
 use Src\Domain\Synchronizer\Models\Client;
 
 class RegisterClientController extends Controller
@@ -42,9 +44,10 @@ class RegisterClientController extends Controller
 
         $cardNumber = next_discount_card_number();
 
-        $client = Client::create([...$request->validated(), 'discount_card' => $cardNumber]);
+        $client = Client::create([...$request->validated(), 'discount_card' => $cardNumber, 'is_registered' => 1]);
 
         dispatch(new CreateClientInInsales($client))->onQueue('high');
+        dispatch(new SubscribeRegisteredFromCashbox($client))->onQueue('high');
 
         $msClient = $msService->createCounterpartyFromClient($client);
         $client->update(['moy_sklad_id' => $msClient->id]);
@@ -69,21 +72,37 @@ class RegisterClientController extends Controller
     ) {
         $cardNumber = next_discount_card_number();
 
-        $client = Client::create([...$request->validated(), 'discount_card' => $cardNumber]);
+        $client = Client::create([...$request->validated(), 'discount_card' => $cardNumber, 'is_registered' => 1]);
 
         dispatch(new CreateClientInInsales($client))->onQueue('high');
         dispatch(new CreateDicardsCard($client))->onQueue('high');
+        dispatch(new SubscribeRegisteredFromCashbox($client))->onQueue('high');
 
         $msClient = $msService->createCounterpartyFromClient($client);
         $client->update(['moy_sklad_id' => $msClient->id]);
     }
 
-    public function registerFromMain(Request $request, MSApiService $msService): void
-    {
+    public function registerFromMain(
+        Request $request,
+        MSApiService $msService,
+    ): void {
+        $request->merge(['phone' => normalize_phone($request->get('phone'))]);
+
         $validated = $request->validate([
             'name' => ['required', 'max: 50', 'string'],
             'email' => ['required', 'email:rfc,dns', 'max:100', Rule::unique('clients')->where(fn ($query) => $query->where('is_registered', 1))],
             'phone' => ['required', 'string', 'size:12', 'starts_with:+79', Rule::unique('clients')->where(fn ($query) => $query->where('is_registered', 1))],
         ]);
+
+        $cardNumber = next_discount_card_number();
+
+        $client = Client::create([...$validated, 'discount_card' => $cardNumber, 'is_registered' => 1]);
+
+        dispatch(new CreateClientInInsales($client))->onQueue('high');
+        dispatch(new CreateDicardsCard($client))->onQueue('high');
+        dispatch(new SubscribeRegisteredFromMain($client))->onQueue('high');
+
+        $msClient = $msService->createCounterpartyFromClient($client);
+        $client->update(['moy_sklad_id' => $msClient->id]);
     }
 }
