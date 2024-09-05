@@ -69,10 +69,11 @@ class ApiController extends Controller
     {
         $validated = $request->validate([
             'email' => ['required', 'email:rfc,dns', 'max:100'],
+            'sex' => ['required', 'in:1,2'],
         ]);
 
         try {
-            $uni->subscribeFromFooterForm($validated['email']);
+            $uni->subscribeFromFooterForm($validated);
         } catch (\Throwable $th) {
             throw new \Exception('Не удалось добавить в подписку емейл из футера: '.$validated['email'].'. '.$th->getMessage());
         }

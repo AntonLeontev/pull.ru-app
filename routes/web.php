@@ -8,7 +8,7 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
-use App\Services\MoySklad\MoySkladApi;
+use App\Services\Unisender\UnisenderService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -51,9 +51,9 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function () {
-        $c = MoySkladApi::getRetailDemand('1d1dc5fe-63c8-11ef-0a80-11d800490064', ['expand' => 'agent'])->json('agent.id');
-
+    Route::get('test', function (UnisenderService $service) {
+        // $c = $service->getContact('aner-anton@yandex.ru');
+        $c = $service->api->getFields()->json();
         dd($c);
     });
 }

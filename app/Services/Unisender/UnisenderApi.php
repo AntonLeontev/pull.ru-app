@@ -48,4 +48,28 @@ class UnisenderApi
                 'overwrite' => $overwrite,
             ]);
     }
+
+    public static function getContact(
+        string $email,
+        bool $includeFields = true,
+        bool $includeLists = false,
+        bool $includeDetails = false,
+    ): Response {
+        return Http::unisender()
+            ->post('getContact', [
+                'api_key' => config('services.unisender.key'),
+                'email' => $email,
+                'include_lists' => $includeLists,
+                'include_fields' => $includeFields,
+                'include_details' => $includeDetails,
+            ]);
+    }
+
+    public static function getFields(): Response
+    {
+        return Http::unisender()
+            ->post('getFields', [
+                'api_key' => config('services.unisender.key'),
+            ]);
+    }
 }
