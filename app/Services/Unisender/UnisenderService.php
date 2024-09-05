@@ -13,6 +13,11 @@ class UnisenderService
         $this->api->subscribe(1, ['email' => $email, 'gender' => $gender->value]);
     }
 
+    public function stylistConsultationSubscribe(string $email, Gender $gender): void
+    {
+        $this->api->subscribe(10, ['email' => $email, 'gender' => $gender->value]);
+    }
+
     public function getContact(string $email): object
     {
         return $this->api->getContact($email)->object();

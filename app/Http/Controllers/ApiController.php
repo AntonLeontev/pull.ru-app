@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RightholdersRequest;
-use App\Services\Unisender\Enums\Gender;
-use App\Services\Unisender\UnisenderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -64,20 +62,5 @@ class ApiController extends Controller
             'brands' => $brands,
             'ip' => $ip,
         ]);
-    }
-
-    public function footerSubscribe(Request $request, UnisenderService $uni)
-    {
-        $validated = $request->validate([
-            'email' => ['required', 'email:rfc,dns', 'max:100'],
-            'sex' => ['required', 'in:1,2'],
-        ]);
-
-        try {
-            $gender = Gender::fromForm($validated['sex']);
-            $uni->subscribeFromFooterForm($validated['email'], $gender);
-        } catch (\Throwable $th) {
-            throw new \Exception('Не удалось добавить в подписку емейл из футера: '.$validated['email'].'. '.$th->getMessage());
-        }
     }
 }

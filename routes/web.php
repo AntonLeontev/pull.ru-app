@@ -8,6 +8,7 @@ use App\Http\Controllers\InSalesController;
 use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
+use App\Http\Controllers\SubscribtionsController;
 use App\Services\Unisender\UnisenderService;
 use Illuminate\Support\Facades\Route;
 
@@ -36,8 +37,12 @@ Route::post('webhooks/moy_sklad/retailsalesreturn_create', [MoySkladController::
 Route::get('api/allowed_regions', [ApiController::class, 'allowedRegions']);
 Route::get('api/organizations_brands', [ApiController::class, 'organizationsAndBrands']);
 Route::get('api/additition-data', [ApiController::class, 'addititionData']);
-Route::middleware('throttle:10,60')->post('api/footer-subscribe', [ApiController::class, 'footerSubscribe']);
 Route::middleware('throttle:60,1')->post('api/rightholders', [ApiController::class, 'rightholders']);
+
+Route::controller(SubscribtionsController::class)->group(function () {
+    Route::middleware('throttle:10,60')->post('api/footer-subscribe', 'subscribeFromFooterForm');
+    Route::middleware('throttle:10,60')->post('api/stylist-subscribe', 'subscribeStylistConsultation');
+});
 
 Route::get('/keep-alive', function () {
     return response()->json(['ok' => true]);
@@ -53,7 +58,6 @@ Route::controller(RegisterClientController::class)->group(function () {
 if (config('app.url') === 'http://localhost:8000') {
     Route::get('test', function (UnisenderService $service) {
         // $c = $service->getContact('aner-anton@yandex.ru');
-        $c = $service->subscribeFromFooterForm(['email' => 'aner-anton@yandex.ru', 'sex' => '2']);
         // dd($c);
     });
 }
