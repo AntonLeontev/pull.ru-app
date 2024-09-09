@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\Synchronizer\Listeners;
+namespace Src\Domain\DiscountSystem\Listeners;
 
 use App\Services\MoySklad\MoySkladApi;
 use Src\Domain\DiscountSystem\Jobs\SetDiscountByPurchases;

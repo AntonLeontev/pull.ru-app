@@ -28,8 +28,8 @@ class CreateOrderFromInsales
         $client = $this->getClientFromInsales(InSalesClient::fromObject($request->client));
 
         if (is_null($client->discount_card) && $client->is_registered) {
-			$number = next_discount_card_number();
-			$client->update(['discount_card' => $number]);
+            $number = next_discount_card_number();
+            $client->update(['discount_card' => $number]);
             dispatch(new CreateDicardsCard($client));
         }
 
