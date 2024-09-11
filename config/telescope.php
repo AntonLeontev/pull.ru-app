@@ -126,7 +126,9 @@ return [
 
         Watchers\CommandWatcher::class => [
             'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
-            'ignore' => [],
+            'ignore' => [
+				'app:logs-to-telegram',
+			],
         ],
 
         Watchers\DumpWatcher::class => [
