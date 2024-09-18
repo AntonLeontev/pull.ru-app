@@ -37,6 +37,13 @@
 					this.processing = false
 				})
 		},
+		format(e) {
+			if (e.target.value.length >= 2) {
+				return
+			}
+
+			this.form.phone = '+7';
+		},
 	}">
 		<form class="register__form" @submit.prevent="submit" x-ref="form">
 			<div class="form__header">
@@ -78,9 +85,10 @@
 						<div class="input__title">Телефон</div>
 						<input type="text" class="input__value" 
 							name="phone"
-							x-mask="+7 (999) 999-99-99"
+							x-mask="+7(999)999-99-99"
 							x-model="form.phone"
 							@change="form.validate('phone')"
+							@input="format"
 						>
 					</label>
 					<div class="input__error" x-text="form.errors.phone"></div>
