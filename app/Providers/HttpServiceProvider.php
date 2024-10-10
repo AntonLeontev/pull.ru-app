@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Bytehand\Exceptions\BytehandException;
 use App\Services\CDEK\Exceptions\CdekApiException;
 use App\Services\CDEK\Exceptions\FullfillmentApiException;
 use App\Services\Cloudpayments\Exceptions\CloudPaymentsApiException;
@@ -160,6 +161,18 @@ class HttpServiceProvider extends ServiceProvider
                 ->throw(function (Response $response) {
                     $error = $response->json('detail') ?? $response->json('error') ?? 'Неизвестная ошибка';
                     throw new DicardsException($error);
+                });
+        });
+
+        Http::macro('bytehand', function () {
+            return Http::baseUrl('https://api.bytehand.com/v2')
+                ->withHeader('X-Service-Key', config('services.bytehand.key'))
+                ->asJson()
+                ->retry(1, 500)
+                ->timeout(10)
+                ->connectTimeout(5)
+                ->throw(function (Response $response) {
+                    throw new BytehandException($response);
                 });
         });
     }

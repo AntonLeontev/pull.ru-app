@@ -118,4 +118,9 @@ return [
         'api_key' => env('DICARDS_API_KEY'),
         'api_id' => env('DICARDS_API_ID'),
     ],
+
+    'bytehand' => [
+        'key' => env('BYTEHAND_KEY'),
+        'sender' => 'Limmite.ru',
+    ],
 ];

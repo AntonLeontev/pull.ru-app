@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Synchronizer\Jobs;
 
+use App\Notifications\DiscountCardLinkNotification;
 use App\Services\Dicards\DicardsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,7 +21,7 @@ class CreateDicardsCard implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public Client $client) {}
+    public function __construct(public Client $client, public bool $withSms = false) {}
 
     /**
      * Execute the job.
@@ -41,6 +42,24 @@ class CreateDicardsCard implements ShouldQueue
             Log::channel('telegram')->critical($message);
 
             $this->fail($th);
+        }
+
+        if ($this->withSms) {
+            try {
+                $link = $service->getCardLink($this->client->discount_card);
+            } catch (\Throwable $th) {
+                $message = sprintf(
+                    'Создали карту, но не удалось получить ссылку в дикардс: id пользователя %s, карта %s. Причина: %s',
+                    $this->client->id,
+                    $this->client->discount_card,
+                    $th->getMessage(),
+                );
+                Log::channel('telegram')->critical($message);
+
+                $this->fail($th);
+            }
+
+            $this->client->notify(new DiscountCardLinkNotification($link));
         }
     }
 }

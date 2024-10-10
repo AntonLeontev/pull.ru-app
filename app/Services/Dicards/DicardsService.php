@@ -13,7 +13,7 @@ class DicardsService
         string $name,
         string $phone,
         ?string $birthday = null,
-    ) {
+    ): array {
         return $this->api->createCard(
             $number,
             $name,
@@ -42,7 +42,7 @@ class DicardsService
         return $this->api->getCard($id)->json();
     }
 
-    public function getCardLink(int|string $id)
+    public function getCardLink(int|string $id): string
     {
         return $this->api->getCardLink($id)->json('link');
     }

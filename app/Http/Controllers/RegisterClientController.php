@@ -75,7 +75,7 @@ class RegisterClientController extends Controller
         $client = Client::create([...$request->validated(), 'discount_card' => $cardNumber, 'is_registered' => 1]);
 
         dispatch(new CreateClientInInsales($client))->onQueue('high');
-        dispatch(new CreateDicardsCard($client))->onQueue('high');
+        dispatch(new CreateDicardsCard($client, true))->onQueue('high');
         dispatch(new SubscribeRegisteredFromCashbox($client))->onQueue('high');
 
         $msClient = $msService->createCounterpartyFromClient($client);

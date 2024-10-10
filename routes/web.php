@@ -9,7 +9,8 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Http\Controllers\SubscribtionsController;
-use App\Services\Unisender\UnisenderService;
+use App\Services\CDEK\FullfillmentApi;
+use App\Services\Dicards\DicardsService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -57,8 +58,8 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (UnisenderService $service) {
-        $c = $service->api->getFields()->json();
+    Route::get('test', function (DicardsService $service) {
+        // $c = FullfillmentApi::getProducts()->json();
         dd($c);
     });
 }
