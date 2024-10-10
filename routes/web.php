@@ -9,7 +9,6 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Http\Controllers\SubscribtionsController;
-use App\Services\CDEK\FullfillmentApi;
 use App\Services\Dicards\DicardsService;
 use Illuminate\Support\Facades\Route;
 
@@ -58,10 +57,7 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (DicardsService $service) {
-        // $c = FullfillmentApi::getProducts()->json();
-        dd($c);
-    });
+    Route::get('test', function (DicardsService $service) {});
 }
 
 Route::prefix(config('moonshine.route.prefix', ''))
