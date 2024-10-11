@@ -34,7 +34,7 @@ class DiscountCardLinkNotification extends SmsNotification implements ShouldQueu
     {
         return (new SmsMessage)
             ->to($notifiable->phone)
-            ->text("Ссылка для получения скидочной карты: $this->link");
+            ->text("Скачайте карту лояльности Limmite по ссылке: $this->link");
     }
 
     /**
