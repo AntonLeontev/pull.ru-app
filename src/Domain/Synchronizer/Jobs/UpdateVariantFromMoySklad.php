@@ -2,6 +2,7 @@
 
 namespace Src\Domain\Synchronizer\Jobs;
 
+use App\Services\InSales\Exceptions\InsalesRateLimitException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,6 +24,10 @@ class UpdateVariantFromMoySklad implements ShouldQueue
      */
     public function handle(ActionsUpdateVariantFromMoySklad $updateAction): void
     {
-        $updateAction->handle($this->request);
+		try {
+			$updateAction->handle($this->request);
+		} catch (InsalesRateLimitException $e) {
+			$this->release(300);
+		}
     }
 }
