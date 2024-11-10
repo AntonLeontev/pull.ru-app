@@ -9,7 +9,8 @@ use App\Http\Controllers\MoySkladController;
 use App\Http\Controllers\OnlinePaymentController;
 use App\Http\Controllers\RegisterClientController;
 use App\Http\Controllers\SubscribtionsController;
-use App\Services\Dicards\DicardsService;
+use App\Services\CDEK\FullfillmentApi;
+use App\Services\InSales\InsalesApiService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('webhooks/delivery/calculate', [DeliveryController::class, 'calculate']);
@@ -57,7 +58,10 @@ Route::controller(RegisterClientController::class)->group(function () {
 });
 
 if (config('app.url') === 'http://localhost:8000') {
-    Route::get('test', function (DicardsService $service) {});
+    Route::get('test', function (InsalesApiService $service) {
+        $c = FullfillmentApi::getOrderById(33114060)->collect('reserves')->sum('items');
+        dd($c);
+    });
 }
 
 Route::prefix(config('moonshine.route.prefix', ''))

@@ -24,10 +24,10 @@ class UpdateVariantFromMoySklad implements ShouldQueue
      */
     public function handle(ActionsUpdateVariantFromMoySklad $updateAction): void
     {
-		try {
-			$updateAction->handle($this->request);
-		} catch (InsalesRateLimitException $e) {
-			$this->release(300);
-		}
+        try {
+            $updateAction->handle($this->request);
+        } catch (InsalesRateLimitException $e) {
+            $this->release(300);
+        }
     }
 }

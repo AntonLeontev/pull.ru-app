@@ -24,10 +24,10 @@ class VariantFromMoySkladToInsales implements ShouldQueue
      */
     public function handle(ActionsVariantFromMoySkladToInsales $action): void
     {
-		try {
-			$action->handle($this->variant);
-		} catch (InsalesRateLimitException $e) {
-			$this->release(300);
-		}
+        try {
+            $action->handle($this->variant);
+        } catch (InsalesRateLimitException $e) {
+            $this->release(300);
+        }
     }
 }
