@@ -33,9 +33,9 @@ class CreateCounterPartyFromMoySklad implements ShouldQueue
             }
 
             telegram_log('В МС создан контрагент.', [
-                'email' => $counterparty->email,
+                'email' => $counterparty->email ?? '',
                 'name' => $counterparty->name,
-                'phone' => $counterparty->phone,
+                'phone' => $counterparty->phone ?? '',
             ]);
         }
     }
