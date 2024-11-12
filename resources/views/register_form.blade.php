@@ -42,6 +42,10 @@
 				.catch(error => {
 					this.processing = false
 
+					if (error.response.status === 422) {
+						return;
+					}
+					
 					this.message = 'error'
 				})
 		},
