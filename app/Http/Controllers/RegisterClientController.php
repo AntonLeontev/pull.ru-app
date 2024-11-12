@@ -32,7 +32,7 @@ class RegisterClientController extends Controller
         DicardsService $dicardsService,
         MSApiService $msService,
     ) {
-        $client = Client::where('phone', $request->get('phone'))
+        $client = Client::where('phone', $request->validated('phone'))
             ->where('is_registered', true)
             ->first();
 
